@@ -9,6 +9,10 @@ runs:
      with:
        file: './pubspec.yaml'
        key-path: '["environment","flutter"]'
+   - uses: actions/setup-java@v2
+     with:
+       distribution: 'zulu'
+       java-version: '11'
 
    - name: Get Flutter
      uses: subosito/flutter-action@v2

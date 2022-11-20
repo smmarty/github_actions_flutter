@@ -39,7 +39,6 @@ jobs:
         uses: ./.github/actions/check
       - name: Assemble
         uses: ./.github/actions/assemble_android
-        secrets: inherit
         with:
           build_type: ${{ github.event.inputs.build_type }}
           build_mode: ${{ github.event.inputs.build_mode }}

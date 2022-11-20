@@ -7,4 +7,5 @@ then
 fi
 
 echo -n "Build flavor:"$BUILD_FLAVOR" target $result_target mode $BUILD_MODE"
-flutter build ios -t $result_target --flavor $BUILD_FLAVOR --$BUILD_MODE --no-codesign
+#flutter build ios -t $result_target --$BUILD_MODE --no-codesign --flavor $BUILD_FLAVOR
+flutter build ios -t $result_target --$BUILD_MODE --no-codesign

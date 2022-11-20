@@ -10,8 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
   setup:
-      uses: ./.github/workflows/_setup_flutter.yaml@main
+      uses: ./.github/workflows/_setup_flutter.yaml
       needs: [checkout]
   check:
-      uses: ./.github/workflows/_check.yaml@main
+      uses: ./.github/workflows/_check.yaml
       needs: [checkout, setup]

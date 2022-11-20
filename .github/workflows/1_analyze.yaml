@@ -1,4 +1,4 @@
-name: 0_Analyze project code
+name: 1_Analyze project code
 on:
   workflow_dispatch:
   pull_request:
@@ -10,6 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup
-        uses: ./ci/actions/setup/action.yml
+        uses: ./ci/actions/setup-action.yml
       - name: Check
-        uses: ./ci/actions/check/action.yml
+        uses: ./ci/actions/check-action.yml

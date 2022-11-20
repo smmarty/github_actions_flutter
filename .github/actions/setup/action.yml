@@ -1,14 +1,10 @@
 name: 'Init flutter'
 description: 'Setup flutter and project dependencies'
-inputs:
-  flutter_version:
-    description: 'flutter_version'
-    required: true
 runs:
   using: "composite"
   steps:
    - name: Read Flutter version
-     uses: KJ002/read-yaml@1.6
+     uses: jbutcher5/read-yaml@1.6
      id: flutter_version
      with:
        file: './pubspec.yaml'
@@ -20,7 +16,6 @@ runs:
        flutter-version: ${{ steps.flutter_version.outputs.data }}
        channel: 'stable'
        architecture: x64
-       
    - name: Get Dependencies
      run: flutter pub get
      shell: bash

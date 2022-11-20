@@ -30,7 +30,7 @@ on:
          - dev
 jobs:
   assemble_android:
-    runs-on: [ self-hosted, checker, ARM64, test  ]
+    runs-on: [ self-hosted, android_builder ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -45,4 +45,4 @@ jobs:
           build_type: ${{ github.event.inputs.build_type }}
           build_mode: ${{ github.event.inputs.build_mode }}
           flavor: ${{ github.event.inputs.flavor }}
-          decript_key:
+          decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}

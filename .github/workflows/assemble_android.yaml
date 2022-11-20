@@ -1,0 +1,46 @@
+name: Assemble android
+on:
+  workflow_dispatch:
+  inputs:
+    build_type:
+      description: 'appbundle или apk'
+      required: true
+      default: appbundle
+      type: choice
+      options:
+        - appbundle
+        - apk
+    build_mode:
+      description: 'release, profile или debug'
+      required: true
+      default: release
+      type: choice
+      options:
+        - release
+        - profile
+        - debug
+    flavor:
+      description: 'prod,stage,dev'
+      required: true
+      default: prod
+      type: choice
+      options:
+        - prod
+        - stage
+        - dev    -
+jobs:
+  analyze:
+    runs-on: [ self-hosted, checker ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Check
+        uses: ./.github/actions/check
+      - name: Assemble
+        uses: ./.github/actions/assemble_android
+        with:
+          build_type: ${{ github.event.inputs.build_type }}
+          build_mode: ${{ github.event.inputs.build_mode }}
+          flavor: ${{ github.event.inputs.build_mode }}
+          decript_keys: false

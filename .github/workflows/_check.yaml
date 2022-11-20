@@ -1,0 +1,14 @@
+name: _Check project code
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: [ self-hosted, checker ]
+    name: Check project code
+    steps:
+      - name: Analyze
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Test
+        run: flutter test .

@@ -27,7 +27,7 @@ on:
       options:
         - prod
         - stage
-        - dev    -
+        - dev
 jobs:
   analyze:
     runs-on: [ self-hosted, checker ]

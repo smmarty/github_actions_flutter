@@ -10,6 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup
-        uses: ./.github/setup/action.yaml
+        uses: ./.github/setup/action.yml
       - name: Check
         uses: ./.github/check/action.yml

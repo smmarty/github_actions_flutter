@@ -25,7 +25,7 @@ runs:
   using: "composite"
   steps:
     - name: Decrypt Android keys
-      if ${{ input.decript_keys}} == 'true'
+      if: ${{ input.decript_keys }} == true
       run: sh ./.github/scripts/android/decrypt_android_keys.sh
       shell: bash
       env:

@@ -4,7 +4,7 @@ runs:
   using: "composite"
   steps:
    - name: Read Flutter version
-     uses: jbutcher5/read-yaml@1.6
+     uses: jbutcher5/read-yaml@main
      id: flutter_version
      with:
        file: './pubspec.yaml'
@@ -16,6 +16,7 @@ runs:
        flutter-version: ${{ steps.flutter_version.outputs.data }}
        channel: 'stable'
        architecture: x64
+
    - name: Get Dependencies
      run: flutter pub get
      shell: bash

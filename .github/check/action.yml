@@ -1,0 +1,12 @@
+name: 'Check'
+description: 'Check project code'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Analyze
+      run: flutter analyze --fatal-infos --fatal-warnings
+      shell: bash
+    - name: Test
+      run: flutter test .
+      shell: bash

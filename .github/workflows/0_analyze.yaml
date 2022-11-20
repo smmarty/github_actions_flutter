@@ -10,6 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup
-        uses: ./.github/workflows/_setup_flutter.yaml
+        uses: ./.github/setup/action.yaml
       - name: Check
-        uses: ./.github/workflows/_check.yaml
+        uses: ./.github/check/action.yml

@@ -1,4 +1,4 @@
-name: 0_Analyze project code
+name: Analyze project code
 on:
   workflow_dispatch:
   pull_request:

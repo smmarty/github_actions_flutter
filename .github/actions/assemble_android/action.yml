@@ -16,20 +16,19 @@ inputs:
   custom_target:
     description: 'custom build target( если не определить, то будет создан из flavor)'
     required: false
-  decript_keys:
-    description: 'нужна ли расшифровка ключей перед сборкой'
-    default: 'true'
+  decript_key:
+    description: 'ANDROID_KEYS_SECRET_PASSPHRASE'
     required: true
 
 runs:
   using: "composite"
   steps:
     - name: Decrypt Android keys
-      if: ${{ inputs.decript_keys == "true" }}
+      if: ${{ inputs.decript_key }}
       run: sh ./.github/scripts/android/decrypt_android_keys.sh
       shell: bash
       env:
-        ANDROID_KEYS_SECRET_PASSPHRASE: ${{ github.event.secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+        ANDROID_KEYS_SECRET_PASSPHRASE: ${{ inputs.decript_key }}
     - name: Assemble
       run: sh ./.github/scripts/android/build_android.sh
       shell: bash

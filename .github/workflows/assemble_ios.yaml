@@ -21,7 +21,7 @@ on:
          - stage
          - dev
 jobs:
-  assemble_android:
+  assemble_ios:
     runs-on: [ self-hosted, ios_builder, test ]
     steps:
       - uses: actions/checkout@v3

@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
     - name: Assemble ios
-      run: sh ./.github/scripts/assemble_ios.sh
+      run: sh ./.github/scripts/ios/assemble_ios.sh
       shell: bash
       env:
         BUILD_FLAVOR: ${{ inputs.flavor }}

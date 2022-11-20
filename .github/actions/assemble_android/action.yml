@@ -33,6 +33,7 @@ runs:
       shell: bash
       env:
         ANDROID_KEYS_SECRET_PASSPHRASE: ${{ inputs.decript_key }}
+
     - name: Assemble
       run: sh ./.github/scripts/android/build_android.sh
       shell: bash

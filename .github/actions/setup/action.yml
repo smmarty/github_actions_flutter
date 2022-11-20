@@ -11,10 +11,10 @@ runs:
        file: './pubspec.yaml'
        key-path: '["environment","flutter"]'
 
-   - name: Get Flutter
-     uses: actions/setup-java@v1
-     with:
-       java-version: '12.x'
+#   - name: Get Flutter
+#     uses: actions/setup-java@v1
+#     with:
+#       java-version: '12.x'
 
    - uses: subosito/flutter-action@v2
      with:

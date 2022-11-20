@@ -23,6 +23,10 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
     - name: Decrypt Android keys
       if: ${{ inputs.decript_key }}
       run: sh ./.github/scripts/android/decrypt_android_keys.sh

@@ -6,10 +6,11 @@ on:
 
 jobs:
   analyze:
-    runs-on: [ self-hosted, checker, ARM64 ]
+    runs-on: [ self-hosted, checker, ARM64, test ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
         uses: ./.github/actions/setup
       - name: Check
+        if: ${{ success() }}
         uses: ./.github/actions/check

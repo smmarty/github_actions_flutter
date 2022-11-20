@@ -30,14 +30,16 @@ on:
          - dev
 jobs:
   assemble_android:
-    runs-on: [ self-hosted, checker, ARM64  ]
+    runs-on: [ self-hosted, checker, ARM64, test  ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
         uses: ./.github/actions/setup
       - name: Check
+        if: ${{ success() }}
         uses: ./.github/actions/check
       - name: Assemble
+        if: ${{ success() }}
         uses: ./.github/actions/assemble_android
         with:
           build_type: ${{ github.event.inputs.build_type }}

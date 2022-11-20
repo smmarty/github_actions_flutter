@@ -15,7 +15,7 @@ runs:
      with:
        flutter-version: ${{ steps.flutter_version.outputs.data }}
        channel: 'stable'
-       architecture: x64
+#       architecture: x64
 
    - name: Get Dependencies
      run: flutter pub get

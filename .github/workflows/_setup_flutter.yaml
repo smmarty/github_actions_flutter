@@ -1,28 +1,24 @@
-name: _Init flutter
-on:
-  workflow_call:
+name: 'Init flutter'
+description: 'Setup flutter and project dependencies'
 
-jobs:
-  build:
-    runs-on: [ self-hosted, checker ]
-    name: Init flutter
-    steps:
-      - name: Read Flutter version
-        uses: KJ002/read-yaml@1.5
-        id: flutter_version
-        with:
-          file: './pubspec.yaml'
-          key-path: '["environment","flutter"]'
+runs:
+ steps:
+   - name: Read Flutter version
+     uses: KJ002/read-yaml@1.5
+     id: flutter_version
+     with:
+       file: './pubspec.yaml'
+       key-path: '["environment","flutter"]'
 
-      - name: Get Flutter
-        uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
+   - name: Get Flutter
+     uses: actions/setup-java@v1
+     with:
+       java-version: '12.x'
 
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ steps.flutter_version.outputs.data }}
-          channel: 'stable'
+   - uses: subosito/flutter-action@v2
+     with:
+       flutter-version: ${{ steps.flutter_version.outputs.data }}
+       channel: 'stable'
 
-      - name: Get Dependencies
-        run: flutter pub get
+   - name: Get Dependencies
+     run: flutter pub get

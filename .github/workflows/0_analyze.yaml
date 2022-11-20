@@ -5,13 +5,11 @@ on:
     branches: [ main, dev, release ]
 
 jobs:
-  checkout:
+  analyze:
     runs-on: [ self-hosted, checker ]
     steps:
       - uses: actions/checkout@v3
-  setup:
-      uses: ./.github/workflows/_setup_flutter.yaml
-      needs: [checkout]
-  check:
-      uses: ./.github/workflows/_check.yaml
-      needs: [checkout, setup]
+      - name: Setup
+        uses: ./.github/workflows/_setup_flutter.yaml
+      - name: Check
+        uses: ./.github/workflows/_check.yaml

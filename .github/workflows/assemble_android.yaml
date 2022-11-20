@@ -1,33 +1,33 @@
 name: Assemble android
 on:
   workflow_dispatch:
-  inputs:
-    build_type:
-      description: 'appbundle или apk'
-      required: true
-      default: appbundle
-      type: choice
-      options:
-        - appbundle
-        - apk
-    build_mode:
-      description: 'release, profile или debug'
-      required: true
-      default: release
-      type: choice
-      options:
-        - release
-        - profile
-        - debug
-    flavor:
-      description: 'prod,stage,dev'
-      required: true
-      default: prod
-      type: choice
-      options:
-        - prod
-        - stage
-        - dev
+   inputs:
+     build_type:
+       description: 'appbundle или apk'
+       required: true
+       default: appbundle
+       type: choice
+       options:
+         - appbundle
+         - apk
+     build_mode:
+       description: 'release, profile или debug'
+       required: true
+       default: release
+       type: choice
+       options:
+         - release
+         - profile
+         - debug
+     flavor:
+       description: 'prod,stage,dev'
+       required: true
+       default: prod
+       type: choice
+       options:
+         - prod
+         - stage
+         - dev
 jobs:
   analyze:
     runs-on: [ self-hosted, checker ]

@@ -37,10 +37,10 @@ runs:
         ANDROID_KEYS_SECRET_PASSPHRASE: ${{ inputs.decript_key }}
 
     - name: Assemble
-      run: sh ./.github/scripts/android/build_android.sh
+      run: sh ./.github/scripts/android/assemble_android.sh
       shell: bash
       env:
         BUILD_FLAVOR: ${{ inputs.flavor }}
         BUILD_TARGET: ${{ inputs.custom_target }}
-        ANDROID_BUILD_TYPE: ${{ inputs.build_type }}
+        BUILD_TYPE: ${{ inputs.build_type }}
         BUILD_MODE: ${{ inputs.build_mode }}

@@ -43,4 +43,4 @@ jobs:
           build_type: ${{ github.event.inputs.build_type }}
           build_mode: ${{ github.event.inputs.build_mode }}
           flavor: ${{ github.event.inputs.build_mode }}
-          decript_keys: false
+          decript_key:

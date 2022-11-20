@@ -5,10 +5,15 @@ on:
     branches: [ main, dev, release ]
 
 jobs:
-  analyze:
+  checkout:
+    runs-on: [ self-hosted, checker ]
     steps:
       - uses: actions/checkout@v3
-      - name: Setup
-        uses: smmarty/flutter_cicd_sample/.github/workflows/_setup_flutter.yaml@main
-      - name: Check
-        uses: smmarty/flutter_cicd_sample/.github/workflows/_check.yamll@main
+  setup:
+    - name: Setup
+      uses: smmarty/flutter_cicd_sample/.github/workflows/_setup_flutter.yaml@main
+      needs: [setup]
+  check:
+    - name: Check
+      uses: smmarty/flutter_cicd_sample/.github/workflows/_check.yamll@main
+      needs: [checkout, setup]

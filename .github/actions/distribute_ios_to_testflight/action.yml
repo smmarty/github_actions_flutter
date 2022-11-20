@@ -1,0 +1,66 @@
+name: 'Distribute to TestFlight'
+description: 'Distribute to TestFlight'
+#inputs:
+#  flavor:
+#    description: 'prod, demo or dev'
+#    required: true
+#    default: dev
+#  build_mode:
+#    description: 'release, profile или debug'
+#    required: true
+#    default: release
+#  release_notes:
+#    required: true
+#    description: 'Release notes'
+#  ipa_file_path:
+#    description: 'Release notes'
+#    required: false
+#    default: "../Runner.ipa"
+#  configuration:
+#    description: 'configuration'
+#  workspace:
+#    description: 'Runner'
+#  scheme:
+#    description: 'scheme'
+#  app_bundle_ids:
+#    description: 'список всех app_id через запятую'
+#    required: true
+#  app_store_connect_team_id:
+#    description: 'app_store_connect_team_id'
+#    required: true
+#  developer_app_id:
+#    description: 'developer_app_id'
+#    required: true
+#  developer_portal_team_id:
+#    description: 'developer_portal_team_id'
+#    required: true
+#  fastlane_apple_id:
+#    description: 'id от apple аккаунта'
+#    required: true
+#  fastlane_apple_application_specific_password:
+#    description: 'Пароль приложения от apple аккаунта(2FA)'
+#    required: true
+#  match_password:
+#    description: 'Пароль для расшифровки сертификатов'
+#    required: true
+#  git_authorization:
+#    description: 'Токен для доступа к git'
+#    required: true
+#  temp_keychain_user:
+#    description: 'Логин от временного keychain (обычно temp)'
+#    required: true
+#  temp_keychain_password:
+#    description: 'Пароль от временного keychain (обычно temp)'
+#    required: true
+#  itc_provider:
+#    description: 'ITC PROVIDER (TEAM ID)'
+#    required: true
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Assemble ios
+      run: echo "input ${{ github.event.inputs.build_mode }} secret ${{ secrets.TEST_SECRET}}"
+#      run: cd ios && fatlane
+      shell: bash

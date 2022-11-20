@@ -1,7 +1,15 @@
-name: Assemble ios and distribute to TestFlight
+name: Deploy android to Telegram
 on:
   workflow_dispatch:
    inputs:
+     build_type:
+       description: 'appbundle или apk'
+       required: true
+       default: appbundle
+       type: choice
+       options:
+         - appbundle
+         - apk
      build_mode:
        description: 'release, profile или debug'
        required: true
@@ -21,8 +29,8 @@ on:
          - stage
          - dev
 jobs:
-  assemble_ios:
-    runs-on: [ self-hosted, ios_builder, test ]
+  deploy_android:
+    runs-on: [ self-hosted, android_builder ]
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -32,7 +40,9 @@ jobs:
         uses: ./.github/actions/check
       - name: Assemble
         if: ${{ success() }}
-        uses: ./.github/actions/assemble_ios
+        uses: ./.github/actions/assemble_android
         with:
+          build_type: ${{ github.event.inputs.build_type }}
           build_mode: ${{ github.event.inputs.build_mode }}
           flavor: ${{ github.event.inputs.flavor }}
+          decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}

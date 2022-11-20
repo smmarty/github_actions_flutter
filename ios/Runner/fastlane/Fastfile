@@ -1,0 +1,73 @@
+default_platform(:ios)
+
+DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"]
+DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"]
+APP_BUNDLE_IDS = ENV["APP_BUNDLE_IDS"]
+TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
+TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
+IPA_FILE_PATH = ENV["IPA_FILE_PATH"]
+CONFIGURATION = ENV["CONFIGURATION"]
+WORKSPACE = ENV["WORKSPACE"]
+SCHEME = ENV["SCHEME"]
+GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
+FASTLANE_USER = ENV["FASTLANE_APPLE_ID"]
+ITC_PROVIDER = ENV["ITC_PROVIDER"]
+
+def delete_temp_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: true
+  )
+end
+
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
+end
+
+platform :ios do
+
+  lane :distribute_to_testflight do
+    keychain_name = "#{TEMP_KEYCHAIN_USER}"
+    keychain_password = "#{TEMP_KEYCHAIN_PASSWORD}"
+    ensure_temp_keychain(keychain_name, keychain_password)
+
+    match(
+      type: 'appstore',
+      app_identifier: "#{APP_BUNDLE_IDS}",
+      git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
+      readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password
+    )
+
+    gym(
+      configuration: "#{CONFIGURATION}",
+      workspace: "#{WORKSPACE}",
+      scheme: "#{SCHEME}",
+      export_method: "app-store"
+    )
+
+    pilot(
+      username: "#{FASTLANE_USER}",
+      apple_id: "#{DEVELOPER_APP_ID}",
+      app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      skip_waiting_for_build_processing: true,
+      skip_submission: true,
+      distribute_external: false,
+      notify_external_testers: false,
+      ipa: "#{IPA_FILE_PATH}",
+      itc_provider: "#{ITC_PROVIDER}"
+    )
+
+    delete_temp_keychain(keychain_name)
+  end
+end
+

@@ -1,15 +1,7 @@
-name: Assemble android
+name: Deploy ios to TestFlight
 on:
   workflow_dispatch:
    inputs:
-     build_type:
-       description: 'appbundle или apk'
-       required: true
-       default: appbundle
-       type: choice
-       options:
-         - appbundle
-         - apk
      build_mode:
        description: 'release, profile или debug'
        required: true
@@ -29,10 +21,12 @@ on:
          - stage
          - dev
 jobs:
-  assemble_android:
-    runs-on: [ self-hosted, android_builder ]
+  deploy_ios:
+    runs-on: [ self-hosted, ios_builder, test ]
     steps:
       - uses: actions/checkout@v3
+      - name: Assemble
+        uses: ./.github/actions/distribute_ios_to_testflight
       - name: Setup
         uses: ./.github/actions/setup
       - name: Check
@@ -40,9 +34,7 @@ jobs:
         uses: ./.github/actions/check
       - name: Assemble
         if: ${{ success() }}
-        uses: ./.github/actions/assemble_android
+        uses: ./.github/actions/assemble_ios
         with:
-          build_type: ${{ github.event.inputs.build_type }}
           build_mode: ${{ github.event.inputs.build_mode }}
           flavor: ${{ github.event.inputs.flavor }}
-          decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}

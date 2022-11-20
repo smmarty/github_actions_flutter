@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
   setup:
       uses: smmarty/flutter_cicd_sample/.github/workflows/_setup_flutter.yaml@main
-      needs: [setup]
+      needs: [checkout]
   check:
       uses: smmarty/flutter_cicd_sample/.github/workflows/_check.yaml@main
       needs: [checkout, setup]

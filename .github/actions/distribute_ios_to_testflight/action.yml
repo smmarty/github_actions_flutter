@@ -6,15 +6,18 @@ inputs:
     required: false
     default: "../Runner.ipa"
   configuration:
-    description: 'configuration (flavor + build type)'
+    description: 'configuration (flavor + Build type)'
     default: 'prodRelease'
   workspace:
     description: 'xcworkspace file name (Runner.xcworkspace)'
     default: 'Runner.xcworkspace'
   scheme:
     description: 'scheme'
+  app_bundle_id:
+    description: 'bundle id для публикуемого приложения'
+    required: true
   app_bundle_ids:
-    description: 'список всех app_id через запятую'
+    description: 'список всех app_id через запятую (com.example.app, com.example.NotifService)'
     required: true
   app_store_connect_team_id:
     description: 'app_store_connect_team_id'
@@ -52,11 +55,11 @@ runs:
   using: "composite"
   steps:
     - name: Assemble ios
-      run: cd ios && fastlane
+      run: cd ios && fastlane distribute_to_testflight
       shell: bash
       env:
         DEVELOPER_APP_ID: ${{ inputs.developer_app_id }}
-        DEVELOPER_APP_IDENTIFIER: ${{ inputs.developer_app_id }}
+        APP_BUNDLE_ID: ${{ inputs.app_bundle_id }}
         APP_BUNDLE_IDS: ${{ inputs.app_bundle_ids }}
         TEMP_KEYCHAIN_USER: ${{ inputs.temp_keychain_user }}
         TEMP_KEYCHAIN_PASSWORD: ${{ inputs.temp_keychain_password }}

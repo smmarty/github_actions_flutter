@@ -43,7 +43,7 @@ platform :ios do
 
     match(
       type: 'appstore',
-      app_identifier: ENV["DEVELOPER_APP_IDENTIFIERS"],
+      app_identifier: ENV["DEVELOPER_APP_ID"],
       git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
       readonly: true,
       keychain_name: keychain_name,
@@ -60,7 +60,7 @@ platform :ios do
     pilot(
       username: ENV["FASTLANE_USER"],
       apple_id: ENV["DEVELOPER_APP_ID"],
-      app_identifier: ENV["DEVELOPER_APP_IDENTIFIER"],
+      app_identifier: ENV["APP_BUNDLE_ID"],
       ipa: ENV["IPA_FILE_PATH"],
       itc_provider: ENV["ITC_PROVIDER"],
       skip_waiting_for_build_processing: true,

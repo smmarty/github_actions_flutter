@@ -90,3 +90,26 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flavorizr:
+  flavors:
+    prod:
+      app:
+        name: TestApp
+      android:
+        applicationId: com.friflex.cicdsample
+      ios:
+        bundleId: com.friflex.cicdsample
+    stage:
+      app:
+        name: TestApp-stage
+      android:
+        applicationId: com.friflex.cicdsample
+      ios:
+        bundleId: com.friflex.cicdsample
+    dev:
+      app:
+        name: TestApp-dev
+      android:
+        applicationId: com.friflex.cicdsample
+      ios:
+        bundleId: com.friflex.cicdsample

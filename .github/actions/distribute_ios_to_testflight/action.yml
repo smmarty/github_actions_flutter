@@ -56,7 +56,7 @@ runs:
       shell: bash
       env:
         DEVELOPER_APP_ID: ${{ inputs.developer_app_id }}
-        DEVELOPER_APP_IDENTIFIER: ${{ inputs. }}
+        DEVELOPER_APP_IDENTIFIER: ${{ inputs.developer_app_id }}
         APP_BUNDLE_IDS: ${{ inputs.app_bundle_ids }}
         TEMP_KEYCHAIN_USER: ${{ inputs.temp_keychain_user }}
         TEMP_KEYCHAIN_PASSWORD: ${{ inputs.temp_keychain_password }}

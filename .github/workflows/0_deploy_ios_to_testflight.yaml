@@ -52,7 +52,7 @@ jobs:
          app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
          developer_app_id: ${{ secrets.DEVELOPER_APP_ID }}
          developer_portal_team_id: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
-         fastlane_apple_id: ${{ secrets.FASTLANE_APPLE_ID }}
+         fastlane_apple_id: ${{ secrets.FASTLANE_USER }}
          fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
          match_password: ${{ secrets.MATCH_PASSWORD }}
          git_authorization: ${{ secrets.GIT_AUTHORIZATION }}

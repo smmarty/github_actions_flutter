@@ -1,0 +1,23 @@
+name: 'Prepare android secrets'
+description: 'Prepare jsk and other secrets'
+inputs:
+  git_url:
+    description: 'appbundle или apk'
+    required: true
+    default: appbundle
+  flavor:
+    description: 'prod, dev, stage'
+    required: true
+    default: prod
+
+runs:
+  using: "composite"
+  steps:
+    - name: Assemble
+      run: sh ./.github/scripts/android/assemble_android.sh
+      shell: bash
+      env:
+        BUILD_FLAVOR: ${{ inputs.flavor }}
+        BUILD_TARGET: ${{ inputs.custom_target }}
+        BUILD_TYPE: ${{ inputs.build_type }}
+        BUILD_MODE: ${{ inputs.build_mode }}

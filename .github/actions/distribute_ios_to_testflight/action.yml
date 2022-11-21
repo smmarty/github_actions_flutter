@@ -67,5 +67,5 @@ runs:
         GIT_AUTHORIZATION: ${{ inputs.git_authorization }}
         ITC_PROVIDER: ${{ inputs.itc_provider }}
         FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ inputs.fastlane_apple_application_specific_password }}
-        FASTLANE_APPLE_ID: ${{ inputs.fastlane_apple_id }}
+        FASTLANE_USER: ${{ inputs.fastlane_apple_id }}
         MATCH_PASSWORD: ${{ inputs.match_password }}

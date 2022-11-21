@@ -6,20 +6,10 @@ on:
         description: 'release, profile или debug'
         required: true
         default: release
-        type: choice
-        options:
-          - release
-          - profile
-          - debug
       flavor:
         description: 'prod, stage, dev'
         required: true
         default: prod
-        type: choice
-        options:
-          - prod
-          - stage
-          - dev
       release_note:
         description: 'Release Note'
         required: true

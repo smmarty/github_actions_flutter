@@ -47,7 +47,7 @@ jobs:
         uses: ./.github/actions/telegram/send_file
         with:
           silent_mode: "true"
-          file_path: build/app/apk/${{ github.event.inputs.flavor }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
+          file_path: build/app/outputs/apk/${{ github.event.inputs.flavor }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 

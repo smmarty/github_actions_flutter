@@ -44,7 +44,7 @@ jobs:
         uses: ./.github/actions/distribute_ios_to_testflight
         with:
          ipa_file_path: './Runner.ipa'
-         configuration: 'prodRelease'
+         configuration: ${{ github.event.inputs.flavor }}${{ github.event.inputs.build_mode }}
          workspace: 'Runner.xcworkspace'
          scheme: ${{ github.event.inputs.flavor }}
          app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}

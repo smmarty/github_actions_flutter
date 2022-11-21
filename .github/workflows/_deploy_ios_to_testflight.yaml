@@ -1,4 +1,4 @@
-name: _Deploy ios to TestFlight
+name: _deploy ios to TestFlight
 on:
   workflow_call:
     inputs:

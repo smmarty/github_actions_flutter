@@ -1,4 +1,4 @@
-name: [Pull Request] Analyze project code
+name: _on Pull Request Analyze project code
 on:
   pull_request:
     branches: [ main, dev, release ]

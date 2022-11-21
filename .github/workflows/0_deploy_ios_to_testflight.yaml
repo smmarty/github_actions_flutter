@@ -23,6 +23,7 @@ on:
 jobs:
   deploy_ios:
     runs-on: [ self-hosted, ios_builder, test ]
+    enviroment: ${{ github.event.inputs.flavor }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup

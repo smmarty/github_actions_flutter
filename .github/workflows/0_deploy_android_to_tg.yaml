@@ -51,25 +51,28 @@ jobs:
           decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
 
       - name: Send file to telegram
-          if: ${{ success() }}
-          uses: ./.github/actions/telegram/send_file
-          silent_mode: "true"
-          file_path:
-          chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
-          tg_url:  ${{ secrets.TG_URL }}
+        if: ${{ success() }}
+        uses: ./.github/actions/telegram/send_file
+        with:
+         silent_mode: "true"
+         file_path:
+         chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
+         tg_url:  ${{ secrets.TG_URL }}
 
       - name: Send release note to telegram
         if: ${{ success() }}
         uses: ./.github/actions/telegram/send_message
-        message: "Test release note"
-        silent_mode: "false"
-        chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
-        tg_url: ${{ secrets.TG_URL }}
+        with:
+         message: "Test release note"
+         silent_mode: "false"
+         chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
+         tg_url: ${{ secrets.TG_URL }}
 
       - name: Send alert
         if: ${{ failure() }}
         uses: ./.github/actions/telegram/send_message
-        message: "Test alert"
-        silent_mode: "false"
-        chat_id: ${{ secrets.ALERTS_CHAT_ID }}
-        tg_url: ${{ secrets.TG_URL }}
+        with:
+         message: "Test alert"
+         silent_mode: "false"
+         chat_id: ${{ secrets.ALERTS_CHAT_ID }}
+         tg_url: ${{ secrets.TG_URL }}

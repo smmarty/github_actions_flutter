@@ -40,21 +40,21 @@ jobs:
           flavor: ${{ github.event.inputs.flavor }}
 
       - name: Deploy to TestFlight
-          if: ${{ success() }}
-          uses: ./.github/actions/distribute_ios_to_testflight
-          with:
-           ipa_file_path: './Runner.ipa'
-           configuration: 'prodRelease'
-           workspace: 'Runner.xcworkspace'
-           scheme: ${{ github.event.inputs.flavor }}
-           app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
-           app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
-           app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
-           developer_app_id: ${{ secrets.DEVELOPER_APP_ID }}
-           developer_portal_team_id: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
-           fastlane_apple_id: ${{ secrets.FASTLANE_APPLE_ID }}
-           fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-           match_password: ${{ secrets.MATCH_PASSWORD }}
-           git_authorization: ${{ secrets.GIT_AUTHORIZATION }}
-           temp_keychain_password: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
-           temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}
+        if: ${{ success() }}
+        uses: ./.github/actions/distribute_ios_to_testflight
+        with:
+         ipa_file_path: './Runner.ipa'
+         configuration: 'prodRelease'
+         workspace: 'Runner.xcworkspace'
+         scheme: ${{ github.event.inputs.flavor }}
+         app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
+         app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
+         app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
+         developer_app_id: ${{ secrets.DEVELOPER_APP_ID }}
+         developer_portal_team_id: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+         fastlane_apple_id: ${{ secrets.FASTLANE_APPLE_ID }}
+         fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+         match_password: ${{ secrets.MATCH_PASSWORD }}
+         git_authorization: ${{ secrets.GIT_AUTHORIZATION }}
+         temp_keychain_password: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
+         temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}

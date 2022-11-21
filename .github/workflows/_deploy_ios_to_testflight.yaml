@@ -6,10 +6,12 @@ on:
        description: 'Release, Profile или Debug'
        required: true
        default: Release
+        type: string
      flavor:
        description: 'prod,stage,dev'
        required: true
        default: prod
+        type: string
      release_note:
        description: 'Release Note'
        required: true

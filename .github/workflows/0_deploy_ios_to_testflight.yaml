@@ -26,9 +26,9 @@ on:
        type: string
 jobs:
   deploy_ios:
+    environment: ${{ github.event.inputs.flavor }}
     name: Deploy ios to testflight
     uses: ./.github/workflows/_deploy_ios_to_testflight.yaml
-    environment: ${{ github.event.inputs.flavor }}
     secrets: inherit
     with:
       build_mode: ${{ github.event.inputs.build_mode }}

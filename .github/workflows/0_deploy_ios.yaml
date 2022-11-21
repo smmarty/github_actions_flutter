@@ -1,0 +1,60 @@
+name: Deploy ios to TestFlight
+on:
+  workflow_dispatch:
+   inputs:
+     build_mode:
+       description: 'release, profile или debug'
+       required: true
+       default: release
+       type: choice
+       options:
+         - release
+         - profile
+         - debug
+     flavor:
+       description: 'prod,stage,dev'
+       required: true
+       default: prod
+       type: choice
+       options:
+         - prod
+         - stage
+         - dev
+jobs:
+  deploy_ios:
+    runs-on: [ self-hosted, ios_builder, test ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Check
+        if: ${{ success() }}
+        uses: ./.github/actions/check
+
+      - name: Assemble
+        if: ${{ success() }}
+        uses: ./.github/actions/assemble_ios
+        with:
+          build_mode: ${{ github.event.inputs.build_mode }}
+          flavor: ${{ github.event.inputs.flavor }}
+
+      - name: Deploy to TestFlight
+          if: ${{ success() }}
+          uses: ./.github/actions/distribute_ios_to_testflight
+          with:
+           ipa_file_path: './Runner.ipa'
+           configuration: 'prodRelease'
+           workspace: 'Runner.xcworkspace'
+           scheme: ${{ github.event.inputs.flavor }}
+           app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
+           app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
+           app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
+           developer_app_id: ${{ secrets.DEVELOPER_APP_ID }}
+           developer_portal_team_id: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+           fastlane_apple_id: ${{ secrets.FASTLANE_APPLE_ID }}
+           fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+           match_password: ${{ secrets.MATCH_PASSWORD }}
+           git_authorization: ${{ secrets.GIT_AUTHORIZATION }}
+           temp_keychain_password: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
+           temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}

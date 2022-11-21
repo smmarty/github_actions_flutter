@@ -1,0 +1,23 @@
+name: 'Telegram send file'
+description: 'Send file to Telegram'
+inputs:
+  file_path:
+    description: 'file_path'
+    required: false
+  chat_id:
+    description: 'chat_id'
+    required: false
+  silent_mode:
+    description: 'true/false'
+    required: false
+    default: "false"
+  tg_url:
+    description: 'tg_url'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: File sending
+      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.tg_url }}
+      shell: bash

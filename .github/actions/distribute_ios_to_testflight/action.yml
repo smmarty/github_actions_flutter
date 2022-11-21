@@ -1,66 +1,71 @@
 name: 'Distribute to TestFlight'
 description: 'Distribute to TestFlight'
-#inputs:
-#  flavor:
-#    description: 'prod, demo or dev'
-#    required: true
-#    default: dev
-#  build_mode:
-#    description: 'release, profile или debug'
-#    required: true
-#    default: release
-#  release_notes:
-#    required: true
-#    description: 'Release notes'
-#  ipa_file_path:
-#    description: 'Release notes'
-#    required: false
-#    default: "../Runner.ipa"
-#  configuration:
-#    description: 'configuration'
-#  workspace:
-#    description: 'Runner'
-#  scheme:
-#    description: 'scheme'
-#  app_bundle_ids:
-#    description: 'список всех app_id через запятую'
-#    required: true
-#  app_store_connect_team_id:
-#    description: 'app_store_connect_team_id'
-#    required: true
-#  developer_app_id:
-#    description: 'developer_app_id'
-#    required: true
-#  developer_portal_team_id:
-#    description: 'developer_portal_team_id'
-#    required: true
-#  fastlane_apple_id:
-#    description: 'id от apple аккаунта'
-#    required: true
-#  fastlane_apple_application_specific_password:
-#    description: 'Пароль приложения от apple аккаунта(2FA)'
-#    required: true
-#  match_password:
-#    description: 'Пароль для расшифровки сертификатов'
-#    required: true
-#  git_authorization:
-#    description: 'Токен для доступа к git'
-#    required: true
-#  temp_keychain_user:
-#    description: 'Логин от временного keychain (обычно temp)'
-#    required: true
-#  temp_keychain_password:
-#    description: 'Пароль от временного keychain (обычно temp)'
-#    required: true
-#  itc_provider:
-#    description: 'ITC PROVIDER (TEAM ID)'
-#    required: true
+inputs:
+  ipa_file_path:
+    description: 'path to ipa file'
+    required: false
+    default: "../Runner.ipa"
+  configuration:
+    description: 'configuration (flavor + build type)'
+    default: 'prodRelease'
+  workspace:
+    description: 'xcworkspace file name (Runner.xcworkspace)'
+    default: 'Runner.xcworkspace'
+  scheme:
+    description: 'scheme'
+  app_bundle_ids:
+    description: 'список всех app_id через запятую'
+    required: true
+  app_store_connect_team_id:
+    description: 'app_store_connect_team_id'
+    required: true
+  developer_app_id:
+    description: 'developer_app_id'
+    required: true
+  developer_portal_team_id:
+    description: 'developer_portal_team_id'
+    required: true
+  fastlane_apple_id:
+    description: 'id от apple аккаунта'
+    required: true
+  fastlane_apple_application_specific_password:
+    description: 'Пароль приложения от apple аккаунта(2FA)'
+    required: true
+  match_password:
+    description: 'Пароль для расшифровки сертификатов'
+    required: true
+  git_authorization:
+    description: 'Токен для доступа к git'
+    required: true
+  temp_keychain_user:
+    description: 'Логин от временного keychain'
+    required: true
+  temp_keychain_password:
+    description: 'Пароль от временного keychain'
+    required: true
+  itc_provider:
+    description: 'ITC PROVIDER (TEAM ID)'
+    required: true
 
 
 runs:
   using: "composite"
   steps:
     - name: Assemble ios
-      run: echo "input ${{ github.event.inputs.build_mode }} secret ${{ secrets.TEST_SECRET}}"
-#      run: cd ios && fatlane
+      run: cd ios && fastlane
       shell: bash
+      env:
+        DEVELOPER_APP_ID: ${{ inputs.developer_app_id }}
+        DEVELOPER_APP_IDENTIFIER: ${{ inputs. }}
+        APP_BUNDLE_IDS: ${{ inputs.app_bundle_ids }}
+        TEMP_KEYCHAIN_USER: ${{ inputs.temp_keychain_user }}
+        TEMP_KEYCHAIN_PASSWORD: ${{ inputs.temp_keychain_password }}
+        IPA_FILE_PATH: ${{ inputs.ipa_file_path }}
+        CONFIGURATION: ${{ inputs.configuration }}
+        WORKSPACE: ${{ inputs.workspace }}
+        SCHEME: ${{ inputs.scheme }}
+        GIT_AUTHORIZATION: ${{ inputs.git_authorization }}
+        ITC_PROVIDER: ${{ inputs.itc_provider }}
+        FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ inputs.fastlane_apple_application_specific_password }}
+        FASTLANE_APPLE_ID: ${{ inputs.fastlane_apple_id }}
+        MATCH_PASSWORD: ${{ inputs.match_password }}

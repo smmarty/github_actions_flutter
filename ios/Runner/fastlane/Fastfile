@@ -1,18 +1,5 @@
 default_platform(:ios)
 
-DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"]
-DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"]
-APP_BUNDLE_IDS = ENV["APP_BUNDLE_IDS"]
-TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
-TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
-IPA_FILE_PATH = ENV["IPA_FILE_PATH"]
-CONFIGURATION = ENV["CONFIGURATION"]
-WORKSPACE = ENV["WORKSPACE"]
-SCHEME = ENV["SCHEME"]
-GIT_AUTHORIZATION = ENV["GIT_AUTHORIZATION"]
-FASTLANE_USER = ENV["FASTLANE_APPLE_ID"]
-ITC_PROVIDER = ENV["ITC_PROVIDER"]
-
 def delete_temp_keychain(name)
   delete_keychain(
     name: name
@@ -34,37 +21,52 @@ end
 
 platform :ios do
 
+  lane :test_match do
+      keychain_name = ENV["TEMP_KEYCHAIN_USER"]
+      keychain_password = ENV["TEMP_KEYCHAIN_PASSWORD"]
+      ensure_temp_keychain(keychain_name, keychain_password)
+
+      match(
+        type: 'appstore',
+        app_identifier: ENV["APP_BUNDLE_IDS"],
+        git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
+        readonly: true,
+        keychain_name: keychain_name,
+        keychain_password: keychain_password
+      )
+  end
+
   lane :distribute_to_testflight do
-    keychain_name = "#{TEMP_KEYCHAIN_USER}"
-    keychain_password = "#{TEMP_KEYCHAIN_PASSWORD}"
+    keychain_name = ENV["TEMP_KEYCHAIN_USER"]
+    keychain_password = ENV["TEMP_KEYCHAIN_PASSWORD"]
     ensure_temp_keychain(keychain_name, keychain_password)
 
     match(
       type: 'appstore',
-      app_identifier: "#{APP_BUNDLE_IDS}",
-      git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
+      app_identifier: ENV["DEVELOPER_APP_IDENTIFIERS"],
+      git_basic_authorization: Base64.strict_encode64(ENV["GIT_AUTHORIZATION"]),
       readonly: true,
       keychain_name: keychain_name,
       keychain_password: keychain_password
     )
 
     gym(
-      configuration: "#{CONFIGURATION}",
-      workspace: "#{WORKSPACE}",
-      scheme: "#{SCHEME}",
+      configuration: ENV["CONFIGURATION"],
+      workspace: ENV["WORKSPACE"],
+      scheme: ENV["SCHEME"],
       export_method: "app-store"
     )
 
     pilot(
-      username: "#{FASTLANE_USER}",
-      apple_id: "#{DEVELOPER_APP_ID}",
-      app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      username: ENV["FASTLANE_APPLE_ID"],
+      apple_id: ENV["DEVELOPER_APP_ID"],
+      app_identifier: ENV["DEVELOPER_APP_IDENTIFIER"],
+      ipa: ENV["IPA_FILE_PATH"],
+      itc_provider: ENV["ITC_PROVIDER"],
       skip_waiting_for_build_processing: true,
       skip_submission: true,
       distribute_external: false,
-      notify_external_testers: false,
-      ipa: "#{IPA_FILE_PATH}",
-      itc_provider: "#{ITC_PROVIDER}"
+      notify_external_testers: false
     )
 
     delete_temp_keychain(keychain_name)

@@ -3,10 +3,10 @@ description: 'Send file to Telegram'
 inputs:
   file_path:
     description: 'file_path'
-    required: false
+    required: true
   chat_id:
     description: 'chat_id'
-    required: false
+    required: true
   silent_mode:
     description: 'true/false'
     required: false

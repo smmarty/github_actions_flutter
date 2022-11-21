@@ -1,2 +1,2 @@
-git_url(ENV["GITHUB_SECRETS_URL"])
+git_url(ENV["GIT_SECRETS_URL"])
 storage_mode("git")

@@ -57,5 +57,6 @@ jobs:
          fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
          match_password: ${{ secrets.MATCH_PASSWORD }}
          git_authorization: ${{ secrets.GIT_AUTHORIZATION }}
+         git_sercrets_url: ${{ secrets.GIT_SECRETS_URL }}
          temp_keychain_password: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
          temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}

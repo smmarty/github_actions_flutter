@@ -38,7 +38,10 @@ inputs:
     description: 'Пароль для расшифровки сертификатов'
     required: true
   git_authorization:
-    description: 'Токен для доступа к git'
+    description: 'Токен для доступа к git с сертификатами'
+    required: true
+  git_sercrets_url:
+    description: 'url к git с сертификатами'
     required: true
   temp_keychain_user:
     description: 'Логин от временного keychain'
@@ -72,3 +75,4 @@ runs:
         FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ inputs.fastlane_apple_application_specific_password }}
         FASTLANE_USER: ${{ inputs.fastlane_apple_id }}
         MATCH_PASSWORD: ${{ inputs.match_password }}
+        GIT_SECRETS_URL: ${{ inputs.git_sercrets_url }}

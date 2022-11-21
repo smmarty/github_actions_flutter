@@ -3,14 +3,14 @@ on:
   workflow_dispatch:
    inputs:
      build_mode:
-       description: 'release, profile или debug'
+       description: 'Release, Profile или Debug'
        required: true
-       default: release
+       default: Release
        type: choice
        options:
-         - release
-         - profile
-         - debug
+         - Release
+         - Profile
+         - Debug
      flavor:
        description: 'prod,stage,dev'
        required: true
@@ -44,8 +44,8 @@ jobs:
         uses: ./.github/actions/distribute_ios_to_testflight
         with:
          ipa_file_path: './Runner.ipa'
-         configuration: ${{ github.event.inputs.flavor }}${{ github.event.inputs.build_mode }}
          workspace: 'Runner.xcworkspace'
+         configuration: ${{ github.event.inputs.flavor }}${{ github.event.inputs.build_mode }}
          scheme: ${{ github.event.inputs.flavor }}
          app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
          app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}

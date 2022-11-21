@@ -20,43 +20,17 @@ on:
          - prod
          - stage
          - dev
+     release_note:
+       description: 'Release Note'
+       required: true
+       type: string
 jobs:
   deploy_ios:
-    runs-on: [ self-hosted, ios_builder, test ]
-    environment: ${{ github.event.inputs.flavor }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Check
-        if: ${{ success() }}
-        uses: ./.github/actions/check
-
-      - name: Assemble
-        if: ${{ success() }}
-        uses: ./.github/actions/assemble_ios
-        with:
-          build_mode: ${{ github.event.inputs.build_mode }}
-          flavor: ${{ github.event.inputs.flavor }}
-
-      - name: Deploy to TestFlight
-        if: ${{ success() }}
-        uses: ./.github/actions/distribute_ios_to_testflight
-        with:
-         ipa_file_path: './Runner.ipa'
-         workspace: 'Runner.xcworkspace'
-         configuration: ${{ github.event.inputs.flavor }}${{ github.event.inputs.build_mode }}
-         scheme: ${{ github.event.inputs.flavor }}
-         app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
-         app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
-         app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
-         developer_app_id: ${{ secrets.DEVELOPER_APP_ID }}
-         developer_portal_team_id: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
-         fastlane_apple_id: ${{ secrets.FASTLANE_USER }}
-         fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-         match_password: ${{ secrets.MATCH_PASSWORD }}
-         git_authorization: ${{ secrets.GIT_AUTHORIZATION }}
-         git_sercrets_url: ${{ secrets.GIT_SECRETS_URL }}
-         temp_keychain_password: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
-         temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}
+     name: Deploy ios to testflight
+     uses: ./.github/workflows/_deploy_ios_to_testflight.yaml
+     environment: ${{ github.event.inputs.flavor }}
+     secrets: inherit
+     with:
+       build_mode: ${{ github.event.inputs.build_mode }}
+       flavor: ${{ github.event.inputs.flavor }}
+       release_note: ${{ github.event.inputs.release_note }}

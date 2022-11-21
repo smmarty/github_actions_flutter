@@ -8,8 +8,10 @@ jobs:
     runs-on: [ self-hosted, checker, test ]
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup
         uses: ./.github/actions/setup
+
       - name: Check
         if: ${{ success() }}
         uses: ./.github/actions/check

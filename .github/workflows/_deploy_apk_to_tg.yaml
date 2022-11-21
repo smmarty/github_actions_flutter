@@ -1,0 +1,79 @@
+name: _Deploy apk to Telegram
+on:
+  workflow_call:
+    inputs:
+      build_mode:
+        description: 'release, profile или debug'
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - profile
+          - debug
+      flavor:
+        description: 'prod, stage, dev'
+        required: true
+        default: prod
+        type: choice
+        options:
+          - prod
+          - stage
+          - dev
+      release_note:
+        description: 'Release Note'
+        required: true
+        type: string
+
+jobs:
+  deploy_android:
+    runs-on: [ self-hosted, android_builder ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Check
+        if: ${{ success() }}
+        uses: ./.github/actions/check
+
+      - name: Assemble
+        if: ${{ success() }}
+        uses: ./.github/actions/assemble_android
+        with:
+          build_type: apk
+          build_mode: ${{ github.event.inputs.build_mode }}
+          flavor: ${{ github.event.inputs.flavor }}
+          decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+
+      - name: Send apk file to telegram
+        if: ${{ success() }}
+        uses: ./.github/actions/telegram/send_file
+        with:
+          silent_mode: "true"
+          file_path: build/app/outputs/apk/${{ github.event.inputs.flavor }}/${{ github.event.inputs.build_mode }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
+          chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
+          tg_url: ${{ secrets.TG_URL }}
+
+      - name: Send release note to telegram
+        if: ${{ success() }}
+        uses: ./.github/actions/telegram/send_message
+        with:
+          message: New android build:\n${{ github.event.inputs.release_note }}
+          silent_mode: "false"
+          chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
+          tg_url: ${{ secrets.TG_URL }}
+
+      - name: Send alert
+        if: ${{ failure() }}
+        uses: ./.github/actions/telegram/send_message
+        with:
+          silent_mode: "false"
+          chat_id: ${{ secrets.ALERTS_CHAT_ID }}
+          tg_url: ${{ secrets.TG_URL }}
+          message: |
+            Action: ${{ github.workflow }}
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref }}
+            Status:  Failure
+            Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}

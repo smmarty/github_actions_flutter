@@ -28,7 +28,7 @@ on:
 jobs:
   deploy_android:
     name: Deploy apk to Telegram
-    uses: ./.github/workflows/_deploy_ios_to_testflight.yaml
+    uses: ./.github/workflows/_deploy_apk_to_tg.yaml
     environment: ${{ github.event.inputs.flavor }}
     secrets: inherit
     with:

@@ -1,6 +1,0 @@
-app_identifier(ENV["APP_BUNDLE_ID"])
-apple_id(ENV["FASTLANE_APPLE_ID"])
-itc_team_id(ENV["APP_STORE_CONNECT_TEAM_ID"])
-itc_provider(ENV["ITC_PROVIDER"])
-team_id(ENV["DEVELOPER_PORTAL_TEAM_ID"])
-

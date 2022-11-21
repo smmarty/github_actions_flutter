@@ -9,4 +9,4 @@ fi
 mode="$(tr -s "[:upper:]" "[:lower:]" <<<$BUILD_MODE)"
 
 echo -n "Build flavor:"$BUILD_FLAVOR" target $result_target mode $mode"
-flutter build ios -t $result_target --$mode --no-codesign --flavor $BUILD_FLAVOR
+flutter build ios --flavor $BUILD_FLAVOR -t $result_target --$mode --no-codesign

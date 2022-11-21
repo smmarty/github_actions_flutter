@@ -14,8 +14,8 @@ jobs:
           chat_id: ${{ secrets.ALERTS_CHAT_ID }}
           tg_url: ${{ secrets.TG_URL }}
           message: |
-            Action ${{ github.workflow }}
-            Repository ${{ github.repository }}
-            Branch ${{ github.ref }}
-            Status  Failure
-            Link ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Action - ${{ github.workflow }}
+            Repository - ${{ github.repository }}
+            Branch - ${{ github.ref }}
+            Status - Failure
+            Link - ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}

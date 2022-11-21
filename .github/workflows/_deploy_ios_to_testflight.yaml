@@ -1,21 +1,21 @@
 name: _Deploy ios to TestFlight
 on:
   workflow_call:
-   inputs:
-     build_mode:
-       description: 'Release, Profile или Debug'
-       required: true
-       default: Release
-      type: string
-     flavor:
-       description: 'prod,stage,dev'
-       required: true
-       default: prod
-      type: string
-     release_note:
-       description: 'Release Note'
-       required: true
-       type: string
+    inputs:
+      build_mode:
+        description: 'Release, Profile или Debug'
+        required: true
+        default: Release
+        type: string
+      flavor:
+        description: 'prod,stage,dev'
+        required: true
+        default: prod
+        type: string
+      release_note:
+        description: 'Release Note'
+        required: true
+        type: string
 jobs:
   deploy_ios:
     runs-on: [ self-hosted, ios_builder, test ]
@@ -40,22 +40,22 @@ jobs:
         if: ${{ success() }}
         uses: ./.github/actions/distribute_ios_to_testflight
         with:
-         ipa_file_path: './Runner.ipa'
-         workspace: 'Runner.xcworkspace'
-         configuration: ${{ github.event.inputs.flavor }}${{ github.event.inputs.build_mode }}
-         scheme: ${{ github.event.inputs.flavor }}
-         app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
-         app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
-         app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
-         developer_app_id: ${{ secrets.DEVELOPER_APP_ID }}
-         developer_portal_team_id: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
-         fastlane_apple_id: ${{ secrets.FASTLANE_USER }}
-         fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-         match_password: ${{ secrets.MATCH_PASSWORD }}
-         git_authorization: ${{ secrets.GIT_AUTHORIZATION }}
-         git_sercrets_url: ${{ secrets.GIT_SECRETS_URL }}
-         temp_keychain_password: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
-         temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}
+          ipa_file_path: './Runner.ipa'
+          workspace: 'Runner.xcworkspace'
+          configuration: ${{ github.event.inputs.flavor }}${{ github.event.inputs.build_mode }}
+          scheme: ${{ github.event.inputs.flavor }}
+          app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
+          app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
+          app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
+          developer_app_id: ${{ secrets.DEVELOPER_APP_ID }}
+          developer_portal_team_id: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+          fastlane_apple_id: ${{ secrets.FASTLANE_USER }}
+          fastlane_apple_application_specific_password: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          match_password: ${{ secrets.MATCH_PASSWORD }}
+          git_authorization: ${{ secrets.GIT_AUTHORIZATION }}
+          git_sercrets_url: ${{ secrets.GIT_SECRETS_URL }}
+          temp_keychain_password: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
+          temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}
 
       - name: Send release note to telegram
           if: ${{ success() }}

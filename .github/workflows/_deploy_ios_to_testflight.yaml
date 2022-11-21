@@ -58,13 +58,13 @@ jobs:
           temp_keychain_user: ${{ secrets.TEMP_KEYCHAIN_USER }}
 
       - name: Send release note to telegram
-          if: ${{ success() }}
-          uses: ./.github/actions/telegram/send_message
-          with:
-            message: New IOS build:\n${{ github.event.inputs.release_note }}
-            silent_mode: "false"
-            chat_id: ${{ secrets.CHAT_ID_FOR_IOS_BUILDS }}
-            tg_url: ${{ secrets.TG_URL }}
+        if: ${{ success() }}
+        uses: ./.github/actions/telegram/send_message
+        with:
+          message: New IOS build:\n${{ github.event.inputs.release_note }}
+          silent_mode: "false"
+          chat_id: ${{ secrets.CHAT_ID_FOR_IOS_BUILDS }}
+          tg_url: ${{ secrets.TG_URL }}
 
       - name: Send alert
         if: ${{ failure() }}

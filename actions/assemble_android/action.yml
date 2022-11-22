@@ -19,6 +19,10 @@ inputs:
   decript_key:
     description: 'ANDROID_KEYS_SECRET_PASSPHRASE'
     required: false
+  secrets_path:
+    description: 'path to gpg file'
+    default: 'android/keys/android_keys.zip.gpg'
+    required: false
 
 runs:
   using: "composite"
@@ -35,6 +39,7 @@ runs:
       shell: bash
       env:
         ANDROID_KEYS_SECRET_PASSPHRASE: ${{ inputs.decript_key }}
+        ANDROID_KEYS_PATH: ${{ inputs.secrets_path }}
 
     - name: Assemble
       run: sh ./.github/scripts/android/assemble_android.sh

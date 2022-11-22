@@ -28,11 +28,11 @@ jobs:
 
       - name: Check
         if: ${{ success() }}
-        uses: ./.github/actions/check
+        uses: ./actions/check
 
       - name: Assemble
         if: ${{ success() }}
-        uses: ./.github/actions/assemble_android
+        uses: ./actions/assemble_android
         with:
           build_type: apk
           build_mode: ${{ github.event.inputs.build_mode }}
@@ -41,7 +41,7 @@ jobs:
 
       - name: Send apk file to telegram
         if: ${{ success() }}
-        uses: ./.github/actions/telegram/send_file
+        uses: ./actions/telegram/send_file
         with:
           silent_mode: "true"
           file_path: build/app/outputs/apk/${{ github.event.inputs.flavor }}/${{ github.event.inputs.build_mode }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
@@ -50,7 +50,7 @@ jobs:
 
       - name: Send release note to telegram
         if: ${{ success() }}
-        uses: ./.github/actions/telegram/send_message
+        uses: ./actions/telegram/send_message
         with:
           message: New android build:\n${{ github.event.inputs.release_note }}
           silent_mode: "false"
@@ -59,7 +59,7 @@ jobs:
 
       - name: Send alert
         if: ${{ failure() }}
-        uses: ./.github/actions/telegram/send_message
+        uses: ./actions/telegram/send_message
         with:
           silent_mode: "false"
           chat_id: ${{ secrets.ALERTS_CHAT_ID }}

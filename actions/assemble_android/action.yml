@@ -35,8 +35,7 @@ runs:
       uses: android-actions/setup-android@v2
     - name: Decrypt Android keys
       if: ${{ inputs.decript_key }}
-      run: |
-        gpg --quiet --batch --yes --decrypt --passphrase=${{ inputs.decript_key }} --output android/android_keys.zip  ${{ inputs.secrets_path }} && jar xvf android/android_keys.zip
+      run: gpg --quiet --batch --yes --decrypt --passphrase=${{ inputs.decript_key }} --output android/android_keys.zip ${{ inputs.secrets_path }} && jar xvf android/android_keys.zip
       shell: bash
 
     - name: Assemble custom target

@@ -37,17 +37,16 @@ runs:
       if: ${{ inputs.decript_key }}
       run: |
         gpg --quiet --batch --yes --decrypt --passphrase=${{ inputs.decript_key }} \
-       --output android/android_keys.zip  ${{ inputs.secrets_path }} && cd android && jar xvf android_keys.zip && cd -
+        --output android/android_keys.zip  ${{ inputs.secrets_path }} && jar xvf android/android_keys.zip
       shell: bash
 
-    - name: Assemble
+    - name: Assemble custom target
+      if: ${{ inputs.custom_target }}
       run: |
-        result_target=${{ inputs.custom_target }} \
-        if [[ -z "$result_target" ]] \
-        then \
-         result_target=lib/targets/${{ inputs.flavor }}.dart \
-        fi \
-        mode="$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }})" \
-        echo -n "Build flavor:${{ inputs.flavor }}  type:${{ inputs.build_type }} target $result_target mode $mode" \
-        flutter build ${{ inputs.build_type }} -t $result_target --flavor ${{ inputs.flavor }} --$mode
+        flutter build ${{ inputs.build_type }} -t ${{ inputs.custom_target }} --flavor ${{ inputs.flavor }} --$mode
+      shell: bash
+
+    - name: Assemble flavor
+      if: !${{ inputs.custom_target }}
+      run: flutter build ${{ inputs.build_type }} -t lib/targets/${{ inputs.flavor }}.dart --flavor ${{ inputs.flavor }} --$mode
       shell: bash

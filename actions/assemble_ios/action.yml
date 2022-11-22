@@ -9,21 +9,15 @@ inputs:
     description: 'release, profile или debug'
     required: true
     default: release
-  custom_target:
-    description: 'custom build target( если не определить, то будет создан из flavor)'
-    required: false
 
 runs:
   using: "composite"
   steps:
+    - name: Prepare build_mode
+      id: mode
+      run: echo $(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) >> $GITHUB_OUTPUT
+      shell: bash
+
     - name: Assemble ios
-      run: |
-        result_target=${{ inputs.custom_target }} \
-        if [[ -z "$result_target" ]] \
-        then \
-         result_target=lib/targets/${{ inputs.flavor }}.dart \
-        fi \
-        mode="$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }})" \
-        echo -n "Build flavor:${{ inputs.flavor }} target $result_target mode $mode" \
-        flutter build ios --flavor${{ inputs.flavor }} -t $result_target --$mode --no-codesign
+      run: flutter build ios --flavor ${{ inputs.flavor }} --${{ steps.mode.outputs.stdout }} --no-codesign
       shell: bash

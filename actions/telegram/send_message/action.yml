@@ -1,0 +1,23 @@
+name: 'Telegram send message'
+description: 'Send message to Telegram'
+inputs:
+  message:
+    description: 'message'
+    required: true
+  chat_id:
+    description: 'chat_id'
+    required: true
+  silent_mode:
+    description: 'true/false'
+    required: false
+    default: "false"
+  tg_url:
+    description: 'tg_url'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: File sending
+      run: curl -s -X POST ${{ inputs.tg_url }}/sendMessage -d chat_id=${{ inputs.chat_id }} -d text="${{ inputs.message }}" -d disable_notification=${{ inputs.silent_mode }}
+      shell: bash

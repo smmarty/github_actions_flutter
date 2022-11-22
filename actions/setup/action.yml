@@ -1,0 +1,22 @@
+name: 'Init flutter'
+description: 'Setup flutter and project dependencies'
+runs:
+  using: "composite"
+  steps:
+   - name: Read Flutter version
+     uses: jbutcher5/read-yaml@main
+     id: flutter_version
+     with:
+       file: './pubspec.yaml'
+       key-path: '["environment","flutter"]'
+
+   - name: Get Flutter
+     uses: subosito/flutter-action@v2
+     with:
+       flutter-version: ${{ steps.flutter_version.outputs.data }}
+       channel: 'stable'
+       architecture: x64
+
+   - name: Get Dependencies
+     run: flutter pub get
+     shell: bash

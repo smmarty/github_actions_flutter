@@ -13,11 +13,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Prepare build_mode
-      id: mode
-      run: echo $(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) >> $GITHUB_OUTPUT
-      shell: bash
-
     - name: Assemble ios
-      run: flutter build ios --flavor ${{ inputs.flavor }} --${{ steps.mode.outputs.stdout }} --no-codesign
+      run: flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign
       shell: bash

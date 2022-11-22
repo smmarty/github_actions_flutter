@@ -35,14 +35,24 @@ runs:
       uses: android-actions/setup-android@v2
     - name: Decrypt Android keys
       if: ${{ inputs.decript_key }}
-      run: sh ./.github/scripts/android/decrypt_android_keys.sh
+      run: |
+        gpg --quiet --batch --yes --decrypt --passphrase="$ANDROID_KEYS_SECRET_PASSPHRASE" \
+        --output android/android_keys.zip ${ANDROID_KEYS_PATH} && cd android && jar xvf android_keys.zip && cd -
       shell: bash
       env:
         ANDROID_KEYS_SECRET_PASSPHRASE: ${{ inputs.decript_key }}
         ANDROID_KEYS_PATH: ${{ inputs.secrets_path }}
 
     - name: Assemble
-      run: sh ./.github/scripts/android/assemble_android.sh
+      run: |
+        result_target=$BUILD_TARGET
+        if [[ -z "$result_target" ]]
+        then
+         result_target=lib/targets/${BUILD_FLAVOR}.dart
+        fi
+        mode="$(tr -s "[:upper:]" "[:lower:]" <<<$BUILD_MODE)"
+        echo -n "Build flavor:"$BUILD_FLAVOR"  type:"$BUILD_TYPE" target $result_target mode $mode"
+        flutter build  $BUILD_TYPE -t $result_target --flavor $BUILD_FLAVOR --$mode
       shell: bash
       env:
         BUILD_FLAVOR: ${{ inputs.flavor }}

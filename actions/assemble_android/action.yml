@@ -36,7 +36,7 @@ runs:
     - name: Decrypt Android keys
       if: ${{ inputs.decript_key }}
       run: |
-        gpg --quiet --batch --yes --passphrase=${{ inputs.decript_key }} --output android/android_keys.zip --decrypt  ${{ inputs.secrets_path }}\ 
+        gpg --quiet --batch --yes --passphrase=${{ inputs.decript_key }} --output android/android_keys.zip --decrypt ${{ inputs.secrets_path }}\ 
         jar xvf android/android_keys.zip
       shell: bash
 

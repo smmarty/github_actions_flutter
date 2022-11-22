@@ -4,4 +4,4 @@
 # Encrypted by
 # gpg --symmetric --cipher-algo AES256 android_keys.zip
 gpg --quiet --batch --yes --decrypt --passphrase="$ANDROID_KEYS_SECRET_PASSPHRASE" \
---output android/android_keys.zip android/android_keys.zip.gpg && cd android && jar xvf android_keys.zip && cd -
+--output android/android_keys.zip ${ANDROID_KEYS_PATH} && cd android && jar xvf android_keys.zip && cd -

@@ -24,24 +24,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup
-        uses: ./.github/actions/setup
+        uses: smmarty/github_actions_flutter/actions/setup@main
 
       - name: Check
         if: ${{ success() }}
-        uses: ./actions/check
+        uses: smmarty/github_actions_flutter/actions/check@main
 
       - name: Assemble
         if: ${{ success() }}
-        uses: ./actions/assemble_android
+        uses: smmarty/github_actions_flutter/actions/assemble_android@main
         with:
           build_type: apk
           build_mode: ${{ github.event.inputs.build_mode }}
           flavor: ${{ github.event.inputs.flavor }}
           decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+          secrets_path: 'android/keys/android_keys.zip.gpg'
 
       - name: Send apk file to telegram
         if: ${{ success() }}
-        uses: ./actions/telegram/send_file
+        uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
           file_path: build/app/outputs/apk/${{ github.event.inputs.flavor }}/${{ github.event.inputs.build_mode }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
@@ -50,7 +51,7 @@ jobs:
 
       - name: Send release note to telegram
         if: ${{ success() }}
-        uses: ./actions/telegram/send_message
+        uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
           message: New android build:\n${{ github.event.inputs.release_note }}
           silent_mode: "false"
@@ -59,7 +60,7 @@ jobs:
 
       - name: Send alert
         if: ${{ failure() }}
-        uses: ./actions/telegram/send_message
+        uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
           silent_mode: "false"
           chat_id: ${{ secrets.ALERTS_CHAT_ID }}

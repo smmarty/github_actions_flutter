@@ -1,8 +1,6 @@
-name: Analyze project code
+name: Analyze project code new
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [ main, dev, release ]
 
 jobs:
   analyze:
@@ -11,8 +9,8 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Setup
-        uses: ./actions/setup
+        uses: smmarty/github_actions_flutter/actions/setup@main
 
       - name: Check
         if: ${{ success() }}
-        uses: ./.github/actions/check
+        uses: smmarty/github_actions_flutter/actions/check@main

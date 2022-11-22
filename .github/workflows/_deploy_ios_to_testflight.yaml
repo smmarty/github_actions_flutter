@@ -23,22 +23,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup
-        uses: ./actions/setup
+        uses: smmarty/github_actions_flutter/actions/setup@main
 
       - name: Check
         if: ${{ success() }}
-        uses: ./actions/check
+        uses: smmarty/github_actions_flutter/actions/check@main
 
       - name: Assemble
         if: ${{ success() }}
-        uses: .//actions/assemble_ios
+        uses: smmarty/github_actions_flutter/actions/assemble_ios@main
         with:
           build_mode: ${{ github.event.inputs.build_mode }}
           flavor: ${{ github.event.inputs.flavor }}
 
       - name: Deploy to TestFlight
         if: ${{ success() }}
-        uses: ./actions/distribute_ios_to_testflight
+        uses: smmarty/github_actions_flutter/actions/distribute_ios_to_testflight@main
         with:
           ipa_file_path: './Runner.ipa'
           workspace: 'Runner.xcworkspace'
@@ -59,7 +59,7 @@ jobs:
 
       - name: Send release note to telegram
         if: ${{ success() }}
-        uses: ./actions/telegram/send_message
+        uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
           message: New IOS build:\n${{ github.event.inputs.release_note }}
           silent_mode: "false"
@@ -68,7 +68,7 @@ jobs:
 
       - name: Send alert
         if: ${{ failure() }}
-        uses: ./actions/telegram/send_message
+        uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
           silent_mode: "false"
           chat_id: ${{ secrets.ALERTS_CHAT_ID }}

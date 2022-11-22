@@ -36,26 +36,18 @@ runs:
     - name: Decrypt Android keys
       if: ${{ inputs.decript_key }}
       run: |
-        gpg --quiet --batch --yes --decrypt --passphrase="$ANDROID_KEYS_SECRET_PASSPHRASE" \
-        --output android/android_keys.zip ${ANDROID_KEYS_PATH} && cd android && jar xvf android_keys.zip && cd -
+        gpg --quiet --batch --yes --decrypt --passphrase=${{ inputs.decript_key }} \
+       --output android/android_keys.zip  ${{ inputs.secrets_path }} && cd android && jar xvf android_keys.zip && cd -
       shell: bash
-      env:
-        ANDROID_KEYS_SECRET_PASSPHRASE: ${{ inputs.decript_key }}
-        ANDROID_KEYS_PATH: ${{ inputs.secrets_path }}
 
     - name: Assemble
       run: |
-        result_target=$BUILD_TARGET
-        if [[ -z "$result_target" ]]
-        then
-         result_target=lib/targets/${BUILD_FLAVOR}.dart
-        fi
-        mode="$(tr -s "[:upper:]" "[:lower:]" <<<$BUILD_MODE)"
-        echo -n "Build flavor:"$BUILD_FLAVOR"  type:"$BUILD_TYPE" target $result_target mode $mode"
-        flutter build  $BUILD_TYPE -t $result_target --flavor $BUILD_FLAVOR --$mode
+        result_target=${{ inputs.custom_target }} \
+        if [[ -z "$result_target" ]] \
+        then \
+         result_target=lib/targets/${{ inputs.flavor }}.dart \
+        fi \
+        mode="$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }})" \
+        echo -n "Build flavor:${{ inputs.flavor }}  type:${{ inputs.build_type }} target $result_target mode $mode" \
+        flutter build ${{ inputs.build_type }} -t $result_target --flavor ${{ inputs.flavor }} --$mode
       shell: bash
-      env:
-        BUILD_FLAVOR: ${{ inputs.flavor }}
-        BUILD_TARGET: ${{ inputs.custom_target }}
-        BUILD_TYPE: ${{ inputs.build_type }}
-        BUILD_MODE: ${{ inputs.build_mode }}

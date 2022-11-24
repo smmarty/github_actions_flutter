@@ -1,6 +1,15 @@
 name: Analyze project code new
 on:
   workflow_dispatch:
+   inputs:
+    type:
+      description: 'types: [full] - include fatal-infos and fatal-warnings,[base] - exclude it'
+      required: false
+      default: full
+    include_test:
+      description: 'true/false'
+      required: false
+      default: 'true'
 
 jobs:
   analyze:
@@ -14,3 +23,6 @@ jobs:
       - name: Check
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/check@main
+        with:
+          type: ${{ github.event.inputs.type }}
+          include_test: ${{ github.event.inputs.include_test }}

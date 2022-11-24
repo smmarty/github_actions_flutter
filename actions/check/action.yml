@@ -1,13 +1,29 @@
 name: 'Check'
 description: 'Check project code'
+inputs:
+  type:
+    description: 'types: [full] - include fatal-infos and fatal-warnings,[base] - exclude it'
+    required: false
+    default: 'full'
+  include_test:
+    description: 'true/false'
+    required: false
+    default: 'true'
 
 runs:
   using: "composite"
   steps:
-    - name: Analyze
-      run: flutter analyze --fatal-warnings
+    - name: Analyze FULL
+      if: ${{ inputs.hard == "full" }}
+      run: flutter analyze --fatal-warnings --fatal-infos
+      shell: bash
+
+    - name: Analyze BASE
+      if: ${{inputs.hard != "full" }}
+      run: flutter analyze
       shell: bash
 
     - name: Test
+      if: ${{ inputs.include_test == "true" }}
       run: flutter test .
       shell: bash

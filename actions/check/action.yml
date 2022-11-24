@@ -24,6 +24,6 @@ runs:
       shell: bash
 
     - name: Test
-      if: ${{ inputs.include_test }}
+      if: ${{ inputs.include_test == 'true' }}
       run: flutter test .
       shell: bash

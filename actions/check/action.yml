@@ -14,12 +14,12 @@ runs:
   using: "composite"
   steps:
     - name: Analyze FULL
-      if: ${{ inputs.hard == "full" }}
+      if: ${{ inputs.type == "full" }}
       run: flutter analyze --fatal-warnings --fatal-infos
       shell: bash
 
     - name: Analyze BASE
-      if: ${{inputs.hard != "full" }}
+      if: ${{inputs.type != "full" }}
       run: flutter analyze
       shell: bash
 

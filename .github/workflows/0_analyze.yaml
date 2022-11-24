@@ -7,7 +7,7 @@ on:
       required: false
       default: full
     include_test:
-      description: 'true/false'
+      description: 'run tests [true/false]'
       required: false
       default: 'true'
 

@@ -4,11 +4,11 @@ inputs:
   type:
     description: 'types: [full] - include fatal-infos and fatal-warnings,[base] - exclude it'
     required: false
-    default: full
+    default: "full"
   include_test:
-    description: 'true/false'
+    description: 'include_test [true/false]'
     required: false
-    default: 'true'
+    default: "true"
 
 runs:
   using: "composite"

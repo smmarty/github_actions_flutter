@@ -5,7 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: Analyze
-      run: flutter analyze --fatal-infos --fatal-warnings
+      run: flutter analyze --fatal-warnings
       shell: bash
 
     - name: Test

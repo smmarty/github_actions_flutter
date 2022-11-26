@@ -2,7 +2,16 @@ name: 'Generate changelog'
 description: 'CGenerate changelog'
 inputs:
   release_version:
-    description: 'Release version, only for workflow dispatch'
+    description: 'Optional, only required when you want to run Changelog CI'
+  changelog_filename:
+    default: 'CHANGELOG.md'
+    description: 'Optional, you can provide any name for your changelog file'
+  config_file:
+    default: 'changelog-ci-config.json'
+    description: 'Optional, only required when you want more customization 
+    e.g: group your changelog by labels with custom titles,
+    different version prefix, pull request title and version number regex etc.
+    config file can be in JSON or YAML format.'
 
 runs:
   using: "composite"
@@ -13,6 +22,8 @@ runs:
       id: changelog-ci
       with:
         release_version: ${{ inputs.release_version }}
+        changelog_filename: ${{ inputs.config_file }}
+        config_file: ${{ inputs.config_file }}
 
     - name: Changelog Output
       shell: bash

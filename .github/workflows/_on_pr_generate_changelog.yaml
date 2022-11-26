@@ -1,0 +1,12 @@
+name: _on PR Generate changelog
+on:
+  pull_request:
+    types: [ opened ]
+
+jobs:
+  generate_changelog:
+    #    runs-on: [ self-hosted, checker ]
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - name: Generate Changelog
+        uses: smmarty/github_actions_flutter/actions/changelog_generator@main

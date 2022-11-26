@@ -1,4 +1,4 @@
-name: Analyze project code new
+name: Generate changelog
 on:
   workflow_dispatch:
 

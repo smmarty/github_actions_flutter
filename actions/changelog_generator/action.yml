@@ -1,0 +1,9 @@
+name: 'Generate changelog'
+description: 'CGenerate changelog'
+runs:
+  using: "composite"
+  steps:
+     - uses: actions/checkout@v3
+     - name: Run Changelog CI
+       uses: saadmk11/changelog-ci@v1.1.0
+

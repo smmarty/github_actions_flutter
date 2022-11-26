@@ -1,9 +1,13 @@
 name: 'Generate changelog'
 description: 'CGenerate changelog'
+inputs:
+  release_version:
+    description: 'Release version, only for workflow dispatch'
+
 runs:
   using: "composite"
   steps:
-     - uses: actions/checkout@v3
-     - name: Run Changelog CI
-       uses: saadmk11/changelog-ci@v1.1.0
+    - uses: actions/checkout@v3
+    - name: Run Changelog CI
+      uses: saadmk11/changelog-ci@v1.1.0
 

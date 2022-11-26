@@ -1,11 +1,16 @@
 name: Generate changelog
 on:
   workflow_dispatch:
-
+    inputs:
+      release_version:
+        description: 'Set Release Version'
+        required: true
 jobs:
-  analyze:
+  generate_changelog:
     #    runs-on: [ self-hosted, checker ]
     runs-on: [ ubuntu-latest ]
     steps:
       - name: Generate Changelog
         uses: smmarty/github_actions_flutter/actions/changelog_generator@main
+        with:
+          release_version: ${{ github.event.inputs.release_version }}

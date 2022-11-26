@@ -10,4 +10,5 @@ runs:
     - uses: actions/checkout@v3
     - name: Run Changelog CI
       uses: saadmk11/changelog-ci@v1.1.0
-
+      with:
+        release_version: ${{ inputs.release_version }}

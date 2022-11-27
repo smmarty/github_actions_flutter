@@ -9,4 +9,4 @@ jobs:
       - name: Generate Changelog
         uses: smmarty/github_actions_flutter/actions/changelog_generator@main
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GIT_AUTHORIZATION }}

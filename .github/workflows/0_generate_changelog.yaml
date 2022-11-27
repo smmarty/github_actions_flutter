@@ -13,4 +13,4 @@ jobs:
       - name: Generate Changelog
         uses: smmarty/github_actions_flutter/actions/changelog_generator@main
         with:
-          release_version: ${{ github.event.inputs.release_version }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.GIT_AUTHORIZATION }}

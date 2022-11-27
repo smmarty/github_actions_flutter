@@ -1,32 +1,21 @@
 name: 'Generate changelog'
 description: 'CGenerate changelog'
 inputs:
-  release_version:
-    description: 'Optional, only required when you want to run Changelog CI'
-  changelog_filename:
-    default: 'CHANGELOG.md'
-    description: 'Optional, you can provide any name for your changelog file'
-  config_file:
-    default: 'changelog-ci-config.json'
-    description: 'Optional, only required when you want more customization 
-    e.g: group your changelog by labels with custom titles,
-    different version prefix, pull request title and version number regex etc.
-    config file can be in JSON or YAML format.'
+  PERSONAL_ACCESS_TOKEN:
+    description: 'If you use GITHUB_TOKEN instead of PERSONAL_ACCESS_TOKEN, the job wont trigger another workflow.
+     Its like using [skip ci] in other CIs.'
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
-    - name: Run Changelog CI
-      uses: saadmk11/changelog-ci@v1.1.0
-      id: changelog-ci
+    - name: Check out
+      if: "!startsWith(github.event.head_commit.message, 'bump:')"
+      uses: actions/checkout@v3
       with:
-        release_version: ${{ inputs.release_version }}
-        changelog_filename: ${{ inputs.config_file }}
-        config_file: ${{ inputs.config_file }}
-
-    - name: Changelog Output
-      shell: bash
-      run: |
-        echo "${{ steps.changelog-ci.outputs.changelog }}"
-        echo "${{ steps.changelog-ci.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY    
+        token: ${{ inputs.PERSONAL_ACCESS_TOKEN }}
+        fetch-depth: 0
+    - name: Create bump and changelog
+      if: "!startsWith(github.event.head_commit.message, 'bump:')"
+      uses: commitizen-tools/commitizen-action@master
+      with:
+        github_token: ${{ inputs.PERSONAL_ACCESS_TOKEN }}

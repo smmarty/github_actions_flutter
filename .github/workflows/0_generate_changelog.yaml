@@ -1,10 +1,6 @@
 name: Generate changelog
 on:
   workflow_dispatch:
-    inputs:
-      release_version:
-        description: 'Set Release Version'
-        required: true
 jobs:
   generate_changelog:
     #    runs-on: [ self-hosted, checker ]

@@ -1,7 +1,7 @@
 name: 'Generate changelog'
 description: 'CGenerate changelog'
 inputs:
-  PERSONAL_ACCESS_TOKEN:
+  github_token:
     description: 'If you use GITHUB_TOKEN instead of PERSONAL_ACCESS_TOKEN, the job wont trigger another workflow.
      Its like using [skip ci] in other CIs.'
 
@@ -12,10 +12,12 @@ runs:
       if: "!startsWith(github.event.head_commit.message, 'bump:')"
       uses: actions/checkout@v2
       with:
-        token: ${{ inputs.PERSONAL_ACCESS_TOKEN }}
+        token: ${{ inputs.github_token }}
         fetch-depth: 0
+        
     - name: Create bump and changelog
       if: "!startsWith(github.event.head_commit.message, 'bump:')"
       uses: commitizen-tools/commitizen-action@master
       with:
-        github_token: ${{ inputs.PERSONAL_ACCESS_TOKEN }}
+        github_token: ${{ inputs.github_token }}
+        changelog_increment_filename: CHANGELOG.md

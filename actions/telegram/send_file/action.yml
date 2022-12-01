@@ -31,6 +31,7 @@ runs:
         token: ${{ inputs.tg_token }}
         message: ${{ inputs.message }}
         document: ${{ inputs.file_path }}
+        socks5: ${{ inputs.tg_url }}
 
 #    - name: File sending
 #      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.tg_url }}

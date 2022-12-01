@@ -14,10 +14,24 @@ inputs:
   tg_url:
     description: 'tg_url'
     required: true
+  tg_token:
+    description: 'TELEGRAM TOKEN'
+    required: true
+  message:
+    description: 'message'
+    required: true
 
 runs:
   using: "composite"
   steps:
-    - name: File sending
-      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.tg_url }}
-      shell: bash
+    - name: send file message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ inputs.chat_id }}
+        token: ${{ inputs.tg_token }}
+        message: ${{ inputs.message }}
+        document: ${{ inputs.file_path }}
+
+#    - name: File sending
+#      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.tg_url }}
+#      shell: bash

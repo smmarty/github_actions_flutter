@@ -19,5 +19,5 @@ runs:
   using: "composite"
   steps:
     - name: File sending
-      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.tg_url }}
+      run: curl -m 1800 -Y 3000 -y 60 -# -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.tg_url }}
       shell: bash

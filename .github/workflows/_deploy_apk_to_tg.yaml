@@ -40,12 +40,27 @@ jobs:
           decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
           secrets_path: 'android/keys/android_keys.zip.gpg'
 
+      - name: Get app version
+        id: app-version
+        if: ${{ success() }}
+        uses: smmarty/github_actions_flutter/actions/app_version@main
+
+      - name: Rename apk file
+        id: file-path
+        if: ${{ success() }}
+        uses: smmarty/github_actions_flutter/actions/rename_file@main
+        with:
+          source_folder: build/app/outputs/apk/
+          source_file_name: ${{ github.event.inputs.flavor }}/${{ github.event.inputs.build_mode }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
+          file_extension: apk
+          file_suffix: ${{ steps.app-version.outputs.app-version }}
+
       - name: Send apk file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: build/app/outputs/apk/${{ github.event.inputs.flavor }}/${{ github.event.inputs.build_mode }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
+          file_path: ${{ steps.file-path.outputs.file-path}}
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 

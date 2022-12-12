@@ -24,7 +24,8 @@ runs:
     - name: Rename output file
       id: rename-file
       run: |
+        SOURCE_FILE=${{ inputs.source_folder }}/${{ inputs.source_file_name }}.${{ inputs.file_extension }}
         FILE_NAME=${{ inputs.source_folder }}/${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}
+        mv -f $SOURCE_FILE $FILE_NAME
         echo "path=$FILE_NAME" >> $GITHUB_OUTPUT
-        mv -f ${{ inputs.source_file }} $FILE_NAME
       shell: bash

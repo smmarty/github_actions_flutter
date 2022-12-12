@@ -1,0 +1,30 @@
+name: 'Rename apk file'
+description: 'Assemble apk or appbundle'
+inputs:
+  source_folder:
+    description: 'Путь до файла не включая название'
+    required: true
+  source_file_name:
+    description: 'Название файла включая расширение'
+    required: true
+  file_extension:
+    description: 'Расширение файла'
+    required: true
+  file_suffix:
+    description: 'Добавит суфикс к названию файла перед расширением filename-${file_suffix}.${file_extension}'
+    required: true
+outputs:
+  file-path:
+    description: "New filename"
+    value: ${{ steps.rename-file.outputs.path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Rename output file
+      id: rename-file
+      run: |
+      mv -f ${{ inputs.source_file }} ${{ inputs.source_folder }}/${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}
+      FILE_PATH=${{ inputs.source_folder }}/${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}
+      echo "::set-output name=path::$(echo $FILE_PATH)"
+      shell: bash

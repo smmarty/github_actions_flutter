@@ -51,7 +51,7 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/rename_file@main
         with:
-          source_folder: build/app/outputs/apk/
+          source_folder: build/app/outputs/apk
           source_file_name: app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}
           file_extension: apk
           file_suffix: ${{ steps.app-version.outputs.app-version }}

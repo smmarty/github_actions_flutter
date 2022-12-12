@@ -2,7 +2,7 @@ name: 'Rename apk file'
 description: 'Assemble apk or appbundle'
 inputs:
   source_folder:
-    description: 'Путь до файла не включая название'
+    description: 'Путь до файла не включая название и без / на конце'
     required: true
   source_file_name:
     description: 'Название файла включая расширение'

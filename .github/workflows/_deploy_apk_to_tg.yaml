@@ -55,6 +55,7 @@ jobs:
           source_file_name: app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}
           file_extension: apk
           file_suffix: ${{ steps.app-version.outputs.app-version }}
+          file_prefix: testciapp
 
       - name: Send apk file to telegram
         if: ${{ success() }}

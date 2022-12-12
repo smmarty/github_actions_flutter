@@ -13,6 +13,11 @@ inputs:
   file_suffix:
     description: 'Добавит суфикс к названию файла перед расширением filename-${file_suffix}.${file_extension}'
     required: true
+  file_prefix:
+    description: 'Добавит префикс к названию файла перед расширением ${file_prefix}filename.${file_extension}'
+    default: 'name'
+    required: false
+
 outputs:
   file-path:
     description: "New filename"
@@ -25,7 +30,7 @@ runs:
       id: rename-file
       run: |
         SOURCE_FILE=${{ inputs.source_folder }}/${{ inputs.source_file_name }}.${{ inputs.file_extension }}
-        FILE_NAME=${{ inputs.source_folder }}/${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}
+        FILE_NAME=${{ inputs.source_folder }}/${{ inputs.file_prefix }}-${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}
         mv -f $SOURCE_FILE $FILE_NAME
         echo "path=$FILE_NAME" >> $GITHUB_OUTPUT
       shell: bash

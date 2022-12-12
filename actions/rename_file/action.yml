@@ -25,6 +25,5 @@ runs:
       id: rename-file
       run: |
       mv -f ${{ inputs.source_file }} ${{ inputs.source_folder }}/${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}
-      FILE_PATH="${{ inputs.source_folder }}/${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}"
-      echo "::set-output name=path::$(echo $FILE_PATH)"
+      echo "::set-output name=path::${{ inputs.source_folder }}/${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}"
       shell: bash

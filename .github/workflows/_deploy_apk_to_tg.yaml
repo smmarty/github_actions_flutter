@@ -19,7 +19,8 @@ on:
 
 jobs:
   deploy_android:
-    runs-on: [ self-hosted, android_builder ]
+#    runs-on: [ self-hosted, android_builder ]
+    runs-on: [ ubuntu-latest ]
     environment: ${{ github.event.inputs.flavor }}
     steps:
       - uses: actions/checkout@v3

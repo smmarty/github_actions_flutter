@@ -1,0 +1,19 @@
+name: 'Get app version'
+description: 'Return app version from pubspec'
+inputs:
+  file-path:
+    description: "Path to your pubspec.yaml. Default is ./pubspec.yaml"
+    required: false
+    default: "./pubspec.yaml"
+outputs:
+  app-version:
+    description: "Return app version"
+    value: ${{ steps.pubspec.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - id: pubspec
+      run: |
+        VERSION=`cat ${{inputs.file-path}} | grep -o 'version:[^:]*' | cut -f2 -d":" | xargs`
+        echo "::set-output name=version::$(echo $VERSION)"
+      shell: bash

@@ -16,5 +16,5 @@ runs:
       uses: jbutcher5/read-yaml@main
       id: pubspec
       with:
-        file: ${{ inputs.path }}
+        file: ${{ inputs.file-path }}
         key-path: '["version"]'

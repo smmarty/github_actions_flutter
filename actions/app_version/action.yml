@@ -8,12 +8,13 @@ inputs:
 outputs:
   app-version:
     description: "Return app version"
-    value: ${{ steps.pubspec.outputs.version }}
+    value: ${{ steps.pubspec.outputs.data  }}
 runs:
   using: "composite"
   steps:
-    - id: pubspec
-      run: |
-        VERSION=`cat ${{inputs.file-path}} | grep -o 'version:[^:]*' | cut -f2 -d":" | xargs`
-        echo "::set-output name=version::$(echo $VERSION)"
-      shell: bash
+    - name: Read Flutter version
+      uses: jbutcher5/read-yaml@main
+      id: pubspec
+      with:
+        file: ${{ inputs.path }}
+        key-path: '["version"]'

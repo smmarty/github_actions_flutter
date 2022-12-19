@@ -15,4 +15,4 @@ runs:
         git config --global user.name 'GithubActions Bot'
         git config --global user.email 'friflexBot@users.noreply.github.com'
         melos version --all --yes 
-        git push
+        git push --follow-tags

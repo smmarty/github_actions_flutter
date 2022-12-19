@@ -1,22 +1,8 @@
-name: idchess_broadcast_backend
-repository: https://github.com/smmarty/idchess_game_broadcast
+name: github_actions_flutter
+repository: https://github.com/smmarty/github_actions_flutter
 
 packages:
-  - packages/game_broadcast_api
-  - packages/idchess_broadcast_model
-  - packages/idchess_model_converter
-  - packages/l10n_service
-  - packages/pub_sub_interface
-  - packages/pub_sub_redis
-  - packages/socket_service_interface
-  - packages/tournament_service_shared
-  #services
-  - packages/socket_io_service
-  - packages/socket_service_conduit_web
-  - packages/superadmin_service
-  # Проблема с версией flutter
-  #  - packages/superadmin_web_client
-  - packages/tournament_service
+  - .
 scripts:
   analyze:
     exec: dart analyze .
@@ -26,18 +12,4 @@ scripts:
     exec: dart pub get
 command:
   version:
-    # Generate commit links in package changelogs.
     linkToCommits: false
-    # # Only allow versioning to happen on main branch.
-    # branch: master
-    # Additionally build a changelog at the root of the workspace.
-    workspaceChangelog: true
-
-    changelogs:
-      - path: idchess_broadcast_backend.md
-        packageFilters:
-          scope: idchess_broadcast_backend_*
-        description: |
-          All notable changes for idchess_broadcast_backend packages
-    bootstrap:
-      runPubGetInParallel: false

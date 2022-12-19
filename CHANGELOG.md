@@ -1,3 +1,7 @@
+## 2.0.2
+
+ - **FIX**: changloggenerator.
+
 ## 2.0.1
 
  - **FIX**: add push tags.

@@ -1,3 +1,18 @@
+## 2.1.0
+
+ - **FIX**: changloggenerator.
+ - **FIX**: test changes.
+ - **FIX**: remove follow tags.
+ - **FIX**: add push tags.
+ - **FIX**: set  git config.
+ - **FIX**: update melos.yaml.
+ - **FIX**: use flutter setup befor changelog generator.
+ - **FEAT**: add with.
+ - **FEAT**: feature 2.
+ - **FEAT**: feature 1.
+ - **FEAT**: set fetch-depth: 0.
+ - **FEAT**: add changelog generator.
+
 ## 2.0.2
 
  - **FIX**: changloggenerator.

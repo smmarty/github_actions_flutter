@@ -6,6 +6,9 @@ jobs:
     #    runs-on: [ self-hosted, checker ]
     runs-on: [ ubuntu-latest ]
     steps:
+      - uses: actions/checkout@v3
+      - name: Setup
+        uses: smmarty/github_actions_flutter/actions/setup@main
       - name: Generate Changelog
         uses: smmarty/github_actions_flutter/actions/changelog_generator@main
         with:

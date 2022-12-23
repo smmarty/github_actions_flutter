@@ -16,6 +16,10 @@ on:
         description: 'Release Note'
         required: true
         type: string
+      build_type:
+        description: 'apk или appbundle'
+        required: true
+        default: apk
 
 jobs:
   deploy_android:
@@ -37,7 +41,7 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/assemble_android@main
         with:
-          build_type: apk
+          build_type: ${{ github.event.inputs.build_type }}
           build_mode: ${{ github.event.inputs.build_mode }}
           flavor: ${{ github.event.inputs.flavor }}
           decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
@@ -48,12 +52,12 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/app_version@main
 
-      - name: Rename apk file
+      - name: Rename file
         id: file-path
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
         with:
-          source_file_path: build/app/outputs/apk/*/*/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
+          source_file_path: build/app/outputs/**/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
           file_suffix: ${{ steps.app-version.outputs.app-version }}
           file_prefix: PREFIX
 

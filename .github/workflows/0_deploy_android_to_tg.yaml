@@ -34,22 +34,12 @@ on:
           - appbundle
 
 jobs:
-  deploy_android_apk:
-    if: ${{ github.event.inputs.build_type == 'apk' }}
+  deploy_android:
     name: Deploy apk to Telegram
-    uses: ./.github/workflows/_deploy_apk_to_tg.yaml
+    uses: ./.github/workflows/_deploy_android_to_tg.yaml
     secrets: inherit
     with:
-      build_mode: ${{ github.event.inputs.build_mode }}
-      flavor: ${{ github.event.inputs.flavor }}
-      release_note: ${{ github.event.inputs.release_note }}
-
-  deploy_android_appbundle:
-    if: ${{ github.event.inputs.build_type == 'appbundle' }}
-    name: Deploy appbundle to Telegram
-    uses: ./.github/workflows/_deploy_appbundle_to_tg.yaml
-    secrets: inherit
-    with:
+      build_type: ${{ github.event.inputs.build_type }}
       build_mode: ${{ github.event.inputs.build_mode }}
       flavor: ${{ github.event.inputs.flavor }}
       release_note: ${{ github.event.inputs.release_note }}

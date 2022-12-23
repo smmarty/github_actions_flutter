@@ -37,7 +37,7 @@ jobs:
   deploy_android_apk:
     if: ${{ github.event.inputs.android_build_type == 'apk' }}
     name: Deploy apk to Telegram
-    uses: ./.github/workflows/_deploy_apk_to_tg.yaml
+    uses: ./.github/workflows/_deploy_android_to_tg.yaml
     secrets: inherit
     with:
       build_mode: ${{ github.event.inputs.build_mode }}

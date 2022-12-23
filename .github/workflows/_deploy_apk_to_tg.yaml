@@ -51,11 +51,9 @@ jobs:
       - name: Rename apk file
         id: file-path
         if: ${{ success() }}
-        uses: smmarty/github_actions_flutter/actions/rename_file@main
+        uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
         with:
-          source_folder: build/app/outputs/apk/${{ github.event.inputs.flavor }}/${{ github.event.inputs.build_mode }}
-          source_file_name: app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}
-          file_extension: apk
+          source_file_path: build/app/outputs/apk/*/*/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.apk
           file_suffix: ${{ steps.app-version.outputs.app-version }}
           file_prefix: PREFIX
 
@@ -72,14 +70,14 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
-          message: | 
-           New android build: 
-           Type: apk
-           Branch: ${{ github.ref_name }}
-           Actor: ${{ github.actor }} 
-           Version: ${{ steps.app-version.outputs.app-version }} 
-           Release Note: 
-            ${{ github.event.inputs.release_note }}
+          message: |
+            New android build
+            Type: apk
+            Branch: ${{ github.ref_name }}
+            Actor: ${{ github.actor }} 
+            Version: ${{ steps.app-version.outputs.app-version }} 
+            Release Note: 
+             ${{ github.event.inputs.release_note }}
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}

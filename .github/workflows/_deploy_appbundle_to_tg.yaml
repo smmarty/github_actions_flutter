@@ -54,7 +54,6 @@ jobs:
         uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
         with:
           source_file_path: build/app/outputs/*/*/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.aab
-          file_extension: aab
           file_suffix: ${{ steps.app-version.outputs.app-version }}
           file_prefix: PREFIX
 
@@ -72,7 +71,7 @@ jobs:
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
           message: |
-            New android build: 
+            New android build
             Type: appbundle
             Branch: ${{ github.ref_name }}
             Actor: ${{ github.actor }} 

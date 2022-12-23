@@ -4,9 +4,6 @@ inputs:
   source_file_path:
     description: 'Путь до файла'
     required: true
-  file_extension:
-    description: 'Расширение файла'
-    required: true
   file_suffix:
     description: 'Добавит суфикс к названию файла перед расширением filename-${file_suffix}.${file_extension}'
     required: true
@@ -29,7 +26,10 @@ runs:
       run: |
         SOURCE_FILE=${{ inputs.source_file_path }}
         DIR_PATH=$(dirname $SOURCE_FILE)
-        TARGET_FILE_PATH=$DIR_PATH/${{ inputs.file_prefix }}-${{ inputs.source_file_name }}-${{ inputs.file_suffix}}.${{ inputs.file_extension }}
+        BASENAME=$(basename $SOURCE_FILE)
+        SOURCE_FILE_NAME=${BASENAME%.*}
+        SOURCE_FILE_EXT=${SOURCE_FILE##*.}
+        TARGET_FILE_PATH=$DIR_PATH/${{ inputs.file_prefix }}-$SOURCE_FILE_NAME-${{ inputs.file_suffix}}.$SOURCE_FILE_EXT
         mv -f $SOURCE_FILE $TARGET_FILE_PATH
         echo "path=$TARGET_FILE_PATH" >> $GITHUB_OUTPUT
     

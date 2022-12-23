@@ -48,24 +48,23 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/app_version@main
 
-      - name: Setup FILE_PATH
+      - name: Rename bundle file
+        id: file-path
         if: ${{ success() }}
-        #          appbundle file_path
-        #          build/app/outputs/bundle/prodRelease/app-prod-release.aab
-        run: echo "FILE_PATH=build/app/outputs/*/*/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.aab" >> $GITHUB_ENV
-
-      - name: Setup absolute FILE_PATH
-        if: ${{ success() }}
-        run: |
-          temp_file_path=(${{ env.FILE_PATH }})
-          echo "FILE_PATH=$temp_file_path" >> $GITHUB_ENV      
+        uses: smmarty/github_actions_flutter/actions/rename_file@main
+        with:
+          source_folder: build/app/outputs/*/*/
+          source_file_name: app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}
+          file_extension: aab
+          file_suffix: ${{ steps.app-version.outputs.app-version }}
+          file_prefix: PREFIX
 
       - name: Send appbundle file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: ${{ env.FILE_PATH }}
+          file_path: ${{ steps.file-path.outputs.file-path}}
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 

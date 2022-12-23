@@ -11,7 +11,6 @@ on:
           - release
           - profile
           - debug
-
       flavor:
         description: 'prod, stage, dev'
         required: true
@@ -21,12 +20,6 @@ on:
           - prod
           - stage
           - dev
-
-      release_note:
-        description: 'Release Note'
-        required: true
-        type: string
-
       build_type:
         description: 'apk или appbundle'
         required: true
@@ -35,6 +28,11 @@ on:
         options:
           - apk
           - appbundle
+      release_note:
+        description: 'Release Note'
+        required: true
+        type: string
+
 
 jobs:
   deploy_android:

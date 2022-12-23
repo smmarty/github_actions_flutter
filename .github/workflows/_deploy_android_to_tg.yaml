@@ -18,6 +18,7 @@ on:
         type: string
       build_type:
         description: 'apk или appbundle'
+        type: string
         required: true
         default: apk
 

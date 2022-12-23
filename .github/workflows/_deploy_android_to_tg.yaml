@@ -55,7 +55,7 @@ jobs:
 
       - name: Get file ext
         id: file-ext
-        uses: |
+        run: |
           if [[ ${{ github.event.inputs.build_type }} == "apk" ]]
           then
             echo "ext=apk" >> $GITHUB_OUTPUT

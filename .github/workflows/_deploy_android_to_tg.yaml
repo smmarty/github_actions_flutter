@@ -55,13 +55,14 @@ jobs:
 
       - name: Get file ext
         id: file-ext
+        shell: bash
         run: |
-          if [[ ${{ github.event.inputs.build_type }} == "apk" ]]
-          then
-            echo "ext=apk" >> $GITHUB_OUTPUT
-          else
-            echo "ext=aab" >> $GITHUB_OUTPUT
-          fi
+            if [[ ${{ github.event.inputs.build_type }} == "apk" ]]
+            then
+             echo "ext=apk" >> $GITHUB_OUTPUT
+            else
+              echo "ext=aab" >> $GITHUB_OUTPUT
+            fi
 
       - name: Rename file
         id: file-path

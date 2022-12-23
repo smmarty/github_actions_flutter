@@ -59,9 +59,11 @@ jobs:
         run: |
             if [[ ${{ github.event.inputs.build_type }} == "apk" ]]
             then
-             echo "ext=apk" >> $GITHUB_OUTPUT
+              echo "ext=apk" >> $GITHUB_OUTPUT
+              echo "dir=build/app/outputs/*/*/*" >> $GITHUB_OUTPUT
             else
               echo "ext=aab" >> $GITHUB_OUTPUT
+              echo "dir=build/app/outputs/*/*" >> $GITHUB_OUTPUT
             fi
 
       - name: Rename file
@@ -69,7 +71,7 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
         with:
-          source_file_path: build/app/outputs/**/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}
+          source_file_path: ${{ steps.file-ext.outputs.dir }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}
           file_suffix: ${{ steps.app-version.outputs.app-version }}
           file_prefix: PREFIX
 

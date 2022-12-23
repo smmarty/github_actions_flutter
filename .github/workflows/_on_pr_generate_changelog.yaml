@@ -5,6 +5,8 @@ on:
 
 jobs:
   generate_changelog:
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
     #    runs-on: [ self-hosted, checker ]
     runs-on: [ ubuntu-latest ]
     steps:

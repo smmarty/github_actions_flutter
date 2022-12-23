@@ -18,7 +18,10 @@ on:
         type: string
 jobs:
   deploy_ios:
-    runs-on: [ self-hosted, ios_builder, test ]
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
+    #    runs-on: [ self-hosted, ios_builder ]
+    runs-on: [ self-hosted, ios_builder ]
     environment: ${{ github.event.inputs.flavor }}
     steps:
       - uses: actions/checkout@v3

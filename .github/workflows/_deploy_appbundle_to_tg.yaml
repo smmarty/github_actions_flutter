@@ -1,4 +1,4 @@
-name: _deploy apk to Telegram
+name: _deploy appbundle to Telegram
 on:
   workflow_call:
     inputs:
@@ -19,7 +19,10 @@ on:
 
 jobs:
   deploy_appbundle:
-    runs-on: [ self-hosted, android_builder ]
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
+    #    runs-on: [ self-hosted, android_builder  ]
+    runs-on: [ ubuntu-latest ]
     environment: ${{ github.event.inputs.flavor }}
     steps:
       - uses: actions/checkout@v3
@@ -40,11 +43,16 @@ jobs:
           decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
           secrets_path: 'android/keys/android_keys.zip.gpg'
 
+      - name: Get app version
+        id: app-version
+        if: ${{ success() }}
+        uses: smmarty/github_actions_flutter/actions/app_version@main
+
       - name: Setup FILE_PATH
         if: ${{ success() }}
         #          appbundle file_path
         #          build/app/outputs/bundle/prodRelease/app-prod-release.aab
-        run: echo "FILE_PATH=build/app/outputs/*/*/app-${{ env.CURRENT_FLAVOR }}-${{ github.event.inputs.build_mode }}.aab" >> $GITHUB_ENV
+        run: echo "FILE_PATH=build/app/outputs/*/*/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.aab" >> $GITHUB_ENV
 
       - name: Setup absolute FILE_PATH
         if: ${{ success() }}
@@ -65,7 +73,14 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
-          message: New android build:\n${{ github.event.inputs.release_note }}
+          message: |
+            New android build: 
+            Type: appbundle
+            Branch: ${{ github.ref_name }}
+            Actor: ${{ github.actor }} 
+            Version: ${{ steps.app-version.outputs.app-version }} 
+            Release Note: 
+              ${{ github.event.inputs.release_note }}
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
@@ -80,6 +95,7 @@ jobs:
           message: |
             Action: ${{ github.workflow }}
             Repository: ${{ github.repository }}
+            Actor: ${{ github.actor }} 
             Branch: ${{ github.ref }}
             Status:  Failure
             Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}

@@ -3,10 +3,14 @@ on:
   workflow_dispatch:
 jobs:
   generate_changelog:
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
     #    runs-on: [ self-hosted, checker ]
     runs-on: [ ubuntu-latest ]
     steps:
       - uses: actions/checkout@v3
+        with:
+         fetch-depth: 0
       - name: Setup
         uses: smmarty/github_actions_flutter/actions/setup@main
       - name: Generate Changelog

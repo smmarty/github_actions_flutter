@@ -5,7 +5,9 @@ on:
 
 jobs:
   analyze:
-#    runs-on: [ self-hosted, checker, test ]
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
+#    runs-on: [ self-hosted, checker ]
     runs-on: [ ubuntu-latest ]
     steps:
       - uses: actions/checkout@v3

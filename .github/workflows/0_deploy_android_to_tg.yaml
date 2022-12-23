@@ -1,4 +1,4 @@
-name: Deploy apk to Telegram
+name: Deploy android to Telegram
 on:
   workflow_dispatch:
     inputs:
@@ -24,11 +24,30 @@ on:
         description: 'Release Note'
         required: true
         type: string
+      build_type:
+        description: 'apk или appbundle'
+        required: true
+        default: apk
+        type: choice
+        options:
+          - apk
+          - appbundle
 
 jobs:
-  deploy_android:
+  deploy_android_apk:
+    if: ${{ github.event.inputs.build_type == apk }}
     name: Deploy apk to Telegram
     uses: ./.github/workflows/_deploy_apk_to_tg.yaml
+    secrets: inherit
+    with:
+      build_mode: ${{ github.event.inputs.build_mode }}
+      flavor: ${{ github.event.inputs.flavor }}
+      release_note: ${{ github.event.inputs.release_note }}
+
+  deploy_android_appbundle:
+    if: ${{ github.event.inputs.build_type == appbundle }}
+    name: Deploy appbundle to Telegram
+    uses: ./.github/workflows/_deploy_appbundle_to_tg.yaml
     secrets: inherit
     with:
       build_mode: ${{ github.event.inputs.build_mode }}

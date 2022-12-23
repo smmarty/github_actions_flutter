@@ -53,12 +53,22 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/app_version@main
 
+      - name: Get file ext
+        id: file-ext
+        uses: |
+          if [[ ${{ github.event.inputs.build_type }} == "apk" ]]
+          then
+            echo "ext=apk" >> $GITHUB_OUTPUT
+          else
+            echo "ext=aab" >> $GITHUB_OUTPUT
+          fi
+
       - name: Rename file
         id: file-path
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
         with:
-          source_file_path: build/app/outputs/**/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.???
+          source_file_path: build/app/outputs/**/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}
           file_suffix: ${{ steps.app-version.outputs.app-version }}
           file_prefix: PREFIX
 

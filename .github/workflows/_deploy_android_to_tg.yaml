@@ -90,7 +90,7 @@ jobs:
         with:
           message: |
             New android build
-            Type: apk
+            Type: ${{ steps.file-ext.outputs.ext }}
             Branch: ${{ github.ref_name }}
             Actor: ${{ github.actor }} 
             Version: ${{ steps.app-version.outputs.app-version }} 

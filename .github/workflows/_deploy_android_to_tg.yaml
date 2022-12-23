@@ -75,7 +75,7 @@ jobs:
           file_suffix: ${{ steps.app-version.outputs.app-version }}
           file_prefix: PREFIX
 
-      - name: Send apk file to telegram
+      - name: Send file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
@@ -94,6 +94,7 @@ jobs:
             Branch: ${{ github.ref_name }}
             Actor: ${{ github.actor }} 
             Version: ${{ steps.app-version.outputs.app-version }} 
+            File Name: $(basename ${{ steps.file-path.outputs.file-path}})
             Release Note: 
              ${{ github.event.inputs.release_note }}
           silent_mode: "false"
@@ -111,6 +112,7 @@ jobs:
             Action: ${{ github.workflow }}
             Repository: ${{ github.repository }}
             Actor: ${{ github.actor }} 
+            Job: ${{ github.job }}
             Branch: ${{ github.ref }}
             Status:  Failure
             Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}

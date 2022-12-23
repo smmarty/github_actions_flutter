@@ -35,7 +35,7 @@ on:
 
 jobs:
   deploy_android_apk:
-    if: ${{ github.event.inputs.build_type == apk }}
+    if: ${{ github.event.inputs.build_type == 'apk' }}
     name: Deploy apk to Telegram
     uses: ./.github/workflows/_deploy_apk_to_tg.yaml
     secrets: inherit
@@ -45,7 +45,7 @@ jobs:
       release_note: ${{ github.event.inputs.release_note }}
 
   deploy_android_appbundle:
-    if: ${{ github.event.inputs.build_type == appbundle }}
+    if: ${{ github.event.inputs.build_type == 'appbundle' }}
     name: Deploy appbundle to Telegram
     uses: ./.github/workflows/_deploy_appbundle_to_tg.yaml
     secrets: inherit

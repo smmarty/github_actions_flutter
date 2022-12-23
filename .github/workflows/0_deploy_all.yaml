@@ -1,0 +1,64 @@
+name: Deploy All Platforms
+on:
+  workflow_dispatch:
+    inputs:
+      build_mode:
+        description: 'release, profile или debug'
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - profile
+          - debug
+      flavor:
+        description: 'prod, stage, dev'
+        required: true
+        default: prod
+        type: choice
+        options:
+          - prod
+          - stage
+          - dev
+      release_note:
+        description: 'Release Note'
+        required: true
+        type: string
+      android_build_type:
+        description: 'apk или appbundle'
+        required: true
+        default: apk
+        type: choice
+        options:
+          - apk
+          - appbundle
+
+jobs:
+  deploy_android_apk:
+    if: ${{ github.event.inputs.android_build_type == 'apk' }}
+    name: Deploy apk to Telegram
+    uses: ./.github/workflows/_deploy_apk_to_tg.yaml
+    secrets: inherit
+    with:
+      build_mode: ${{ github.event.inputs.build_mode }}
+      flavor: ${{ github.event.inputs.flavor }}
+      release_note: ${{ github.event.inputs.release_note }}
+
+  deploy_android_appbundle:
+    if: ${{ github.event.inputs.android_build_type == 'appbundle' }}
+    name: Deploy appbundle to Telegram
+    uses: ./.github/workflows/_deploy_appbundle_to_tg.yaml
+    secrets: inherit
+    with:
+      build_mode: ${{ github.event.inputs.build_mode }}
+      flavor: ${{ github.event.inputs.flavor }}
+      release_note: ${{ github.event.inputs.release_note }}
+
+  deploy_ios:
+    name: Deploy ios to testflight
+    uses: ./.github/workflows/_deploy_ios_to_testflight.yaml
+    secrets: inherit
+    with:
+      build_mode: ${{ github.event.inputs.build_mode }}
+      flavor: ${{ github.event.inputs.flavor }}
+      release_note: ${{ github.event.inputs.release_note }}

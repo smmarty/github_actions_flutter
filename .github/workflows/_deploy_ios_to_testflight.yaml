@@ -22,7 +22,7 @@ jobs:
     # Меняем на
     #    runs-on: [ self-hosted, ios_builder ]
     runs-on: [ self-hosted, ios_builder ]
-    environment: ${{ github.event.inputs.flavor }}
+    environment: ${{ inputs.flavor }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -36,8 +36,8 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/assemble_ios@main
         with:
-          build_mode: ${{ github.event.inputs.build_mode }}
-          flavor: ${{ github.event.inputs.flavor }}
+          build_mode: ${{ inputs.build_mode }}
+          flavor: ${{ inputs.flavor }}
 
       - name: Deploy to TestFlight
         if: ${{ success() }}
@@ -45,8 +45,8 @@ jobs:
         with:
           ipa_file_path: './Runner.ipa'
           workspace: 'Runner.xcworkspace'
-          configuration: ${{ github.event.inputs.flavor }}${{ github.event.inputs.build_mode }}
-          scheme: ${{ github.event.inputs.flavor }}
+          configuration: ${{ inputs.flavor }}${{ inputs.build_mode }}
+          scheme: ${{ inputs.flavor }}
           app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
           app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
           app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
@@ -64,7 +64,7 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
-          message: New IOS build:\n${{ github.event.inputs.release_note }}
+          message: New IOS build:\n${{ inputs.release_note }}
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_IOS_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}

@@ -28,7 +28,7 @@ jobs:
     # Меняем на
     #    runs-on: [ self-hosted, android_builder  ]
     runs-on: [ ubuntu-latest ]
-    environment: ${{ github.event.inputs.flavor }}
+    environment: ${{ inputs.flavor }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup
@@ -42,9 +42,9 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/assemble_android@main
         with:
-          build_type: ${{ github.event.inputs.build_type }}
-          build_mode: ${{ github.event.inputs.build_mode }}
-          flavor: ${{ github.event.inputs.flavor }}
+          build_type: ${{ inputs.build_type }}
+          build_mode: ${{ inputs.build_mode }}
+          flavor: ${{ inputs.flavor }}
           decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
           secrets_path: 'android/keys/android_keys.zip.gpg'
 
@@ -57,7 +57,7 @@ jobs:
         id: file-ext
         shell: bash
         run: |
-            if [[ ${{ github.event.inputs.build_type }} == "apk" ]]
+            if [[ ${{ inputs.build_type }} == "apk" ]]
             then
               echo "ext=apk" >> $GITHUB_OUTPUT
               echo "dir=build/app/outputs/*/*/*" >> $GITHUB_OUTPUT
@@ -71,7 +71,7 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
         with:
-          source_file_path: ${{ steps.file-ext.outputs.dir }}/app-${{ github.event.inputs.flavor }}-${{ github.event.inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}
+          source_file_path: ${{ steps.file-ext.outputs.dir }}/app-${{ inputs.flavor }}-${{ inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}
           file_suffix: ${{ steps.app-version.outputs.app-version }}
           file_prefix: PREFIX
 
@@ -96,7 +96,7 @@ jobs:
             Version: ${{ steps.app-version.outputs.app-version }} 
             File Name: $(basename ${{ steps.file-path.outputs.file-path}})
             Release Note: 
-             ${{ github.event.inputs.release_note }}
+             ${{ inputs.release_note }}
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}

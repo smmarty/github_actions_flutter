@@ -23,10 +23,6 @@ inputs:
     description: 'path to gpg file'
     default: 'android/keys/android_keys.zip.gpg'
     required: false
-  obfuscate:
-    description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
-    default: 'false'
-    required: false
 
 runs:
   using: "composite"
@@ -43,23 +39,12 @@ runs:
       shell: bash
 
     - name: Assemble custom target
-      id: assemble
       if: ${{ inputs.custom_target != null }}
       run: |
-        CMD_ARGS=""
-        if [ ${{ inputs.custom_target != null }}]; then 
-        CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
-        fi
-        if [ ${{ obfuscate == "true" }}]; then 
-          DEBUG_DIR=""
-          CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
-        fi
-        flutter build ${{ inputs.build_type }} $CMD_ARGS --flavor ${{ inputs.flavor }} --${{ inputs.build_mode }}
+        flutter build ${{ inputs.build_type }} -t ${{ inputs.custom_target }} --flavor ${{ inputs.flavor }} --${{ inputs.build_mode }}
       shell: bash
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: Debug Info ${{ assemble.debug_info_name }}
-        path: ${{ assemble.debug_info_path }}
-
+    - name: Assemble flavor
+      if: ${{ inputs.custom_target == null }}
+      run: flutter build ${{ inputs.build_type }} -t lib/targets/${{ inputs.flavor }}.dart --flavor ${{ inputs.flavor }} --${{ inputs.build_mode }}
+      shell: bash

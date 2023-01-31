@@ -16,6 +16,6 @@ jobs:
       uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
       with:
         silent_mode: "false"
-        chat_id: ${{ secrets.ALERTS_CHAT_ID }}
+        chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
         tg_url: ${{ secrets.TG_URL }}
         message: ${{ inputs.release_note }}

@@ -21,7 +21,5 @@ runs:
     - name: Send message
       shell: bash
       run: |
-       text="${{ inputs.message }}"
-       fold -s -w 3000 <<< "$text" | while read -r line; do
-        curl -s -X POST "${{ inputs.tg_url }}/sendMessage" -d chat_id="${{ inputs.chat_id }}" -d text="$line" -d disable_notification="${{ inputs.silent_mode }}"
-       done
+        curl -s -X POST "${{ inputs.tg_url }}/sendMessage" -d chat_id="${{ inputs.chat_id }}" -d text="${{ inputs.message }}" -d disable_notification="${{ inputs.silent_mode }}"
+

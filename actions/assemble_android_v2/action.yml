@@ -1,4 +1,4 @@
-name: 'Assemble Android'
+name: 'Assemble Android V2'
 description: 'Assemble apk or appbundle'
 inputs:
   build_type:

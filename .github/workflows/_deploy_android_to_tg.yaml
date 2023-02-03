@@ -22,7 +22,8 @@ on:
         default: apk
       obfuscate:
         description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
-        type: boolean
+        type: string
+        default: false
         required: false
 jobs:
   deploy_android:

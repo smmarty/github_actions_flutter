@@ -33,7 +33,7 @@ on:
         required: true
         type: string
       obfuscate:
-        description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
+        description: 'Obfuscate'
         type: boolean
         required: false
 
@@ -48,4 +48,4 @@ jobs:
       build_mode: ${{ github.event.inputs.build_mode }}
       flavor: ${{ github.event.inputs.flavor }}
       release_note: ${{ github.event.inputs.release_note }}
-      obfuscate: ${{ github.event.inputs.obfuscate == true }}
+      obfuscate: ${{ github.event.inputs.obfuscate }}

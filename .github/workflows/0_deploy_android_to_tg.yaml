@@ -48,4 +48,4 @@ jobs:
       build_mode: ${{ github.event.inputs.build_mode }}
       flavor: ${{ github.event.inputs.flavor }}
       release_note: ${{ github.event.inputs.release_note }}
-      obfuscate: ${{ github.event.inputs.obfuscate }}
+      obfuscate: ${{ github.event.inputs.obfuscate == true }}

@@ -74,7 +74,7 @@ runs:
         if [ ${{ inputs.custom_target }} != null]; then 
         CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
         fi
-        if [ ${{ inputs.obfuscate }} == "true"]; then 
+        if [ ${{ inputs.obfuscate }} == true ]; then 
           mkdir debug_info
           DEBUG_DIR="debug_info"
           echo "debug_info_path=$DEBUG_DIR" >> $GITHUB_OUTPUT

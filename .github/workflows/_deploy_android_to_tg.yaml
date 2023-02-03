@@ -42,6 +42,7 @@ jobs:
         uses: smmarty/github_actions_flutter/actions/check@main
 
       - name: Assemble
+        id: assemble
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/assemble_android_v2@main
         with:
@@ -50,39 +51,12 @@ jobs:
           flavor: ${{ inputs.flavor }}
           obfuscate: ${{ inputs.obfuscate }}
 
-      - name: Get app version
-        id: app-version
-        if: ${{ success() }}
-        uses: smmarty/github_actions_flutter/actions/app_version@main
-
-      - name: Get file ext
-        id: file-ext
-        shell: bash
-        run: |
-          if [[ ${{ inputs.build_type }} == "apk" ]]
-          then
-            echo "ext=apk" >> $GITHUB_OUTPUT
-            echo "dir=build/app/outputs/*/*/*" >> $GITHUB_OUTPUT
-          else
-            echo "ext=aab" >> $GITHUB_OUTPUT
-            echo "dir=build/app/outputs/*/*" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Rename file
-        id: file-path
-        if: ${{ success() }}
-        uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
-        with:
-          source_file_path: ${{ steps.file-ext.outputs.dir }}/app-${{ inputs.flavor }}-${{ inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}
-          file_suffix: ${{ steps.app-version.outputs.app-version }}
-          file_prefix: PREFIX
-
       - name: Send file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: ${{ steps.file-path.outputs.file-path}}
+          file_path: ${{ steps.assemble.outputs.file-path}}
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 
@@ -92,11 +66,11 @@ jobs:
         with:
           message: |
             New android build
-            Type: ${{ steps.file-ext.outputs.ext }}
+            Type: ${{ steps.assemble.outputs.ext }}
             Branch: ${{ github.ref_name }}
             Actor: ${{ github.actor }} 
-            Version: ${{ steps.app-version.outputs.app-version }} 
-            File Name: $(basename ${{ steps.file-path.outputs.file-path}})
+            Version: ${{ steps.assemble.outputs.app-version }} 
+            File Name: $(basename ${{ steps.assemble.outputs.file-path}})
             Release Note: 
              ${{ inputs.release_note }}
           silent_mode: "false"
@@ -118,3 +92,10 @@ jobs:
             Branch: ${{ github.ref }}
             Status:  Failure
             Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        if: ${{ success() }}
+        with:
+          name: Debug Info ${{ steps.assemble.outputs.app-version }}
+          path: ${{ steps.assemble.outputs.debug-info-path }}

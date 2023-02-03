@@ -12,6 +12,9 @@ inputs:
   flavor:
     description: 'prod, dev, stage'
     required: false
+  file_prefix:
+    description: 'prefix to file'
+    required: false
   custom_target:
     description: 'custom build target( если не определить, то будет создан из flavor)'
     required: false
@@ -26,6 +29,19 @@ inputs:
     description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
     default: 'false'
     required: false
+outputs:
+  app-version:
+    description: "App Version x.y.z+b"
+    value: ${{ steps.app-version.outputs.app-version }}
+  build-file:
+    description: "Path to result file"
+    value: ${{ steps.file-path.outputs.file-path }}
+  debug-info-path:
+    description: "Path to debug-info-folder"
+    value: ${{ steps.assemble.outputs.debug_info_path }}
+  ext:
+    description: "file extension"
+    value: ${{ steps.file-ext.outputs.ext }}
 
 runs:
   using: "composite"
@@ -36,6 +52,7 @@ runs:
         java-version: '11'
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
+
     - name: Decrypt Android keys
       if: ${{ inputs.decript_key }}
       shell: bash
@@ -44,37 +61,50 @@ runs:
         --output android/android_keys.zip --decrypt ${{ inputs.secrets_path }}
         cd android && jar xvf android_keys.zip && cd -
 
-    - name: Assemble custom target
-      id: assemble
-      if: ${{ inputs.custom_target != null }}
-      shell: bash
-      run: |
-        CMD_ARGS=""
-        if [ ${{ inputs.custom_target != null }}]; then 
-        CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
-        fi
-        if [ ${{ inputs.obfuscate == true }}]; then 
-          mkdir debug_info
-          DEBUG_DIR="debug_info"
-          echo "debug_info_path=$DEBUG_DIR" >> $GITHUB_OUTPUT
-          CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
-        fi
-        if [ ${{ inputs.flavor != null }}]; then 
-          CMD_ARGS="$CMD_ARGS --flavor ${{ inputs.flavor }}"
-        fi
-        flutter build ${{ inputs.build_type }} $CMD_ARGS  --${{ inputs.build_mode }}
-
     - name: Get app version
       id: app-version
       if: ${{ success() }}
       uses: smmarty/github_actions_flutter/actions/app_version@main
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
+    - name: Assemble
+      id: assemble
+      shell: bash
+      run: |
+        CMD_ARGS=""
+        if [ ${{ inputs.custom_target }} != null]; then 
+        CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
+        fi
+        if [ ${{ inputs.obfuscate }} == "true"]; then 
+          mkdir debug_info
+          DEBUG_DIR="debug_info"
+          echo "debug_info_path=$DEBUG_DIR" >> $GITHUB_OUTPUT
+          CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
+        fi
+        if [ ${{ inputs.flavor }} != null ]; then 
+          CMD_ARGS="$CMD_ARGS --flavor ${{ inputs.flavor }}"
+        fi
+        flutter build ${{ inputs.build_type }} $CMD_ARGS  --${{ inputs.build_mode }}
+
+    - name: Get file ext
+      id: file-ext
+      shell: bash
+      run: |
+        if [[ ${{ inputs.build_type }} == "apk" ]]
+        then
+          echo "ext=apk" >> $GITHUB_OUTPUT
+          echo "dir=build/app/outputs/*/*/*" >> $GITHUB_OUTPUT
+        else
+          echo "ext=aab" >> $GITHUB_OUTPUT
+          echo "dir=build/app/outputs/*/*" >> $GITHUB_OUTPUT
+        fi    
+
+    - name: Rename file
+      id: file-path
       if: ${{ success() }}
+      uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
       with:
-        name: Debug Info ${{ steps.app-version.outputs.version }}
-        path: ${{ steps.assemble.outputs.debug_info_path }}
-          
-          echo "path=$FILE_NAME" >> $GITHUB_OUTPUT
+        source_file_path: ${{ steps.file-ext.outputs.dir }}/app-${{ inputs.flavor }}-${{ inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}
+        file_suffix: ${{ steps.app-version.outputs.app-version }}
+        file_prefix: ${{ inputs.file_prefix }}
+
 

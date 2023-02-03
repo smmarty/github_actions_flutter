@@ -53,8 +53,10 @@ runs:
         if [ ${{ inputs.custom_target != null }}]; then 
         CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
         fi
-        if [ ${{ obfuscate == "true" }}]; then 
-          DEBUG_DIR=""
+        if [ ${{ inputs.obfuscate == "true" }}]; then 
+          mkdir debug_info
+          DEBUG_DIR="debug_info"
+          echo "debug_info_path=$DEBUG_DIR" >> $GITHUB_OUTPUT
           CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
         fi
         if [ ${{ inputs.flavor != null }}]; then 
@@ -62,9 +64,17 @@ runs:
         fi
         flutter build ${{ inputs.build_type }} $CMD_ARGS  --${{ inputs.build_mode }}
 
+    - name: Get app version
+      id: app-version
+      if: ${{ success() }}
+      uses: smmarty/github_actions_flutter/actions/app_version@main
+
     - name: Upload artifact
       uses: actions/upload-artifact@v3
+      if: ${{ success() }}
       with:
-        name: Debug Info ${{ assemble.debug_info_name }}
-        path: ${{ assemble.debug_info_path }}
+        name: Debug Info ${{ steps.app-version.outputs.version }}
+        path: ${{ steps.assemble.outputs.debug_info_path }}
+          
+          echo "path=$FILE_NAME" >> $GITHUB_OUTPUT
 

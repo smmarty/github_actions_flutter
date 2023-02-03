@@ -35,6 +35,7 @@ on:
       obfuscate:
         description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
         default: false
+        type: boolean
         required: false
 
 

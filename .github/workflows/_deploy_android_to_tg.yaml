@@ -56,7 +56,7 @@ jobs:
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: ${{ steps.assemble.outputs.file-path}}
+          file_path: ${{ steps.assemble.outputs.build-file }}
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 
@@ -70,7 +70,7 @@ jobs:
             Branch: ${{ github.ref_name }}
             Actor: ${{ github.actor }} 
             Version: ${{ steps.assemble.outputs.app-version }} 
-            File Name: $(basename ${{ steps.assemble.outputs.file-path}})
+            File Name: $(basename ${{ steps.assemble.outputs.build-file}})
             Release Note: 
              ${{ inputs.release_note }}
           silent_mode: "false"

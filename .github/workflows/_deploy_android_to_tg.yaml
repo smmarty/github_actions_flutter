@@ -77,6 +77,13 @@ jobs:
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        if: ${{ inputs.obfuscate }}
+        with:
+          name: Debug Info ${{ steps.assemble.outputs.app-version }}
+          path: ${{ steps.assemble.outputs.debug-info-path }}
+
       - name: Send alert
         if: ${{ failure() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
@@ -93,9 +100,3 @@ jobs:
             Status:  Failure
             Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        if: ${{ success() }}
-        with:
-          name: Debug Info ${{ steps.assemble.outputs.app-version }}
-          path: ${{ steps.assemble.outputs.debug-info-path }}

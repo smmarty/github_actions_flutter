@@ -9,8 +9,7 @@ on:
         type: string
       flavor:
         description: 'prod, stage, dev'
-        required: true
-        default: prod
+        required: false
         type: string
       release_note:
         description: 'Release Note'
@@ -21,7 +20,10 @@ on:
         type: string
         required: true
         default: apk
-
+      obfuscate:
+        description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
+        default: false
+        required: false
 jobs:
   deploy_android:
     # ubuntu-latest  используется только в примерах
@@ -40,13 +42,12 @@ jobs:
 
       - name: Assemble
         if: ${{ success() }}
-        uses: smmarty/github_actions_flutter/actions/assemble_android@main
+        uses: smmarty/github_actions_flutter/actions/assemble_android_v2@main
         with:
           build_type: ${{ inputs.build_type }}
           build_mode: ${{ inputs.build_mode }}
           flavor: ${{ inputs.flavor }}
-          decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
-          secrets_path: 'android/keys/android_keys.zip.gpg'
+          obfuscate: ${{ inputs.obfuscate }}
 
       - name: Get app version
         id: app-version
@@ -57,14 +58,14 @@ jobs:
         id: file-ext
         shell: bash
         run: |
-            if [[ ${{ inputs.build_type }} == "apk" ]]
-            then
-              echo "ext=apk" >> $GITHUB_OUTPUT
-              echo "dir=build/app/outputs/*/*/*" >> $GITHUB_OUTPUT
-            else
-              echo "ext=aab" >> $GITHUB_OUTPUT
-              echo "dir=build/app/outputs/*/*" >> $GITHUB_OUTPUT
-            fi
+          if [[ ${{ inputs.build_type }} == "apk" ]]
+          then
+            echo "ext=apk" >> $GITHUB_OUTPUT
+            echo "dir=build/app/outputs/*/*/*" >> $GITHUB_OUTPUT
+          else
+            echo "ext=aab" >> $GITHUB_OUTPUT
+            echo "dir=build/app/outputs/*/*" >> $GITHUB_OUTPUT
+          fi
 
       - name: Rename file
         id: file-path

@@ -1,0 +1,70 @@
+name: 'Assemble Android'
+description: 'Assemble apk or appbundle'
+inputs:
+  build_type:
+    description: 'appbundle или apk'
+    required: true
+    default: appbundle
+  build_mode:
+    description: 'release, profile или debug'
+    required: true
+    default: release
+  flavor:
+    description: 'prod, dev, stage'
+    required: false
+  custom_target:
+    description: 'custom build target( если не определить, то будет создан из flavor)'
+    required: false
+  decript_key:
+    description: 'ANDROID_KEYS_SECRET_PASSPHRASE'
+    required: false
+  secrets_path:
+    description: 'path to gpg file'
+    default: 'android/keys/android_keys.zip.gpg'
+    required: false
+  obfuscate:
+    description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
+    default: 'false'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+    - name: Decrypt Android keys
+      if: ${{ inputs.decript_key }}
+      shell: bash
+      run: |
+        gpg --quiet --batch --yes --passphrase=${{ inputs.decript_key }} \ 
+        --output android/android_keys.zip --decrypt ${{ inputs.secrets_path }}
+        cd android && jar xvf android_keys.zip && cd -
+
+    - name: Assemble custom target
+      id: assemble
+      if: ${{ inputs.custom_target != null }}
+      shell: bash
+      run: |
+        CMD_ARGS=""
+        if [ ${{ inputs.custom_target != null }}]; then 
+        CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
+        fi
+        if [ ${{ obfuscate == "true" }}]; then 
+          DEBUG_DIR=""
+          CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
+        fi
+        if [ ${{ inputs.flavor != null }}]; then 
+          CMD_ARGS="$CMD_ARGS --flavor ${{ inputs.flavor }}"
+        fi
+        flutter build ${{ inputs.build_type }} $CMD_ARGS  --${{ inputs.build_mode }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Debug Info ${{ assemble.debug_info_name }}
+        path: ${{ assemble.debug_info_path }}
+

@@ -56,10 +56,7 @@ runs:
     - name: Decrypt Android keys
       if: ${{ inputs.decript_key }}
       shell: bash
-      run: |
-        gpg --quiet --batch --yes --passphrase=${{ inputs.decript_key }} \ 
-        --output android/android_keys.zip --decrypt ${{ inputs.secrets_path }}
-        cd android && jar xvf android_keys.zip && cd -
+      run: gpg --quiet --batch --yes --passphrase=${{ inputs.decript_key }} --output android/android_keys.zip --decrypt ${{ inputs.secrets_path }} && cd android && jar xvf android_keys.zip && cd -
 
     - name: Get app version
       id: app-version

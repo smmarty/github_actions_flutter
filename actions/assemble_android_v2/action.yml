@@ -77,7 +77,7 @@ runs:
         if [ ${{ inputs.flavor }} != null ]; then 
           CMD_ARGS="$CMD_ARGS --flavor ${{ inputs.flavor }}" 
           if [ ${{ inputs.custom_target }} == null]; then 
-          CMD_ARGS="$CMD_ARGS -t lib/targets/${{ inputs.flavor }}.dart
+          CMD_ARGS="$CMD_ARGS -t lib/targets/${{ inputs.flavor }}.dart"
           fi
         fi
         if [ ${{ inputs.custom_target }} != null]; then 

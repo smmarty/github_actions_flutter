@@ -50,6 +50,10 @@ jobs:
           build_mode: ${{ inputs.build_mode }}
           flavor: ${{ inputs.flavor }}
           obfuscate: ${{ inputs.obfuscate }}
+          # Добавить эти два параметра если у вас есть подпись
+          #decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
+          #secrets_path: 'android/keys/android_keys.zip.gpg'
+
 
       - name: Send file to telegram
         if: ${{ success() }}

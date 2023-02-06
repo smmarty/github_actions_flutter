@@ -68,9 +68,6 @@ runs:
       shell: bash
       run: |
         CMD_ARGS=""
-        if [ ${{ inputs.custom_target }} != null]; then 
-        CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
-        fi
         if [ ${{ inputs.obfuscate }} == true ]; then 
           mkdir debug_info
           DEBUG_DIR="debug_info"
@@ -78,7 +75,10 @@ runs:
           CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
         fi
         if [ ${{ inputs.flavor }} != null ]; then 
-          CMD_ARGS="$CMD_ARGS --flavor ${{ inputs.flavor }}"
+          CMD_ARGS="$CMD_ARGS --flavor ${{ inputs.flavor }}" -t lib/targets/${{ inputs.flavor }}.dart
+        fi
+        if [ ${{ inputs.custom_target }} != null]; then 
+        CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
         fi
         flutter build ${{ inputs.build_type }} $CMD_ARGS  --${{ inputs.build_mode }}
 

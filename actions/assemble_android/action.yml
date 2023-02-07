@@ -41,10 +41,13 @@ runs:
     - name: Assemble custom target
       if: ${{ inputs.custom_target != null }}
       run: |
-        flutter build ${{ inputs.build_type }} -t ${{ inputs.custom_target }} --flavor ${{ inputs.flavor }} --${{ inputs.build_mode }}
+        date=$(date +"%m/%d/%Y")
+        flutter build ${{ inputs.build_type }} -t ${{ inputs.custom_target }} --flavor ${{ inputs.flavor }} --${{ inputs.build_mode }} --dart-define=buildDate=$date
       shell: bash
 
     - name: Assemble flavor
       if: ${{ inputs.custom_target == null }}
-      run: flutter build ${{ inputs.build_type }} -t lib/targets/${{ inputs.flavor }}.dart --flavor ${{ inputs.flavor }} --${{ inputs.build_mode }}
+      run: |
+        date=$(date +"%m/%d/%Y")
+        flutter build ${{ inputs.build_type }} -t lib/targets/${{ inputs.flavor }}.dart --flavor ${{ inputs.flavor }} --${{ inputs.build_mode }} --dart-define=buildDate=$date
       shell: bash

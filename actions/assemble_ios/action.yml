@@ -16,5 +16,5 @@ runs:
     - name: Assemble ios
       shell: bash
       run: |
-        date=$(date +"%m/%d/%Y")
+        date=$(date +"%d-%m-%Y")
         flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign --dart-define=buildDate=$date

@@ -85,7 +85,7 @@ runs:
         fi
         date=$(date +"%d-%m-%Y")
         CMD_ARGS="$CMD_ARGS --dart-define=buildDate=$date"
-        echo "CMD ARGS $CMD_ARGS"
+        echo $CMD_ARGS
         flutter build ${{ inputs.build_type }} $CMD_ARGS --${{ inputs.build_mode }}
 
     - name: Get file ext

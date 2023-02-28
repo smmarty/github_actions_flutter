@@ -17,6 +17,6 @@ jobs:
       - name: Provide envs
         uses: smmarty/github_actions_flutter/actions/env_generator@main
         with:
-          password: ${{ secrets.ENV_PASSWORD}}
+          password: ${{ secrets.ENV_PASSWORD }}
           env_path: env/prod.env
           secret_path: env/prod.env.gpg

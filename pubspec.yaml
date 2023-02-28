@@ -11,11 +11,19 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  friflex_env:
+    hosted: https://pub.friflex.com
+    version: 1.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: any
   flutter_lints: ^2.0.0
+  dotenv: any
+  friflex_env_generator:
+    hosted: https://pub.friflex.com
+    version: 1.0.1
 
 flutter:
   uses-material-design: false

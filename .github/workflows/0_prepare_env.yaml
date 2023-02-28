@@ -1,0 +1,21 @@
+name: Prepare env test
+on:
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
+    #    runs-on: [ self-hosted, checker ]
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup
+        uses: smmarty/github_actions_flutter/actions/setup@main
+
+      - name: Provide envs
+        uses: smmarty/github_actions_flutter/actions/env_generator@main
+        with:
+          prod_envs: ${{ secrets.ENVS}}
+          env_path: env/prod.env

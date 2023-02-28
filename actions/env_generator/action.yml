@@ -1,0 +1,28 @@
+name: 'Generate env'
+description: 'Запускает build runner и проверяет env через friflex_env'
+inputs:
+  prod_envs:
+    required: true
+    description: 'Декодированный env файл'
+  env_path:
+    required: true
+    description: 'Путь до env файла'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Extract env
+      shell: bash
+      run: |
+        echo ${{ inputs.prod_envs }} > $env_path
+
+    - name: Run build runner
+      shell: bash
+      run: |
+        flutter packages pub run build_runner build --delete-conflicting-outputs
+
+    - name: Test
+      shell: bash
+      run: |
+        flutter test test/config/evn_test.dart  
+        

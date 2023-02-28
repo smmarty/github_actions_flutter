@@ -3,7 +3,7 @@ description: 'Запускает build runner и проверяет env чере
 inputs:
   prod_envs:
     required: true
-    description: 'Декодированный env файл'
+    description: 'Путь до файла с секретами'
   env_path:
     required: true
     description: 'Путь до env файла'
@@ -14,7 +14,7 @@ runs:
     - name: Extract env
       shell: bash
       run: |
-        echo ${{ inputs.prod_envs }} > $env_path
+        echo ${{ inputs.prod_envs }} > ${{ inputs.env_path }}
 
     - name: Run build runner
       shell: bash

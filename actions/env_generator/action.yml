@@ -17,7 +17,7 @@ runs:
     - name: Extract env
       shell: bash
       run: |
-        gpg --quiet --batch --yes --decrypt --passphrase=${{ inputs.password }} \
+        gpg --quiet --batch --yes --passphrase=${{ inputs.password }} \
         --decrypt ${{ inputs.secret_path }} --output ${{ inputs.env_path }}
 
     - name: Run build runner

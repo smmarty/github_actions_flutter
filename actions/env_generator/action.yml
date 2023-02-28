@@ -1,12 +1,15 @@
 name: 'Generate env'
 description: 'Запускает build runner и проверяет env через friflex_env'
 inputs:
-  prod_envs:
+  secret_path:
     required: true
     description: 'Путь до файла с секретами'
   env_path:
     required: true
     description: 'Путь до env файла'
+  password:
+    required: true
+    description: 'Пароль от файла с секретами'
 
 runs:
   using: "composite"
@@ -14,7 +17,8 @@ runs:
     - name: Extract env
       shell: bash
       run: |
-        echo ${{ inputs.prod_envs }} > ${{ inputs.env_path }}
+        gpg --quiet --batch --yes --decrypt --passphrase="${{ inputs.password }}" \
+        --output ${{ inputs.secret_path }} ${{ inputs.env_path }}
 
     - name: Run build runner
       shell: bash

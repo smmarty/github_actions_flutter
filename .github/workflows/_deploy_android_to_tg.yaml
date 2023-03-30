@@ -25,6 +25,10 @@ on:
         type: string
         default: false
         required: false
+      dart_define:
+        description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
+        type: string
+        required: false
 jobs:
   deploy_android:
     # ubuntu-latest  используется только в примерах
@@ -50,6 +54,7 @@ jobs:
           build_mode: ${{ inputs.build_mode }}
           flavor: ${{ inputs.flavor }}
           obfuscate: ${{ inputs.obfuscate }}
+          dart_define: ${{ inputs.dart_define }}
           # Добавить эти два параметра если у вас есть подпись
           #custom_target: lib/targets/{{ needs.temp_env.outputs.GITHUB_FLAVOR }}.dart
           #decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}

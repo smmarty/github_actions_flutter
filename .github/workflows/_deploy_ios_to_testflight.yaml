@@ -16,6 +16,10 @@ on:
         description: 'Release Note'
         required: true
         type: string
+      dart_define:
+        description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
+        type: string
+        required: false
 jobs:
   deploy_ios:
     # ubuntu-latest  используется только в примерах
@@ -47,6 +51,7 @@ jobs:
           workspace: 'Runner.xcworkspace'
           configuration: ${{ inputs.flavor }}${{ inputs.build_mode }}
           scheme: ${{ inputs.flavor }}
+          dart_define: ${{ inputs.dart_define }}
           app_bundle_id: ${{ secrets.APP_BUNDLE_ID }}
           app_bundle_ids: ${{ secrets.APP_BUNDLE_IDS }}
           app_store_connect_team_id: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}

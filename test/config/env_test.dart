@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:dotenv/dotenv.dart';
 import 'package:flutter_cicd_sample/config/prod.dart';
 import 'package:flutter_cicd_sample/config/stage.dart';

@@ -96,7 +96,8 @@ runs:
          IFS=',' read -r -a dart_define_array <<< "$dart_define"
          for element in "${dart_define_array[@]}"
          do
-           DART_DEFINE_ARGS="$DART_DEFINE_ARGS --dart-define=${dart_define_array[0]}"
+           echo "dart_define add ${element}"
+           DART_DEFINE_ARGS="$DART_DEFINE_ARGS --dart-define=${element}"
          done
         fi
         CMD_ARGS="$CMD_ARGS $DART_DEFINE_ARGS"

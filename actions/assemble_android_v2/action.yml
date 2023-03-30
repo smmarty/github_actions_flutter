@@ -29,6 +29,9 @@ inputs:
     description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
     default: 'false'
     required: false
+  dart_define:
+    description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
+    required: false
 outputs:
   app-version:
     description: "App Version x.y.z+b"
@@ -87,7 +90,16 @@ runs:
          CMD_ARGS="$CMD_ARGS -t ${{ inputs.custom_target }}"
         fi
         date=$(date +"%d-%m-%Y")
-        CMD_ARGS="$CMD_ARGS --dart-define=buildDate=$date"
+        DART_DEFINE_ARGS=" --dart-define=buildDate=$date"
+        if [ ${{ inputs.dart_define }} != null ]; then   
+         echo "Set dart_define values"
+         IFS=',' read -r -a dart_define_array <<< "$dart_define"
+         for element in "${dart_define_array[@]}"
+         do
+           DART_DEFINE_ARGS="$DART_DEFINE_ARGS --dart-define=${dart_define_array[0]}"
+         done
+        fi
+        CMD_ARGS="$CMD_ARGS $DART_DEFINE_ARGS"
         echo $CMD_ARGS
         flutter build ${{ inputs.build_type }} $CMD_ARGS --${{ inputs.build_mode }}
 

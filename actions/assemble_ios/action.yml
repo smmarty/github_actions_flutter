@@ -9,6 +9,9 @@ inputs:
     description: 'release, profile или debug'
     required: true
     default: release
+  dart_define:
+    description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
+    required: false
 
 runs:
   using: "composite"
@@ -17,4 +20,15 @@ runs:
       shell: bash
       run: |
         date=$(date +"%d-%m-%Y")
-        flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign --dart-define=buildDate=$date
+        DART_DEFINE_ARGS=" --dart-define=buildDate=$date"
+        if [ ${{ inputs.dart_define }} != null ]; then   
+          echo "Set dart_define values"
+          IFS=',' read -r -a dart_define_array <<< "$dart_define"
+          for element in "${dart_define_array[@]}"
+          do
+           DART_DEFINE_ARGS="${$DART_DEFINE_ARGS} --dart-define=${dart_define_array[0]}"
+          done
+        fi
+        CMD_ARGS="$CMD_ARGS $DART_DEFINE_ARGS"
+        date=$(date +"%d-%m-%Y")
+        flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign $CMD_ARGS

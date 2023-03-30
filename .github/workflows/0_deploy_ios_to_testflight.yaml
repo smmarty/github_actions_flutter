@@ -24,6 +24,10 @@ on:
        description: 'Release Note'
        required: true
        type: string
+     dart_define:
+       description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
+       type: string
+       required: false
 
 jobs:
   deploy_ios:
@@ -34,3 +38,4 @@ jobs:
       build_mode: ${{ github.event.inputs.build_mode }}
       flavor: ${{ github.event.inputs.flavor }}
       release_note: ${{ github.event.inputs.release_note }}
+      dart_define: ${{ github.event.inputs.dart_define }}

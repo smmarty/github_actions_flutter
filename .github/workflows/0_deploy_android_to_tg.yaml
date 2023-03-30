@@ -36,6 +36,10 @@ on:
         description: 'Obfuscate'
         type: boolean
         required: false
+      dart_define:
+        description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
+        type: string
+        required: false
 
 
 jobs:
@@ -49,3 +53,4 @@ jobs:
       flavor: ${{ github.event.inputs.flavor }}
       release_note: ${{ github.event.inputs.release_note }}
       obfuscate: ${{ github.event.inputs.obfuscate }}
+      dart_define: ${{ github.event.inputs.dart_define }}

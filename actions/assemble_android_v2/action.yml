@@ -93,8 +93,8 @@ runs:
         DART_DEFINE_ARGS=" --dart-define=buildDate=$date"
         if [ ${{ inputs.dart_define }} != null ]; then   
          echo "Set dart_define values"
-         dart_define_values = "${{ inputs.dart_define }}"
-         IFS=',' read -r -a dart_define_array <<< $dart_define_values
+         dart_define_values="${{ inputs.dart_define }}"
+         IFS=',' read -r -a dart_define_array <<< "$dart_define_values"
          for element in "${dart_define_array[@]}"
          do
            echo "dart_define add ${element}"

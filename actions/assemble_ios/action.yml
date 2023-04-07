@@ -22,15 +22,15 @@ runs:
         date=$(date +"%d-%m-%Y")
         DART_DEFINE_ARGS=" --dart-define=buildDate=$date"
         if [ ${{ inputs.dart_define }} != null ]; then   
-          echo "Set dart_define values"
-          dart_define_values="${{ inputs.dart_define }}"
-          IFS=',' read -r -a dart_define_array <<< "$dart_define_values"
-          for element in "${dart_define_array[@]}"
+         echo "Set dart_define values"
+         dart_define_values="${{ inputs.dart_define }}"
+         IFS=',' read -r -a dart_define_array <<< "$dart_define_values"
+        for element in "${dart_define_array[@]}"
           do
-            echo "dart_define add ${element}"
-           DART_DEFINE_ARGS="${$DART_DEFINE_ARGS} --dart-define=${element}"
-          done
+           echo "dart_define add ${element}"
+           DART_DEFINE_ARGS="$DART_DEFINE_ARGS --dart-define=${element}"
+           done
         fi
         CMD_ARGS="$CMD_ARGS $DART_DEFINE_ARGS"
-        date=$(date +"%d-%m-%Y")
+        echo $CMD_ARGS
         flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign $CMD_ARGS

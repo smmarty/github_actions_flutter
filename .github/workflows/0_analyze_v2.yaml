@@ -5,13 +5,13 @@ on:
     fatal-warnings:
       description: 'fatal-warnings'
       required: false
-      default: 'true'
-      type: checkbox
+      default: true
+      type: boolean
     fatal-infos:
       description: 'fatal-infos'
       required: false
-      default: 'true'
-      type: checkbox
+      default: true
+      type: boolean
     include_test:
       description: 'run tests [true/false]'
       required: false

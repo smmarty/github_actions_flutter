@@ -1,0 +1,40 @@
+name: Analyze project code V2
+on:
+  workflow_dispatch:
+   inputs:
+    type:
+      description: 'types: [full] - include fatal-infos and fatal-warnings,[base] - exclude it'
+      required: false
+      default: full
+    fatal-warnings:
+      description: 'fatal-warnings'
+      required: false
+      default: 'true'
+    fatal-infos:
+      description: 'fatal-infos'
+      required: false
+      default: 'true'
+    include_test:
+      description: 'run tests [true/false]'
+      required: false
+      default: 'true'
+
+jobs:
+  analyze:
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
+    #    runs-on: [ self-hosted, checker ]
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup
+        uses: smmarty/github_actions_flutter/actions/setup@main
+
+      - name: Check
+        if: ${{ success() }}
+        uses: smmarty/github_actions_flutter/actions/check_v2@main
+        with:
+          fatal-infos: ${{ github.event.inputs.fatal-infos }}
+          fatal-warnings: ${{ github.event.inputs.fatal-warnings }}
+          include_test: ${{ github.event.inputs.include_test }}

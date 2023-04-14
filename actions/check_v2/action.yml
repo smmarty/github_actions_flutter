@@ -1,0 +1,44 @@
+name: 'Check'
+description: 'Check project code'
+inputs:
+  fatal-warnings:
+    description: 'fatal-warnings'
+    required: false
+    default: 'true'
+  fatal-infos:
+    description: 'fatal-infos'
+    required: false
+    default: 'true'
+  include_test:
+    description: 'include_test [true/false]'
+    required: false
+    default: 'true'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Analyze
+      shell: bash
+      run: |
+        CMD_ARGS="" 
+         if [ -z "$fatal-warnings" ]; then
+           echo "Enable fatal-warnings"
+           CMD_ARGS="$CMD_ARGS --fatal-warnings"
+         else
+          echo "Disable fatal-warnings"
+          CMD_ARGS="$CMD_ARGS --no-fatal-warnings"
+         fi
+        
+         if [ -z "$fatal-infos" ]; then
+            echo "Enable fatal-infos"
+            CMD_ARGS="$CMD_ARGS --fatal-infos"
+         else
+           echo "Disable fatal-infos"
+           CMD_ARGS="$CMD_ARGS --no-fatal-infos"
+         fi
+        flutter analyze $CMD_ARGS
+
+    - name: Test
+      if: ${{ inputs.include_test == 'true' }}
+      run: flutter test .
+      shell: bash

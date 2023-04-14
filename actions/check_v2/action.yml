@@ -21,6 +21,7 @@ runs:
       shell: bash
       run: |
         CMD_ARGS="" 
+        
          if [ ${{ inputs.fatal-warnings }} ]; then
            echo "Enable fatal-warnings"
            CMD_ARGS="$CMD_ARGS --fatal-warnings"
@@ -29,13 +30,14 @@ runs:
           CMD_ARGS="$CMD_ARGS --no-fatal-warnings"
          fi
         
-         if [${{ inputs.fatal-infos }} ]; then
-            echo "Enable fatal-infos"
+         if [ ${{ inputs.fatal-infos }} ]; then
             CMD_ARGS="$CMD_ARGS --fatal-infos"
+            echo "fatal-infos Enabled"
          else
-           echo "Disable fatal-infos"
            CMD_ARGS="$CMD_ARGS --no-fatal-infos"
+           echo "fatal-infos disabled"
          fi
+        
         flutter analyze $CMD_ARGS
 
     - name: Test

@@ -21,7 +21,7 @@ runs:
       shell: bash
       run: |
         CMD_ARGS="" 
-         if [ ${{ inputs.fatal-warnings }} == true ]; then
+         if [ ${{ inputs.fatal-warnings }} ]; then
            echo "Enable fatal-warnings"
            CMD_ARGS="$CMD_ARGS --fatal-warnings"
          else
@@ -29,7 +29,7 @@ runs:
           CMD_ARGS="$CMD_ARGS --no-fatal-warnings"
          fi
         
-         if [${{ inputs.fatal-infos }} == true  ]; then
+         if [${{ inputs.fatal-infos }} ]; then
             echo "Enable fatal-infos"
             CMD_ARGS="$CMD_ARGS --fatal-infos"
          else

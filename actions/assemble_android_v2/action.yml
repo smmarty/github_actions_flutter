@@ -32,6 +32,10 @@ inputs:
   dart_define:
     description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
     required: false
+  rename_file:
+    description: 'Переименовывает output file'
+    default: 'true'
+    required: false
 outputs:
   app-version:
     description: "App Version x.y.z+b"
@@ -120,7 +124,7 @@ runs:
 
     - name: Rename file
       id: file-path
-      if: ${{ success() }}
+      if: ${{ success() }} && ${{ inputs.rename_file }}
       uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
       with:
         source_file_path: ${{ steps.file-ext.outputs.dir }}/app-${{ inputs.flavor }}-${{ inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}

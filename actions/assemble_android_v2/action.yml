@@ -124,7 +124,7 @@ runs:
 
     - name: Rename file
       id: file-path
-      if: ${{ success() == 'true' &&  inputs.rename_file == 'true' }}
+      if: ${{ success() &&  inputs.rename_file == 'true' }}
       uses: smmarty/github_actions_flutter/actions/rename_file_v2@main
       with:
         source_file_path: ${{ steps.file-ext.outputs.dir }}/app-${{ inputs.flavor }}-${{ inputs.build_mode }}.${{ steps.file-ext.outputs.ext }}

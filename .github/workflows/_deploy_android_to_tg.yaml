@@ -55,7 +55,7 @@ jobs:
           flavor: ${{ inputs.flavor }}
           obfuscate: ${{ inputs.obfuscate }}
           dart_define: ${{ inputs.dart_define }}
-          rename_file: false
+          rename_file: true
           # Добавить эти два параметра если у вас есть подпись
           #custom_target: lib/targets/{{ needs.temp_env.outputs.GITHUB_FLAVOR }}.dart
           #decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}

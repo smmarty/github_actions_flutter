@@ -40,6 +40,10 @@ runs:
         
         flutter analyze $CMD_ARGS
 
+    - name: Set PR Comments
+      if: ${{ failure() }}
+      uses: blendthink/elixir@v2
+
     - name: Test
       if: ${{ inputs.include_test == 'true' }}
       run: flutter test .

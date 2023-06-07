@@ -25,7 +25,6 @@ jobs:
     runs-on: [ ubuntu-latest ]
     steps:
       - uses: actions/checkout@v3
-
       - name: Setup
         uses: smmarty/github_actions_flutter/actions/setup@main
 

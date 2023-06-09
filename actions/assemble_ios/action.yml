@@ -21,7 +21,7 @@ runs:
       run: |
         date=$(date +"%d-%m-%Y")
         DART_DEFINE_ARGS=" --dart-define=buildDate=$date"
-        if [-n "${{ inputs.dart_define }}" ]; then   
+        if [ ${{ inputs.dart_define }} != null ]; then   
          echo "Set dart_define values"
          dart_define_values="${{ inputs.dart_define }}"
          IFS=',' read -r -a dart_define_array <<< "$dart_define_values"

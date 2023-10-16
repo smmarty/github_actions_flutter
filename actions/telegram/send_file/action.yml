@@ -19,5 +19,5 @@ runs:
   using: "composite"
   steps:
     - name: File sending
-      run: curl --max-time 1800 -Y 1000 -y 600 -F --no-keepalive document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.silent_mode }}
+      run: curl --max-time 1800 -Y 1000 -y 600 -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.silent_mode }}
       shell: bash

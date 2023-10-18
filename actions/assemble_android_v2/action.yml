@@ -131,10 +131,3 @@ runs:
         file_suffix: ${{ steps.app-version.outputs.app-version }}
         file_prefix: ${{ inputs.file_prefix }}
 
-    - name: Upload to artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: android-build-artifact
-        path: ${{ steps.file-path.outputs.file-path }}
-        retention-days: 1
-

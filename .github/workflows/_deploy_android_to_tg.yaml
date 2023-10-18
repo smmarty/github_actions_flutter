@@ -63,7 +63,7 @@ jobs:
 
 
       - name: Upload apk to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apk-artifact
           path: build/app/outputs/apk/*/*/*.apk
@@ -75,7 +75,7 @@ jobs:
    needs:
      - assemble_android
    steps:
-      - uses: actions/download-artifact@master
+      - uses: actions/download-artifact@v3
         with:
           name: apk-artifact
           path: build/app/outputs/apk/
@@ -85,7 +85,7 @@ jobs:
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: build/app/outputs/apk/*.apk
+          file_path: build/app/outputs/apk/*/*/*.apk
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 

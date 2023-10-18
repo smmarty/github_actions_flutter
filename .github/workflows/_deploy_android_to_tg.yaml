@@ -78,14 +78,14 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: apk-artifact
-          path: build/app/outputs/apk/*/*/*.apk
+          path: build/app/outputs/apk/
 
       - name: Send file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: build/app/outputs/apk/*/*/*.apk
+          file_path: build/app/outputs/apk/*.apk
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 
@@ -130,6 +130,9 @@ jobs:
             Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
   send_failure:
+    needs:
+      - deploy_android
+      - assemble_android
     if: ${{ failure() }}
     runs-on: [ ubuntu-latest ]
     steps:

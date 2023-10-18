@@ -30,7 +30,7 @@ on:
         type: string
         required: false
 jobs:
-  deploy_android:
+  assemble_android:
     # ubuntu-latest  используется только в примерах
     # Меняем на
     #    runs-on: [ self-hosted, android_builder  ]
@@ -62,12 +62,30 @@ jobs:
           #secrets_path: 'android/keys/android_keys.zip.gpg'
 
 
+      - name: Upload apk to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk-artifact
+          path: build/app/outputs/apk/*/*/*.apk
+          retention-days: 1
+
+  deploy_android:
+   runs-on: [ ubuntu-latest ]
+   environment: ${{ inputs.flavor }}
+   needs:
+     - assemble_android
+   steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: apk-artifact
+          path: build/app/outputs/apk/*/*/*.apk
+
       - name: Send file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: ${{ steps.assemble.outputs.build-file }}
+          file_path: build/app/outputs/apk/*/*/*.apk
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 
@@ -111,3 +129,22 @@ jobs:
             Status:  Failure
             Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
+  send_failure:
+    if: ${{ failure() }}
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - name: Send alert
+        if: ${{ failure() }}
+        uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
+        with:
+          silent_mode: "false"
+          chat_id: ${{ secrets.ALERTS_CHAT_ID }}
+          tg_url: ${{ secrets.TG_URL }}
+          message: |
+            Action: ${{ github.workflow }}
+            Repository: ${{ github.repository }}
+            Actor: ${{ github.actor }} 
+            Job: ${{ github.job }}
+            Branch: ${{ github.ref }}
+            Status:  Failure
+            Link: ${{ github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}

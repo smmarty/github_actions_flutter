@@ -80,16 +80,12 @@ jobs:
           name: apk-artifact
           path: build/app/outputs/apk/
 
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: build/app/outputs/apk/
-
       - name: Send file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: build/app/outputs/apk/*/*/*.apk
+          file_path: "build/app/outputs/apk/*/*/*.apk"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 

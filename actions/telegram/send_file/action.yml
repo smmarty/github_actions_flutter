@@ -19,5 +19,5 @@ runs:
   using: "composite"
   steps:
     - name: File sending
-      run: curl -v --http1.1 --retry 10 --retry-all-errors --max-time 20 --retry-max-time 5 -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.silent_mode }}
+      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.silent_mode }} --retry-delay 0 --retry 10 --max-time 20 --retry-max-time 5  -v
       shell: bash

@@ -61,14 +61,6 @@ jobs:
           #decript_key: ${{ secrets.ANDROID_KEYS_SECRET_PASSPHRASE }}
           #secrets_path: 'android/keys/android_keys.zip.gpg'
 
-
-      - name: Upload apk to artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: apk-artifact
-          path: ${{ steps.assemble.outputs.build-file }}
-          retention-days: 1
-
   deploy_android:
    runs-on: [ ubuntu-latest ]
    environment: ${{ inputs.flavor }}
@@ -77,15 +69,15 @@ jobs:
    steps:
       - uses: actions/download-artifact@v3
         with:
-          name: apk-artifact
-          path: build/app/outputs/apk/
+          name: android-build-artifact
+          path: artifact/
 
       - name: Send file to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_file@main
         with:
           silent_mode: "true"
-          file_path: "build/app/outputs/apk/*/*/*.apk"
+          file_path: "artifact/**/*.apk"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
 

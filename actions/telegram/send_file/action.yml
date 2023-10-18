@@ -26,5 +26,5 @@ runs:
         retention-days: 1
 
     - name: File sending
-      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.silent_mode }} --retry 10 --max-time 20  -v
+      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.silent_mode }}  --max-time 20  -v
       shell: bash

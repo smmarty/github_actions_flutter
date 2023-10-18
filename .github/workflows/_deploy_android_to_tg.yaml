@@ -66,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: apk-artifact
-          path: build/app/outputs/apk/*/*/*.apk
+          path: ${{ steps.assemble.outputs.build-file }}
           retention-days: 1
 
   deploy_android:
@@ -137,7 +137,6 @@ jobs:
     runs-on: [ ubuntu-latest ]
     steps:
       - name: Send alert
-        if: ${{ failure() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
           silent_mode: "false"

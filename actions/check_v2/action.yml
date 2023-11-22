@@ -46,5 +46,5 @@ runs:
 
     - name: Test
       if: ${{ inputs.include_test == 'true' }}
-      run: flutter test .
+      run: flutter test . --concurrency=16
       shell: bash

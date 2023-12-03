@@ -1,0 +1,40 @@
+name: 'Upload file to minio storage'
+description: 'Upload file to minio storage'
+author: 'friflex.sna'
+inputs:
+  minio_endpoint:
+    description: 'minio endpoint link'
+    required: true
+  minio_bucked:
+    description: 'minio bucked alias'
+    required: true
+  minio_key:
+    description: 'minio_key'
+    required: true
+  minio_secret:
+    description: 'minio_secret'
+    required: true
+  target_path:
+    description: 'Куда грузим файл?'
+    required: true
+  source_file:
+    description: 'Путь к файлу который должен быть загружен'
+    required: true
+  share_filename:
+    description: 'Название файла'
+    required: true
+outputs:
+  link:
+    description: 'shared link'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    MINIO_ENDPOINT: ${{ inputs.minio_endpoint }}
+    MINIO_ACCESS_KEY: ${{ inputs.minio_key }}
+    MINIO_SECRET_KEY: ${{ inputs.minio_secret }}
+  args:
+    - ${{ inputs.source_file }}
+    - '${{ inputs.minio_bucked }}${{ inputs.source_file }}'
+    - ${{ inputs.share_filename }}

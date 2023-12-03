@@ -1,0 +1,30 @@
+name: 'Upload debug info'
+description: 'Upload debug info to any services'
+inputs:
+  debug-info-path:
+    description: 'debug info file path'
+    required: true
+  firebase-token:
+    description: 'firebase-token'
+    required: false
+  firebase-app-id:
+    description: 'firebase-app-id'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+
+    - uses: pocket-apps/action-setup-firebase@v2
+      if: ${{ inputs.firebase-token }}
+      with:
+        firebase-token: ${{ inputs.firebase-token }}
+
+    - name: File sending to firebase
+      if: ${{ inputs.firebase-token }}
+      shell: bash
+      run: |
+        firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
+        

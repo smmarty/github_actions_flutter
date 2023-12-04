@@ -16,11 +16,17 @@ runs:
   steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v4
-
     - uses: pocket-apps/action-setup-firebase@v2
       if: ${{ inputs.firebase-token }}
       with:
         firebase-token: ${{ inputs.firebase-token }}
+
+    - name: Upload to artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-info
+        path: ${{ inputs.debug-info-path }}
+        retention-days: 5
 
     - name: File sending to firebase
       if: ${{ inputs.firebase-token }}

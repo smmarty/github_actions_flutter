@@ -21,10 +21,6 @@ runs:
         name: debug-info
         path: ${{ inputs.debug-info-path }}
         retention-days: 5
-
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 17
     - uses: pocket-apps/action-setup-firebase@v2
       if: ${{ inputs.firebase-token }}
       with:

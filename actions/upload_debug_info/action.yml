@@ -15,7 +15,14 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v3
+    - name: Upload to artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-info
+        path: ${{ inputs.debug-info-path }}
+        retention-days: 5
+
+    - uses: actions/setup-node@v4
       with:
         node-version: 17
     - uses: pocket-apps/action-setup-firebase@v2
@@ -23,12 +30,6 @@ runs:
       with:
         firebase-token: ${{ inputs.firebase-token }}
 
-    - name: Upload to artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: debug-info
-        path: ${{ inputs.debug-info-path }}
-        retention-days: 5
 
     - name: File sending to firebase
       if: ${{ inputs.firebase-token }}

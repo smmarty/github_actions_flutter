@@ -21,15 +21,13 @@ runs:
         name: debug-info
         path: ${{ inputs.debug-info-path }}
         retention-days: 5
-    - uses: pocket-apps/action-setup-firebase@v2
-      if: ${{ inputs.firebase-token }}
-      with:
-        firebase-token: ${{ inputs.firebase-token }}
 
 
     - name: File sending to firebase
       if: ${{ inputs.firebase-token }}
-      shell: bash
-      run: |
-        firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
+      uses: w9jds/firebase-action@master
+      env:
+        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
+      with:
+        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
         

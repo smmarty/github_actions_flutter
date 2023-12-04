@@ -16,6 +16,8 @@ runs:
   steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v4
+      with:
+        node-version: 18
     - uses: pocket-apps/action-setup-firebase@v2
       if: ${{ inputs.firebase-token }}
       with:

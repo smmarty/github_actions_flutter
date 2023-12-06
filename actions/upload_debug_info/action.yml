@@ -26,9 +26,10 @@ runs:
       with:
         path: artifacts
 
-    - uses: pocket-apps/action-setup-firebase@v2
+    - uses: w9jds/setup-firebase@main
       with:
-        firebase-token: ${{ inputs.firebase-token }}
+        tools-version: 11.9.0
+        firebase_token: ${{ inputs.firebase-token }}
 
     - name: Upload artifacts to firebase
       shell: bash

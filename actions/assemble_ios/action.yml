@@ -50,6 +50,6 @@ runs:
       uses: actions/upload-artifact@v3
       if: ${{ inputs.obfuscate }}
       with:
-        name: ${{ steps.assemble.debug-info-artifact-name }}
-        path: ${{ steps.assemble.debug-info-path }}
+        name: ${{ steps.assemble.outputs.debug-info-artifact-name }}
+        path: ${{ steps.assemble.outputs.debug-info-path }}
         retention-days: 5

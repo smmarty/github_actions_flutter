@@ -26,10 +26,11 @@ runs:
         path: ${{ inputs.artifact-name }}
 
     - uses: actions/setup-node@v3
-    - uses: pocket-apps/action-setup-firebase@v2
+    - uses: jonahsnider/firebase-action@1.0.7
+      env:
+        PROJECT_ID: ${{ inputs.firebase-app-id }}
+        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
       with:
-        firebase-token: ${{ inputs.firebase-token }}
-    - run: firebase crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ inputs.artifact-name }}\"
-      shell: bash
+          args: crashlytics:symbols:upload  \"${{ inputs.artifact-name }}\"
 
 

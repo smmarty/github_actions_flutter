@@ -24,19 +24,27 @@ runs:
       id: download
       uses: actions/download-artifact@v2
       with:
-#        name: ${{ inputs.artifact-name }}
         path: artifacts
 
-    - uses: actions/setup-node@v3
-#    - uses: w9jds/setup-firebase@main
-#      with:
-#        tools-version: 11.9.0
-#        firebase_token: ${{ inputs.firebase-token }}
-    - run: |
-        app_id=${{ inputs.firebase-app-id }}
-        cd ${{ steps.download.outputs.download-path }}
-        ls -R
-        exit 1
-#        firebase crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ steps.download.outputs.download-path }}\"
+    - name: Upload artifacts to firebase
       shell: bash
+      run: |
+        app_id=${{ inputs.firebase-app-id }}
+        dir=${{ steps.download.outputs.download-path }}
+        
+        for file in `find $dir -type f -name "*.symbols"`
+        do
+         echo upload $file
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file
+        done
+        
+        for file in `find $dir -type f -name "*.dSYM"`
+        do
+         echo upload $file
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file
+        done
+
+      env:
+        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
+
 

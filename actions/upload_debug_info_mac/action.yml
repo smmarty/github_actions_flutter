@@ -1,4 +1,4 @@
-name: 'Upload crashlytics artefact to firebase(mac)'
+name: 'Upload crashlytics artefact to firebase'
 description: 'Upload debug info to any services'
 inputs:
   app-version:
@@ -25,6 +25,17 @@ runs:
       uses: actions/download-artifact@v2
       with:
         path: artifacts
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu' # See 'Supported distributions' for available options
+        java-version: '17'
+    - uses: w9jds/setup-firebase@main
+      with:
+        tools-version: 12.3.1
+        firebase_token: ${{ inputs.firebase-token }}
 
     - name: Upload artifacts to firebase
       shell: bash
@@ -32,13 +43,17 @@ runs:
         app_id=${{ inputs.firebase-app-id }}
         dir=${{ steps.download.outputs.download-path }}
         
+        for file in `find $dir -type f -name "*.dSYM"`
+        do
+         echo upload $file
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file --generator csym
+        done
+        
         for file in `find $dir -type f -name "*.symbols"`
         do
          echo upload $file
-         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file --generator csym
         done
-      env:
-        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
         
 
 

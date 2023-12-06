@@ -66,5 +66,5 @@ runs:
         name: 'debug-info-${{ steps.app-version.outputs.app-version }}'
         path: |
           debug_info/
-          **/*.dSYM
+          **/Runner.app.dSYM
         retention-days: 5

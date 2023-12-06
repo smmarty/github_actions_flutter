@@ -1,4 +1,4 @@
-name: 'Upload crashlitycs artefact to firebase'
+name: 'Upload crashlytics artefact to firebase'
 description: 'Upload debug info to any services'
 inputs:
   app-version:

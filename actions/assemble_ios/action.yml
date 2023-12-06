@@ -59,10 +59,12 @@ runs:
         echo $CMD_ARGS
         flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign $CMD_ARGS
 
-    - name: Upload to artifacts
+    - name: Upload debug_info to artifacts
       uses: actions/upload-artifact@v3
       if: ${{ inputs.obfuscate }}
       with:
         name: 'debug-info-${{ steps.app-version.outputs.app-version }}'
-        path: 'debug_info'
+        path: |
+          debug_info/
+          **/*.dSYM
         retention-days: 5

@@ -29,6 +29,7 @@ runs:
           mkdir debug_info
           DEBUG_DIR="debug_info"
           echo "debug_info_path=$DEBUG_DIR" >> $GITHUB_OUTPUT
+          echo "debug-info-artifact-name=debug-info app version ${{ steps.assemble.outputs.app-version }}" >> $GITHUB_OUTPUT
           CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
         fi
         if [ ${{ inputs.dart_define }} != null ]; then   
@@ -49,6 +50,6 @@ runs:
       uses: actions/upload-artifact@v3
       if: ${{ inputs.obfuscate }}
       with:
-        name: debug-info app version ${{ steps.assemble.outputs.app-version }}
+        name: ${{ steps.assemble.debug-info-artifact-name }}
         path: ${{ steps.assemble.outputs.debug-info-path }}
         retention-days: 5

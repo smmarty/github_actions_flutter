@@ -36,6 +36,7 @@ runs:
         app_id=${{ inputs.firebase-app-id }}
         cd ${{ steps.download.outputs.download-path }}
         ls -R
+        exit 1
 #        firebase crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ steps.download.outputs.download-path }}\"
       shell: bash
 

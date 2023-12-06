@@ -24,12 +24,16 @@ runs:
         path: ${{ inputs.debug-info-path }}
         retention-days: 5
 
+    - name: Setup firebase
+      if: ${{ inputs.firebase-token }}
+      uses: pocket-apps/action-setup-firebase@v2
+      env:
+        firebase-token: ${{ inputs.firebase-token }}
+    #      with:
+    #        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
+
     - name: File sending to firebase
       if: ${{ inputs.firebase-token }}
-      uses: jonahsnider/firebase-action@1.0.7
-      env:
-        PROJECT_ID: ${{ inputs.firebase-app-id }}
-        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
-      with:
-        args: crashlytics:symbols:upload ${{ inputs.debug-info-path }}
+      shell: bash
+      run: firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
         

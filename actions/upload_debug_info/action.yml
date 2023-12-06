@@ -1,6 +1,9 @@
 name: 'Upload debug info'
 description: 'Upload debug info to any services'
 inputs:
+  app-version:
+    description: 'App Version'
+    required: true
   debug-info-path:
     description: 'debug info file path'
     required: true
@@ -14,14 +17,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
     - name: Upload to artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: debug-info
+        name: debug-info app version ${{ inputs.app-version }}
         path: ${{ inputs.debug-info-path }}
         retention-days: 5
-
 
     - name: File sending to firebase
       if: ${{ inputs.firebase-token }}

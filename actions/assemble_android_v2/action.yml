@@ -138,6 +138,6 @@ runs:
       if: ${{ inputs.obfuscate }}
       with:
         name: ${{ steps.assemble.debug-info-artifact-name }}
-        path: ${{ steps.assemble.outputs.debug-info-path }}
+        path: ${{ steps.assemble.debug-info-path }}
         retention-days: 5
 

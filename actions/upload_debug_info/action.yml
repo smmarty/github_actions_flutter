@@ -24,13 +24,13 @@ runs:
       uses: actions/download-artifact@v2
       with:
         name: ${{ inputs.artifact-name }}
-        path: ${{ inputs.artifact-name }}
+#        path: ${{ inputs.artifact-name }}
 
     - name: File sending to firebase
       uses: w9jds/firebase-action@master
       env:
         FIREBASE_TOKEN: ${{ inputs.firebase-token }}
       with:
-        args: crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ inputs.artifact-name }}\"
+        args: crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ steps.download.outputs.download-path }}\"
 
 

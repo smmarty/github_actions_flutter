@@ -31,6 +31,6 @@ runs:
       env:
         FIREBASE_TOKEN: ${{ inputs.firebase-token }}
       with:
-        args: crashlytics:symbols:upload --app='${{ inputs.firebase-app-id }}' '${{ inputs.artifact-name }}'
+        args: crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ inputs.artifact-name }}\"
 
 

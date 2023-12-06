@@ -26,9 +26,10 @@ runs:
 
     - name: File sending to firebase
       if: ${{ inputs.firebase-token }}
-      uses: docker://w9jds/firebase-action:v2.2.0
+      uses: jonahsnider/firebase-action@1.0.7
       env:
+        PROJECT_ID: ${{ inputs.firebase-app-id }}
         FIREBASE_TOKEN: ${{ inputs.firebase-token }}
       with:
-        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
+        args: crashlytics:symbols:upload ${{ inputs.debug-info-path }}
         

@@ -26,6 +26,10 @@ runs:
       with:
         path: artifacts
 
+    - uses: pocket-apps/action-setup-firebase@v2
+      with:
+        firebase-token: ${{ inputs.firebase-token }}
+
     - name: Upload artifacts to firebase
       shell: bash
       run: |

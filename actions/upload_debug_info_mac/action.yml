@@ -52,7 +52,7 @@ runs:
         for file in `find $dir -type f -name "*.symbols"`
         do
          echo upload $file
-         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file --generator csym
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file
         done
         
 

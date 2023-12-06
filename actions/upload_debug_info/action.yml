@@ -26,10 +26,9 @@ runs:
         path: ${{ inputs.artifact-name }}
 
     - uses: actions/setup-node@v3
-    - uses: w9jds/setup-firebase@main
+    - uses: pocket-apps/action-setup-firebase@v2
       with:
-        tools-version: 11.9.0
-        firebase_token: ${{ inputs.firebase-token }}
+        firebase-token: ${{ inputs.firebase-token }}
     - run: firebase crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ inputs.artifact-name }}\"
       shell: bash
 

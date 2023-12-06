@@ -28,10 +28,10 @@ runs:
 #        path: ${{ inputs.artifact-name }}
 
     - uses: actions/setup-node@v3
-    - uses: w9jds/setup-firebase@main
-      with:
-        tools-version: 11.9.0
-        firebase_token: ${{ inputs.firebase-token }}
+#    - uses: w9jds/setup-firebase@main
+#      with:
+#        tools-version: 11.9.0
+#        firebase_token: ${{ inputs.firebase-token }}
     - run: |
         app_id=${{ inputs.firebase-app-id }}
         cd ${{ steps.download.outputs.download-path }}

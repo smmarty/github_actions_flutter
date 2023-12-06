@@ -19,18 +19,17 @@ runs:
   steps:
     - name: Checkout Repo
       uses: actions/checkout@v3
-
     - name: Download Artifact
       uses: actions/download-artifact@v2
       with:
         name: ${{ inputs.artifact-name }}
         path: ${{ inputs.artifact-name }}
-
+    - uses: actions/setup-node@v3
     - name: File sending to firebase
-      uses: w9jds/firebase-action@master
-      env:
-        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
+      uses: w9jds/setup-firebase@main
       with:
-        args: crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ inputs.artifact-name }}\"
+        tools-version: 11.9.0
+        firebase_token: ${{ inputs.firebase-token }}
+      run: firebase crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ inputs.artifact-name }}\"
 
 

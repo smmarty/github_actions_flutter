@@ -27,7 +27,7 @@ runs:
     - name: Setup firebase
       if: ${{ inputs.firebase-token }}
       uses: pocket-apps/action-setup-firebase@v2
-      env:
+      with:
         firebase-token: ${{ inputs.firebase-token }}
     #      with:
     #        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}

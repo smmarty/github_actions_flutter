@@ -32,16 +32,16 @@ runs:
         app_id=${{ inputs.firebase-app-id }}
         dir=${{ steps.download.outputs.download-path }}
         
-        for file in `find $dir -type f -name "*.dSYM"`
+        for file in `find $dir -d -type f -name "*.dSYM"`
         do
          echo upload $file
-         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file --generator csym
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file 
         done
         
         for file in `find $dir -type f -name "*.symbols"`
         do
          echo upload $file
-         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file --generator csym
         done
       env:
         FIREBASE_TOKEN: ${{ inputs.firebase-token }}

@@ -4,7 +4,7 @@ inputs:
   app-version:
     description: 'App Version'
     required: true
-  artefact-name:
+  artifact-name:
     description: 'debug info'
     required: true
   firebase-token:
@@ -23,14 +23,14 @@ runs:
     - name: Download Artifact
       uses: actions/download-artifact@v2
       with:
-        name: ${{ debug-info-artefact-name }}
-        path: ${{ debug-info-artefact-name }}
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.artifact-name }}
 
     - name: File sending to firebase
       uses: w9jds/firebase-action@master
       env:
         FIREBASE_TOKEN: ${{ inputs.firebase-token }}
       with:
-        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ debug-info-artefact-name }}
+        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.artifact-name }}
 
 

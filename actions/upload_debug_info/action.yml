@@ -1,39 +1,36 @@
-name: 'Upload debug info'
+name: 'Upload crashlitycs artefact to firebase'
 description: 'Upload debug info to any services'
 inputs:
   app-version:
     description: 'App Version'
     required: true
-  debug-info-path:
-    description: 'debug info file path'
+  artefact-name:
+    description: 'debug info'
     required: true
   firebase-token:
     description: 'firebase-token'
-    required: false
+    required: true
   firebase-app-id:
     description: 'firebase-app-id'
-    required: false
+    required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Upload to artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: debug-info app version ${{ inputs.app-version }}
-        path: ${{ inputs.debug-info-path }}
-        retention-days: 5
+    - name: Checkout Repo
+      uses: actions/checkout@v3
 
-    - name: Setup firebase
-      if: ${{ inputs.firebase-token }}
-      uses: pocket-apps/action-setup-firebase@v2
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
       with:
-        firebase-token: ${{ inputs.firebase-token }}
-    #      with:
-    #        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
+        name: ${{ debug-info-artefact-name }}
+        path: ${{ debug-info-artefact-name }}
 
     - name: File sending to firebase
-      if: ${{ inputs.firebase-token }}
-      shell: bash
-      run: firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ inputs.debug-info-path }}
-        
+      uses: w9jds/firebase-action@master
+      env:
+        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
+      with:
+        args: crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} ${{ debug-info-artefact-name }}
+
+

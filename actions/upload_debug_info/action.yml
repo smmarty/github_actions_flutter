@@ -26,7 +26,7 @@ runs:
 
     - name: File sending to firebase
       if: ${{ inputs.firebase-token }}
-      uses: w9jds/firebase-action@master
+      uses: docker://w9jds/firebase-action:master
       env:
         FIREBASE_TOKEN: ${{ inputs.firebase-token }}
       with:

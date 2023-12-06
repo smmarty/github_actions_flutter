@@ -23,8 +23,8 @@ runs:
     - name: Download Artifact
       id: download
       uses: actions/download-artifact@v2
-      with:
-        name: ${{ inputs.artifact-name }}
+#      with:
+#        name: ${{ inputs.artifact-name }}
 #        path: ${{ inputs.artifact-name }}
 
     - name: File sending to firebase

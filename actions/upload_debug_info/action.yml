@@ -27,11 +27,15 @@ runs:
 #        name: ${{ inputs.artifact-name }}
 #        path: ${{ inputs.artifact-name }}
 
-    - name: File sending to firebase
-      uses: w9jds/firebase-action@master
-      env:
-        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
+    - uses: actions/setup-node@v3
+    - uses: w9jds/setup-firebase@main
       with:
-        args: crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ steps.download.outputs.download-path }}\"
-
+        tools-version: 11.9.0
+        firebase_token: ${{ inputs.firebase-token }}
+    - run: |
+        app_id=${{ inputs.firebase-app-id }}
+        cd ${{ steps.download.outputs.download-path }}
+        ls -R
+#        firebase crashlytics:symbols:upload --app=\"${{ inputs.firebase-app-id }}\" \"${{ steps.download.outputs.download-path }}\"
+      shell: bash
 

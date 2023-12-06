@@ -12,6 +12,10 @@ inputs:
   dart_define:
     description: 'Переопределяет все что будет в --dart-define=. Аргументы передаем в виде key=value,key2=value2'
     required: false
+  obfuscate:
+    description: 'Будет использовано --obfuscate и данные --split-debug-info будут загружены в github artifacts'
+    default: 'false'
+    required: false
 
 runs:
   using: "composite"
@@ -21,6 +25,12 @@ runs:
       run: |
         date=$(date +"%d-%m-%Y")
         DART_DEFINE_ARGS=" --dart-define=buildDate=$date"
+        if [ ${{ inputs.obfuscate }} == true ]; then 
+          mkdir debug_info
+          DEBUG_DIR="debug_info"
+          echo "debug_info_path=$DEBUG_DIR" >> $GITHUB_OUTPUT
+          CMD_ARGS="$CMD_ARGS --obfuscate --split-debug-info=$DEBUG_DIR"
+        fi
         if [ ${{ inputs.dart_define }} != null ]; then   
          echo "Set dart_define values"
          dart_define_values="${{ inputs.dart_define }}"
@@ -34,3 +44,11 @@ runs:
         CMD_ARGS="$CMD_ARGS $DART_DEFINE_ARGS"
         echo $CMD_ARGS
         flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign $CMD_ARGS
+
+    - name: Upload to artifacts
+      uses: actions/upload-artifact@v3
+      if: ${{ inputs.obfuscate }}
+      with:
+        name: debug-info app version ${{ steps.assemble.outputs.app-version }}
+        path: ${{ steps.assemble.outputs.debug-info-path }}
+        retention-days: 5

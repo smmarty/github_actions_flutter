@@ -131,3 +131,12 @@ runs:
         file_suffix: ${{ steps.app-version.outputs.app-version }}
         file_prefix: ${{ inputs.file_prefix }}
 
+
+    - name: Upload to artifacts
+      uses: actions/upload-artifact@v3
+      if: ${{ inputs.obfuscate }}
+      with:
+        name: debug-info app version ${{ steps.assemble.outputs.app-version }}
+        path: ${{ steps.assemble.outputs.debug-info-path }}
+        retention-days: 5
+

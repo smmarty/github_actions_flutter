@@ -84,8 +84,8 @@ runs:
 
     - name: Upload Ipa File
       uses: actions/upload-artifact@v3
-      if: ${{ inputs.upload_ipa }} && ${{ success() }}
+      if: ${{ inputs.upload_ipa }} && ${{ always() }}
       with:
-        name: 'app_bundle_id-${{ inputs.scheme }}'
+        name: '**/Runner.ipa'
         path: ${{ inputs.ipa_file_path }}
         retention-days: 5

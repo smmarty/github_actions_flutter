@@ -21,6 +21,13 @@ jobs:
           minio_secret: ${{ secrets.MINIO_SECRET }}
           source_file: 'CHANGELOG.md'
           share_filename: 'CHANGELOG.md'
-      - name: 'Print output'
-        shell: bash
-        run: echo '${{ steps.minio.outputs.link }}'
+
+      - name: Send release note to telegram
+        if: ${{ success() }}
+        uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
+        with:
+          message: |
+            Download link: '${{ steps.minio.outputs.link }}'
+          silent_mode: "false"
+          chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
+          tg_url: ${{ secrets.TG_URL }}

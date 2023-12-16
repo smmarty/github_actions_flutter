@@ -1,0 +1,26 @@
+name: Upload to minio
+on:
+  workflow_dispatch:
+jobs:
+  minio_upload:
+    # ubuntu-latest  используется только в примерах
+    # Меняем на
+    #    runs-on: [ self-hosted, checker ]
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Upload Test File
+        id: minio
+        uses: smmarty/github_actions_flutter/actions/minio@main
+        with:
+          minio_endpoint: secrets.MINIO_ENDPOINT
+          minio_bucked: secrets.MINIO_BUCKET
+          minio_key: secrets.MINIO_KEY
+          minio_secret: secrets.MINIO_SECRET
+          source_file: 'CHANGELOG.md'
+          share_filename: 'CHANGELOG.md'
+      - name: 'Print output'
+        shell: bash
+        run: echo ${{ steps.minio.outputs.link }}

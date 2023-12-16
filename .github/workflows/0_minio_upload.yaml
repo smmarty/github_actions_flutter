@@ -23,4 +23,4 @@ jobs:
           share_filename: 'CHANGELOG.md'
       - name: 'Print output'
         shell: bash
-        run: echo ${{ steps.minio.outputs.link }}
+        run: echo '${{ steps.minio.outputs.link }}'

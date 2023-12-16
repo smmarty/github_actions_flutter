@@ -36,7 +36,7 @@ runs:
     MINIO_SECRET_KEY: '${{ inputs.minio_secret }}'
   args:
     - ${{ inputs.source_file }}
-    - '${{ inputs.minio_bucked }}${{ inputs.source_file }}'
+    - ${{ inputs.minio_bucked }}
     - ${{ inputs.share_filename }}
 branding:
   icon: 'upload-cloud'

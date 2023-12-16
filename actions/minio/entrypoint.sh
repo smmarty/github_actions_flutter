@@ -1,5 +1,5 @@
 #!/bin/sh -l
-set -euo pipefail
+export PATH=$PATH:/minio-binaries/
 
 mc alias set deploy $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
 

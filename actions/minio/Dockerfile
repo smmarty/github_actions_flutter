@@ -1,6 +1,12 @@
-FROM alpine:latest
+FROM ubuntu:latest
 
-RUN apt-get update && apt-get install -y minio-client grep
+RUN apt-get update && \
+    apt-get install --assume-yes wget grep
+
+RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc \
+    && chmod +x mc \
+    && mv mc /usr/local/bin/ \
+    && mc --help
 
 COPY entrypoint.sh /entrypoint.sh
 

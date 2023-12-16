@@ -15,10 +15,10 @@ jobs:
         id: minio
         uses: smmarty/github_actions_flutter/actions/minio@main
         with:
-          minio_endpoint: secrets.MINIO_ENDPOINT
-          minio_bucked: secrets.MINIO_BUCKET
-          minio_key: secrets.MINIO_KEY
-          minio_secret: secrets.MINIO_SECRET
+          minio_endpoint: ${{ secrets.MINIO_ENDPOINT }}
+          minio_bucked: ${{ secrets.MINIO_BUCKET }}
+          minio_key: ${{ secrets.MINIO_KEY }}
+          minio_secret: ${{ secrets.MINIO_SECRET }}
           source_file: 'CHANGELOG.md'
           share_filename: 'CHANGELOG.md'
       - name: 'Print output'

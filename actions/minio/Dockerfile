@@ -1,11 +1,7 @@
-FROM alpine/curl:8.2.1
-LABEL authors="ns.friflex"
+FROM minio/mc:latest
 
-RUN curl https://dl.min.io/client/mc/release/linux-amd64/mc \
-  --create-dirs \
-  -o /minio-binaries/mc \
+WORKDIR /
+ADD ./ /
 
-RUN chmod +x /minio-binaries/mc
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]

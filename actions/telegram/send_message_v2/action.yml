@@ -30,7 +30,7 @@ runs:
       with:
         to: ${{ inputs.chat_id }}
         socks5: ${{ inputs.url }}
-        token: ${{ inputs.tg_token }}
+        token: ${{ inputs.token }}
         format: ${{ inputs.format }}
         disable_notification: ${{ inputs.silent_mode }}
         message: ${{ inputs.message }}

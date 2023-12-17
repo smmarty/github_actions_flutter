@@ -1,4 +1,4 @@
-name: 'Upload crashlytics artefact to firebase(mac)'
+name: 'Upload crashlytics artefact to firebase'
 description: 'Upload debug info to any services'
 inputs:
   app-version:
@@ -37,12 +37,24 @@ runs:
         tools-version: 12.3.1
         firebase_token: ${{ inputs.firebase-token }}
 
+    - name: Upload Debug Info to Minio
+      id: minio
+      uses: smmarty/github_actions_flutter/actions/minio@main
+      if: ${{ secrets.MINIO_BUCKET }}
+      with:
+        minio_endpoint: ${{ secrets.MINIO_ENDPOINT }}
+        minio_bucked: ${{ secrets.MINIO_BUCKET }}
+        minio_key: ${{ secrets.MINIO_KEY }}
+        minio_secret: ${{ secrets.MINIO_SECRET }}
+        source_file: ${{ steps.download.outputs.download-path }}
+        share_filename: "debugInfo/${{ inputs.app-version }}/${{ inputs.debug-info-artifact-name }}"
+
     - name: Upload artifacts to firebase
       shell: bash
       run: |
         app_id=${{ inputs.firebase-app-id }}
         dir=${{ steps.download.outputs.download-path }}
-        
+
         for file in `find $dir -type f -name "*.symbols"`
         do
          echo upload $file

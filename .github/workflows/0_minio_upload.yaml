@@ -29,11 +29,11 @@ jobs:
 
       - name: Send release note to telegram
         if: ${{ success() }}
-        uses: smmarty/github_actions_flutter/actions/telegram/send_message_v2@main
+        uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
-          message: "Download link: ${{ steps.minio.outputs.link }}"
+          message: "Download link: [Link](${{ steps.minio.outputs.link }})"
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           url: ${{ secrets.TG_URL }}
           token: ${{ secrets.TG_TOKEN }}
-          format: "html"
+          format: "markdown"

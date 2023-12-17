@@ -26,7 +26,7 @@ jobs:
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
-          message: "Download link: [Link]\\(${{ '${{ steps.minio.outputs.link }}' }}\\)"
+          message: "Download link: [Link](${{ steps.minio.outputs.link }})"
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}

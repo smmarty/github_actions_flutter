@@ -25,6 +25,8 @@ runs:
     - name: Send message
       shell: bash
       run: |
-        curl -X POST -H 'Content-Type: application/json' \
-        -d '{"chat_id": "${{ inputs.chat_id }}", "text": \"${{ inputs.message }}\", "disable_notification": "${{ inputs.silent_mode }}", "parse_mode": "${{ inputs.parse_mode }}"}' \
-        '${{ inputs.tg_url }}/sendMessage'
+        curl -s -X POST "${{ inputs.tg_url }}/sendMessage" \
+        -d chat_id="${{ inputs.chat_id }}" \
+        -d text="${{ inputs.message }}" \
+        -d disable_notification="${{ inputs.silent_mode }}" \
+        -d parse_mode="${{ inputs.parse_mode }}"

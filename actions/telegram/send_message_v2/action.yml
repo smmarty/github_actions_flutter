@@ -1,0 +1,36 @@
+name: 'Telegram send message'
+description: 'Send message to Telegram'
+inputs:
+  message:
+    description: 'message'
+    required: true
+  chat_id:
+    description: 'chat_id'
+    required: true
+  token:
+    description: 'token'
+    required: true
+  url:
+    description: 'url'
+    required: true
+  format:
+    description: 'format'
+    default: 'MarkdownV2'
+    required: false
+  silent_mode:
+    description: 'true/false'
+    required: false
+    default: "false"
+
+runs:
+  using: "composite"
+  steps:
+    - name: send telegram message on push
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ inputs.chat_id }}
+        socks5: ${{ inputs.url }}
+        token: ${{ inputs.tg_token }}
+        format: ${{ inputs.format }}
+        disable_notification: ${{ inputs.silent_mode }}
+        message: ${{ inputs.message }}

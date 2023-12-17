@@ -28,7 +28,7 @@ jobs:
         with:
           message: |
            Test message:
-            <a href="https://www.example.com/">inline URL</a>
+            [inline URL](http://www.example.com/)
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}

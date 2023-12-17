@@ -26,11 +26,11 @@ runs:
   using: "composite"
   steps:
     - name: send telegram message
-      uses: appleboy/telegram-action@master
+      uses: tyagdit/release-telegram-action@master
       with:
-        to: "${{ inputs.chat_id }}"
-        socks5: "${{ inputs.url }}"
+        channel: "${{ inputs.chat_id }}"
+#        socks5: "${{ inputs.url }}"
         token: "${{ inputs.token }}"
-        format: "${{ inputs.format }}"
-        disable_notification: "${{ inputs.silent_mode }}"
-        message: "${{ inputs.message }}"
+#        format: "${{ inputs.format }}"
+#        disable_notification: "${{ inputs.silent_mode }}"
+        changelog: "${{ inputs.message }}"

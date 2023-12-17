@@ -28,9 +28,9 @@ runs:
     - name: send telegram message
       uses: appleboy/telegram-action@master
       with:
-        to: ${{ inputs.chat_id }}
-#        socks5: ${{ inputs.url }}
-        token: ${{ inputs.token }}
-        format: ${{ inputs.format }}
-        disable_notification: ${{ inputs.silent_mode }}
-        message: ${{ inputs.message }}
+        to: "${{ inputs.chat_id }}"
+        socks5: "${{ inputs.url }}"
+        token: "${{ inputs.token }}"
+        format: "${{ inputs.format }}"
+        disable_notification: "${{ inputs.silent_mode }}"
+        message: "${{ inputs.message }}"

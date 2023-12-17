@@ -20,7 +20,7 @@ jobs:
           minio_key: ${{ secrets.MINIO_KEY }}
           minio_secret: ${{ secrets.MINIO_SECRET }}
           source_file: 'CHANGELOG.md'
-          share_filename: 'CHANGELOG.md'
+          share_filename: 'changelogs/CHANGELOG.md'
 
       - name: Echo link
         if: ${{ success() }}

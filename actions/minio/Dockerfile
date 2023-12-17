@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update && \
-    apt-get install --assume-yes wget grep
+    apt-get install --assume-yes wget grep jq
 
 RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc \
     && chmod +x mc \

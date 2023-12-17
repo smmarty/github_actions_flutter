@@ -35,3 +35,4 @@ jobs:
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
+          parse_mode: "html"

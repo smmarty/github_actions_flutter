@@ -22,13 +22,19 @@ jobs:
           source_file: 'CHANGELOG.md'
           share_filename: 'CHANGELOG.md'
 
+      - name: Echo link
+        if: ${{ success() }}
+        run: echo "${{ steps.minio.outputs.link }}"
+        shell: bash
+
       - name: Send release note to telegram
         if: ${{ success() }}
         uses: smmarty/github_actions_flutter/actions/telegram/send_message@main
         with:
-          message:
-           "Test message:
-            Download link: [Link](${{ steps.minio.outputs.link }})"
+          message: |
+           Test message:
+           <a href="${{ steps.minio.outputs.link }}">Link</a>
           silent_mode: "false"
           chat_id: ${{ secrets.CHAT_ID_FOR_ANDROID_BUILDS }}
           tg_url: ${{ secrets.TG_URL }}
+          parse_mode: 'html'

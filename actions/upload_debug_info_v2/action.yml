@@ -1,22 +1,25 @@
 name: 'Upload crashlytics artifacts'
 description: 'Upload debug info to any services'
 inputs:
-  app-version:
+  app_version:
     description: 'App Version'
     required: true
-  artifacts-path:
+  artifacts_path:
     description: 'path to downloaded artifacts'
     required: true
-  firebase-token:
+  firebase_app_id:
     description: 'firebase-token'
     required: true
-  minio-endpoint:
+  firebase_token:
+    description: 'firebase-token'
+    required: true
+  minio_endpoint:
     description: 'minio-endpoint'
     required: true
-  minio-key:
+  minio_key:
     description: 'minio-key'
     required: true
-  minio-secret:
+  minio_secret:
     description: 'minio-secret'
     required: true
   minio_bucked:
@@ -36,42 +39,42 @@ runs:
     - uses: w9jds/setup-firebase@main
       with:
         tools-version: 12.3.1
-        firebase_token: ${{ inputs.firebase-token }}
+        firebase_token: ${{ inputs.firebase_token }}
 
     - name: Upload symbols to minio
       shell: bash
       env:
-        MINIO_ENDPOINT: ${{ inputs.minio-endpoint }}
-        MINIO_ACCESS_KEY: ${{ inputs.minio-key }}
-        MINIO_SECRET_KEY: ${{ inputs.minio-secret }}
+        MINIO_ENDPOINT: ${{ inputs.minio_endpoint }}
+        MINIO_ACCESS_KEY: ${{ inputs.minio_key }}
+        MINIO_SECRET_KEY: ${{ inputs.minio_secret }}
       run: |
-        app_id=${{ inputs.firebase-app-id }}
-        dir=${{ inputs.artifacts-path }}
+        app_id=${{ inputs.firebase_app_id }}
+        dir=${{ inputs.artifacts_path }}
         alias="deploy-${{ inputs.minio_bucked }}"
         mc alias set $alias $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
         
         for file in `find $dir -d -type f -name "*.dSYM"`
         do
-          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app-version }}/${{ inputs.share_filename }}"
+          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app_version }}/$file"
         done
         
         for file in `find $dir -d -type f -name "*.symbols"`
         do
-          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app-version }}/${{ inputs.share_filename }}"
+          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app_version }}/$file"
         done
 
     - name: Upload symbols to firebase
       shell: bash
       env:
-        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
+        FIREBASE_TOKEN: ${{ inputs.firebase_token }}
       run: |
-        app_id=${{ inputs.firebase-app-id }}
-        dir=${{ inputs.artifacts-path }}
+        app_id=${{ inputs.firebase_app_id }}
+        dir=${{ inputs.artifacts_path }}
 
         for file in `find $dir -type f -name "*.symbols"`
         do
          echo upload $file
-         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase_app_id }} $file
         done
   
         

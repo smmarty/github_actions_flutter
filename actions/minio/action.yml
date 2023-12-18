@@ -35,7 +35,7 @@ runs:
     MINIO_ACCESS_KEY: '${{ inputs.minio_key }}'
     MINIO_SECRET_KEY: '${{ inputs.minio_secret }}'
   args:
-    - ${{ inputs.source_file }}
+    - "**/app-demo-gms-release.apk"
     - ${{ inputs.minio_bucked }}
     - ${{ inputs.share_filename }}
 branding:

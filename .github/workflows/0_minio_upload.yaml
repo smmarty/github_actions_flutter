@@ -40,12 +40,12 @@ jobs:
             Mobile services: prod
             Mobile store: gms
             Build mode: release
-            BaseUrl: https://github.com/smmarty/any?test
+            BaseUrl: $(echo "https://github.com/smmarty/any?test" | jq --slurp --raw-input --raw-output @uri) 
             Obfuscated: true
             Branch: main
             Actor: ns
             
-            Download link: \[Link\]\(${{ steps.minio.outputs.link }}\)
+            Download link: [Link](${{ steps.minio.outputs.link }})
 
       - name: Artifact filepath
         id: download-file-info

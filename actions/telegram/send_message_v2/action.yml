@@ -25,7 +25,7 @@ runs:
     - name: Send message
       shell: bash
       run: |
-        message=$(echo "${{ inputs.message }}" | jq --slurp --raw-input --raw-output @uri)
+        message="${{ inputs.message }}"
         curl -s -X POST "${{ inputs.tg_url }}/sendMessage" \
         -d chat_id="${{ inputs.chat_id }}" \
         -d text="$message" \

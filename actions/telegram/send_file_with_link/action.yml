@@ -1,0 +1,34 @@
+name: 'Telegram send file'
+description: 'Send file to Telegram'
+inputs:
+  file_path:
+    description: 'file_path'
+    required: true
+  chat_id:
+    description: 'chat_id'
+    required: true
+  silent_mode:
+    description: 'true/false'
+    required: false
+    default: "false"
+  tg_url:
+    description: 'tg_url'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Upload file to minio
+      id: minio
+      uses: smmarty/github_actions_flutter/actions/minio@main
+      with:
+        minio_endpoint: ${{ secrets.MINIO_ENDPOINT }}
+        minio_bucked: ${{ secrets.MINIO_BUCKET }}
+        minio_key: ${{ secrets.MINIO_KEY }}
+        minio_secret: ${{ secrets.MINIO_SECRET }}
+        source_file: ${{ inputs.file_path }}
+        share_filename: 'changelogs/CHANGELOG.md'
+
+    - name: File sending
+      run: curl -F document=@${{ inputs.file_path }} ${{ inputs.tg_url }}/sendDocument?chat_id=${{ inputs.chat_id }}?disable_notification=${{ inputs.silent_mode }}  --max-time 20  -v
+      shell: bash

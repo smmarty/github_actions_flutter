@@ -55,12 +55,12 @@ runs:
         
         for file in `find $dir -d -type f -name "*.dSYM"`
         do
-          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app_version }}/$file"
+          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app_version }}/"
         done
         
         for file in `find $dir -d -type f -name "*.symbols"`
         do
-          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app_version }}/$file"
+          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app_version }}/"
         done
 
     - name: Upload symbols to firebase

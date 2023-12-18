@@ -29,7 +29,6 @@ outputs:
     value: ${{ steps.upload.outputs.link }}
 runs:
   using: 'composite'
-  #  image: 'Dockerfile'
   steps:
     - name: 'Upload'
       shell: bash
@@ -39,10 +38,11 @@ runs:
         MINIO_ACCESS_KEY: '${{ inputs.minio_key }}'
         MINIO_SECRET_KEY: '${{ inputs.minio_secret }}'
       run: |
-        mc --version
-        mc alias set deploy $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
-        mc cp ${{ inputs.source_file }} "deploy/${{ inputs.minio_bucked }}/${{ inputs.share_filename }}"
-        echo "link=$(mc share download "deploy/${{ inputs.minio_bucked }}/${{ inputs.share_filename }}" | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @uri)" >> $GITHUB_OUTPUT
+        alias="deploy-${{ inputs.minio_bucked }}"
+        output_path="$alias/${{ inputs.minio_bucked }}/${{ inputs.share_filename }}"
+        mc alias set $alias $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
+        mc cp ${{ inputs.source_file }} $output_path
+        echo "link=$(mc share download $output_path | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @uri)" >> $GITHUB_OUTPUT
 
 branding:
   icon: 'upload-cloud'

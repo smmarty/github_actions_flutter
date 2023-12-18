@@ -1,0 +1,79 @@
+name: 'Upload crashlytics artifacts'
+description: 'Upload debug info to any services'
+inputs:
+  app-version:
+    description: 'App Version'
+    required: true
+  artifacts-path:
+    description: 'path to downloaded artifacts'
+    required: true
+  firebase-token:
+    description: 'firebase-token'
+    required: true
+  minio-endpoint:
+    description: 'minio-endpoint'
+    required: true
+  minio-key:
+    description: 'minio-key'
+    required: true
+  minio-secret:
+    description: 'minio-secret'
+    required: true
+  minio_bucked:
+    description: 'minio_bucked'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu' # See 'Supported distributions' for available options
+        java-version: '17'
+    - uses: w9jds/setup-firebase@main
+      with:
+        tools-version: 12.3.1
+        firebase_token: ${{ inputs.firebase-token }}
+
+    - name: Upload symbols to minio
+      shell: bash
+      env:
+        MINIO_ENDPOINT: ${{ inputs.minio-endpoint }}
+        MINIO_ACCESS_KEY: ${{ inputs.minio-key }}
+        MINIO_SECRET_KEY: ${{ inputs.minio-secret }}
+      run: |
+        app_id=${{ inputs.firebase-app-id }}
+        dir=${{ inputs.artifacts-path }}
+        alias="deploy-${{ inputs.minio_bucked }}"
+        mc alias set $alias $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
+        
+        for file in `find $dir -d -type f -name "*.dSYM"`
+        do
+          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app-version }}/${{ inputs.share_filename }}"
+        done
+        
+        for file in `find $dir -d -type f -name "*.symbols"`
+        do
+          mc cp $file "$alias/${{ inputs.minio_bucked }}/debug-info/${{ inputs.app-version }}/${{ inputs.share_filename }}"
+        done
+
+    - name: Upload symbols to firebase
+      shell: bash
+      env:
+        FIREBASE_TOKEN: ${{ inputs.firebase-token }}
+      run: |
+        app_id=${{ inputs.firebase-app-id }}
+        dir=${{ inputs.artifacts-path }}
+
+        for file in `find $dir -type f -name "*.symbols"`
+        do
+         echo upload $file
+         firebase crashlytics:symbols:upload --app=${{ inputs.firebase-app-id }} $file
+        done
+  
+        
+
+

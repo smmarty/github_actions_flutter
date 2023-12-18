@@ -45,4 +45,4 @@ jobs:
           echo "file-info=$file" >> $GITHUB_OUTPUT    
 
       - name: ECHO RESULT
-        run: echo ${{ steps.download-file-info.outputs.file-inf }}
+        run: echo ${{ steps.download-file-info.outputs.file-info }}

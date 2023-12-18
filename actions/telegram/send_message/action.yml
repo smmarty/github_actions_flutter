@@ -16,7 +16,7 @@ inputs:
     required: true
   parse_mode:
     description: 'parse_mode'
-    default: 'markdown'
+    default: 'html'
     required: false
 
 runs:

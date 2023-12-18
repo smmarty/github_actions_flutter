@@ -37,15 +37,11 @@ runs:
         MINIO_ENDPOINT: ${{ inputs.minio_endpoint }}
         MINIO_ACCESS_KEY: '${{ inputs.minio_key }}'
         MINIO_SECRET_KEY: '${{ inputs.minio_secret }}'
-      args:
-        - ${{ inputs.source_file }}
-        - ${{ inputs.minio_bucked }}
-        - ${{ inputs.share_filename }}
       run: |
         mc --version
         mc alias set deploy $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
-        mc cp $1 "deploy/$2/$3"
-        echo "link=$(mc share download "deploy/$2/$3" | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @uri)" >> $GITHUB_OUTPUT
+        mc cp ${{ inputs.source_file }} "deploy/${{ inputs.minio_bucked }}/${{ inputs.share_filename }}"
+        echo "link=$(mc share download "deploy/${{ inputs.minio_bucked }}/${{ inputs.share_filename }}" | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @uri)" >> $GITHUB_OUTPUT
 
 branding:
   icon: 'upload-cloud'

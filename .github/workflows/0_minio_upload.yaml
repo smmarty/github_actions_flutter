@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0
       - name: Upload Test File
         id: minio
-        uses: smmarty/github_actions_flutter/actions/minio@main
+        uses: smmarty/github_actions_flutter/actions/minio-docker@main
         with:
           minio_endpoint: ${{ secrets.MINIO_ENDPOINT }}
           minio_bucked: ${{ secrets.MINIO_BUCKET }}

@@ -45,7 +45,7 @@ jobs:
             Branch: main
             Actor: ns
             
-            Download link: [Link](${{ steps.minio.outputs.link }})
+            Download link: \[Link\]\(${{ steps.minio.outputs.link }}\)
 
       - name: Artifact filepath
         id: download-file-info

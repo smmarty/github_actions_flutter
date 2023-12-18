@@ -42,7 +42,7 @@ jobs:
         run: |
           dir=${{ steps.download.outputs.download-path }}
           file=/home/ns/services/github_runner_latest/actions-runner/_work/***_client_mobile/***_client_mobile/artifacts/android-build-artifact/app-prod-gms-release.apk
-          echo "download-file-info=$file" >> $GITHUB_OUTPUT    
+          echo "file-info=$file" >> $GITHUB_OUTPUT    
 
       - name: ECHO RESULT
-        run: echo ${{ steps.download-file-info.output.download-file-info }}
+        run: echo ${{ steps.download-file-info.outputs.file-inf }}

@@ -29,4 +29,4 @@ runs:
         -d chat_id="${{ inputs.chat_id }}" \
         -d text="${{ inputs.message }}" \
         -d disable_notification="${{ inputs.silent_mode }}" \
-        -d parse_mode="${{ inputs.parse_mode }}"
+        -d parse_mode="html"

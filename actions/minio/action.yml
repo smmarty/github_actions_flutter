@@ -23,6 +23,9 @@ inputs:
   share_filename:
     description: 'Название файла'
     required: true
+  raw-output:
+    description: 'Название файла'
+    required: true
 outputs:
   link:
     description: 'shared link'
@@ -42,7 +45,7 @@ runs:
         output_path="$alias/${{ inputs.minio_bucked }}/${{ inputs.share_filename }}"
         mc alias set $alias $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
         mc cp ${{ inputs.source_file }} $output_path
-        shared_link=$(mc share download $output_path | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @uri )
+        shared_link=$(mc share download $output_path | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @html )
         echo "link=$shared_link" >> $GITHUB_OUTPUT
 
 branding:

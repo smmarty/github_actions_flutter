@@ -44,7 +44,7 @@ jobs:
             Obfuscated: true
             Branch: main
             Actor: ns
-            
+          
             Download link: [Link](${{ steps.minio.outputs.link }})
 
       - name: Artifact filepath

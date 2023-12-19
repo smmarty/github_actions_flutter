@@ -25,7 +25,7 @@ inputs:
     required: true
   raw-output:
     description: '@url или @html'
-    default: '@url'
+    default: '@uri'
     required: true
 outputs:
   link:

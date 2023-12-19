@@ -1,4 +1,4 @@
-name: 'Telegram send message'
+name: 'Telegram send message with button'
 description: 'Send message to Telegram'
 inputs:
   message:
@@ -18,6 +18,12 @@ inputs:
     description: 'parse_mode'
     default: 'html'
     required: false
+  button_link:
+    description: 'Ссылка которая будет открыта по нажатию на кнопку'
+    required: true
+  button_text:
+    description: 'Текст внутри кнопки'
+    required: true
 
 runs:
   using: "composite"
@@ -25,9 +31,8 @@ runs:
     - name: Send message
       shell: bash
       run: |
-        message="${{ inputs.message }}"
-        curl -s -X POST "${{ inputs.tg_url }}/sendMessage" \
-        -d chat_id="${{ inputs.chat_id }}" \
-        -d text="$message" \
-        -d disable_notification="${{ inputs.silent_mode }}" \
-        -d parse_mode="${{ inputs.parse_mode }}"
+        curl -H "Content-Type: application/json" \
+        -d '{"chat_id": "${{ inputs.chat_id }}", \
+        "text": "${{ inputs.message }}", \
+        "reply_markup": {"inline_keyboard": [[{ "text": "${{ inputs.button_text }}", "url": "${{ inputs.button_link }}" }]]}}}' \
+        "${{ inputs.tg_url }}/sendMessage"

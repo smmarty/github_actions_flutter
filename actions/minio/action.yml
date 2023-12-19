@@ -42,7 +42,8 @@ runs:
         output_path="$alias/${{ inputs.minio_bucked }}/${{ inputs.share_filename }}"
         mc alias set $alias $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY --api S3v4
         mc cp ${{ inputs.source_file }} $output_path
-        echo "link=$(mc share download $output_path | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @uri)" >> $GITHUB_OUTPUT
+        shared_link=$(mc share download $output_path | grep -o 'Share: .*' | grep -o 'http.*' | jq --slurp --raw-input --raw-output @uri | sed 's/\/n//' )
+        echo "link=$shared_link" >> $GITHUB_OUTPUT
 
 branding:
   icon: 'upload-cloud'

@@ -35,5 +35,6 @@ runs:
         chat_id=${{ inputs.chat_id }}
         button_text="${{ inputs.button_text }}"
         button_link="${{ inputs.button_link }}"
-        
-        curl -H "Content-Type: application/json" -d '{"chat_id": chat_id, "text": $text, "reply_markup": {"inline_keyboard": [[{ "text": $button_text , "url": $button_link }]]}}}' "${{ inputs.tg_url }}/sendMessage"
+        json='{"chat_id": -1, "text": "Текст сообщения", "reply_markup": {"inline_keyboard": [[{ "text": "Кнопка", "url": "https://example.com" }]]}}}'
+        body="$(echo "$json" | jq  --arg chat_id $chat_id --arg text $text --arg buttonText $button_text --arg buttonLink $button_link '.chat_id = $chat_id | .text = $text | .reply_markup.inline_keyboard[0][0].text = $buttonText | .reply_markup.inline_keyboard[0][0].url = $buttonLink')"
+        curl -H "Content-Type: application/json" -d $body "${{ inputs.tg_url }}/sendMessage"

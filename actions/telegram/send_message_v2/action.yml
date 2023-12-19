@@ -31,7 +31,6 @@ runs:
     - name: Send message
       shell: bash
       run: |
-        body="{"chat_id": "${{ inputs.chat_id }}", "text": "${{ inputs.message }}", "reply_markup": {"inline_keyboard": [[{ "text": "${{ inputs.button_text }}", "url": "${{ inputs.button_link }}" }]]}}}"
-        curl -H "Content-Type: application/json" \
-        -d  $body \
+        curl -H "Content-Type: application/json"\
+        -d '{"chat_id": "${{ inputs.chat_id }}", "text": "${{ inputs.message }}", "reply_markup": {"inline_keyboard": [[{ "text": "${{ inputs.button_text }}", "url": "${{ inputs.button_link }}" }]]}}}'\
         "${{ inputs.tg_url }}/sendMessage"

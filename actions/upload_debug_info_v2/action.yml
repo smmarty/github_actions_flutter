@@ -57,7 +57,7 @@ runs:
       with:
         distribution: 'zulu'
         java-version: '17'
-    - uses: w9jds/setup-firebase@v12.9.0
+    - uses: w9jds/setup-firebase@12.9.0
       with:
         tools-version: 12.9.0
         firebase_token: ${{ inputs.firebase_token }}

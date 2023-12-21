@@ -60,7 +60,7 @@ runs:
 
     - name: Setup firebase
       shell: bash
-      run: npm install -g firebase-tools
+      run: npm install -g firebase-tools@12.3.0
 
     - name: Upload symbols to firebase
       shell: bash

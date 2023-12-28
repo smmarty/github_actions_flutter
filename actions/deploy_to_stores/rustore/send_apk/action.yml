@@ -1,0 +1,29 @@
+name: 'Send apk to RuStore'
+description: 'Send apk to RuStore'
+inputs:
+  rustore_token:
+    description: 'RuStore API access token'
+    required: true
+  application_id:
+    description: 'id приложения'
+    required: true
+  build_number:
+    description: 'Номер сборки приложения'
+    required: true
+  services_type:
+    description: 'Тип сервиса – HMS или Unknown'
+    required: true
+  is_main_apk:
+    description: 'Признак основного apk (gms) – true или false'
+    required: true
+  file_path:
+    description: 'Путь до apk файла'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Отправка apk
+      shell: bash
+      run: |
+        curl --location 'https://public-api.rustore.ru/public/v1/application/${{ inputs.application_id }}/version/${{ inputs.build_number }}/apk?servicesType=${{ inputs.services_type }}&isMainApk=${{ inputs.is_main_apk }}&' -H 'Content-Type: application/json' -H 'Public-Token: ${{ inputs.rustore_token }}' --form 'file=@"${{ inputs.file_path }}"'

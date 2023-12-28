@@ -23,8 +23,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-#     работает только на linux, на macos нет %N
-    - name: Получение токена
+    - name: Отправка черновика
       id: get-token
       shell: bash
       run: |

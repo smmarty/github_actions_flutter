@@ -1,0 +1,39 @@
+name: 'Add RuStore draft'
+description: 'Add RuStore draft'
+inputs:
+  rustore_token:
+    description: 'RuStore API access token'
+    required: true
+  application_id:
+    description: 'id приложения'
+    required: true
+  short_description:
+    description: 'Короткое описание'
+    required: false
+  full_description:
+    description: 'Полное описание'
+    required: false
+  changelog:
+    description: 'Описание изменений'
+    required: false
+  partial_value:
+    description: 'Значение процента раскатки (5, 10, 25, 50, 75, 100)'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+#     работает только на linux, на macos нет %N
+    - name: Получение токена
+      id: get-token
+      shell: bash
+      run: |
+        application_id="${{ inputs.application_id }}"
+        short_description="${{ inputs.short_description }}"
+        full_description="${{ inputs.full_description }}"
+        changelog="${{ inputs.changelog }}"
+        partial_value=${{ inputs.partial_value }}
+        json='{"packageName": "key", "shortDescription": "time", "fullDescription": "SHA512withRSA", "whatsNew": "whats new ?", "partialValue": 5, "publishType": "MANUAL"}'
+        body=$(echo "$json" | jq  --arg packageName "$application_id" --arg shortDescription "$short_description" --arg fullDescription "$full_description" --arg whatsNew $changelog --arg partialValue $partial_value '.packageName = $application_id | .shortDescription = $short_description | .fullDescription = $full_description | .whatsNew = $changelog | .partialValue = $partial_value')
+        echo $body | jq
+        curl --location 'https://public-api.rustore.ru/public/v1/application/$application_id/version' -H 'Content-Type: application/json' -H 'Public-Token: ${{ inputs.rustore_token }}' -d "$body"

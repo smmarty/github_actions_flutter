@@ -24,7 +24,6 @@ runs:
   using: "composite"
   steps:
     - name: Отправка черновика
-      id: get-token
       shell: bash
       run: |
         application_id="${{ inputs.application_id }}"

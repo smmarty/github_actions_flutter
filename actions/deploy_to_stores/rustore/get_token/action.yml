@@ -1,0 +1,32 @@
+name: 'Get RuStore token'
+description: 'Get RuStore token'
+inputs:
+  key_id:
+    description: 'key id проекта'
+    required: true
+  rustore_api_key:
+    description: 'RuStore private API key'
+    required: true
+outputs:
+  token:
+    description: "Api token"
+    value: ${{ steps.get-token.outputs.token }}
+
+runs:
+  using: "composite"
+  steps:
+#     работает только на linux, на macos нет %N
+    - name: Получение токена
+      id: get-token
+      shell: bash
+      run: |
+        datetime_now="$(date +%Y-%m-%dT%H:%M:%S.%NZ%z)"
+        key_id="${{ inputs.key_id }}"
+        rustore_api_key="${{ inputs.rustore_api_key }}"
+        message="$key_id$datetime_now"
+        signature="$(openssl dgst -sha512 -verify $rustore_api_key -signature $message)"
+        json='{"keyId": "key", "timestamp": "time", "signature": "SHA512withRSA"}'
+        body=$(echo "$json" | jq  --arg keyId $key_id --arg timestamp "$datetime_now" --arg signature $signature '.keyId = $keyId | .timestamp = $datetime_now | .signature = $signature')
+        echo $body | jq
+        token=$(curl --location 'https://public-api.rustore.ru/public/auth' -H 'Content-Type: application/json' -d "$body" | jq '.body.jwe')
+        echo "token=$token" >> $GITHUB_OUTPUT

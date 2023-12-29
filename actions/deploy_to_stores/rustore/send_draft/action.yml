@@ -17,6 +17,7 @@ inputs:
 runs:
   using: "composite"
   steps:
+#     https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/apk-file-upload
     - name: Отправка черновика на модерацию
       shell: bash
       run: |

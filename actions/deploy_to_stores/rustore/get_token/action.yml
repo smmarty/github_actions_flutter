@@ -16,6 +16,7 @@ runs:
   using: "composite"
   steps:
 #     работает только на linux, на macos нет %N
+#     https://www.rustore.ru/help/work-with-RuStore-API/api-authorization-token
     - name: Получение токена
       id: get-token
       shell: bash

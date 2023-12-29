@@ -1,5 +1,5 @@
-name: 'Add RuStore draft'
-description: 'Add RuStore draft'
+name: 'Create RuStore draft'
+description: 'Create RuStore draft'
 inputs:
   rustore_token:
     description: 'RuStore API access token'
@@ -23,7 +23,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Отправка черновика
+#     https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/create-draft-version
+    - name: Создание черновика
       shell: bash
       run: |
         application_id="${{ inputs.application_id }}"

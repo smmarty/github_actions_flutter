@@ -1,0 +1,24 @@
+name: 'Send RuStore draft on moderation'
+description: 'Send RuStore draft on moderation'
+inputs:
+  rustore_token:
+    description: 'RuStore API access token'
+    required: true
+  application_id:
+    description: 'id приложения'
+    required: true
+  build_number:
+    description: 'Номер сборки приложения'
+    required: true
+  priority_update:
+    description: 'Приоритет обновления (0 - 5), где 0 мин и 5 макс'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+#     https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/apk-file-upload
+    - name: Отправка черновика на модерацию
+      shell: bash
+      run: |
+        curl --location 'https://public-api.rustore.ru/public/v1/application/${{ inputs.application_id }}/version/${{ inputs.build_number }}/commit?priorityUpdate=${{ inputs.priority_update }}' -H 'Public-Token: ${{ inputs.rustore_token }}'

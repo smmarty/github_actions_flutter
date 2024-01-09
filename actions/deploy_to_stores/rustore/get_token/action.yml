@@ -21,7 +21,7 @@ runs:
       id: get-token
       shell: bash
       run: |
-        datetime_now="$(date +%Y-%m-%dT%H:%M:%S.%NZ%z)"
+        datetime_now="$(date +%Y-%m-%dT%H:%M:%S.%N%z)"
         key_id="${{ inputs.key_id }}"
         rustore_api_key="${{ inputs.rustore_api_key }}"
         message="$key_id$datetime_now"

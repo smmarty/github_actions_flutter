@@ -1,0 +1,43 @@
+name: 'AppGallery Submit App'
+description: 'AppGallery Submit App'
+inputs:
+  client_id:
+    description: 'Client id проекта'
+    required: true
+  access_token:
+    description: 'Access токен для доступа к API. Без Bearer.'
+    required: true
+  application_id:
+    description: 'Id приложения'
+    required: true
+  release_type:
+    description: '1 – полная раскатка, 3 – по фазам.'
+    required: true
+  phased_release_percent:
+    description: 'Процент раскатки приложения от 0 до 100'
+    required: true
+  phased_release_description:
+    description: 'Описание релиза до 500 символов'
+    required: true
+runs:
+  using: "composite"
+  steps:
+#     работает только на linux, на macos другой синтаксис добавления времени к дате
+#     https://developer.huawei.com/consumer/en/doc/AppGallery-connect-References/agcapi-app-submit-0000001158245061
+    - name: Обновление сборки в шаблоне проекта на раскатку
+      id: update-app-file-info
+      shell: bash
+      run: |
+        date_format="+%Y-%m-%dT%H:%M:%S%z"
+        start_time="$(date -d 'today + 5 minute' $date_format)"
+        end_time="$(date -d 'today + 3 week' $date_format)"
+        client_id="${{ inputs.client_id }}"
+        access_token="${{ inputs.access_token }}"
+        application_id="${{ inputs.application_id }}"
+        release_type="${{ inputs.release_type }}"
+        phased_release_percent="${{ inputs.phased_release_percent }}"
+        phased_release_description="${{ inputs.phased_release_description }}"
+        json='{"phasedReleaseStartTime": "start", "phasedReleaseEndTime": "end", "phasedReleasePercent": 5, "phasedReleaseDescription": "description"}'
+        body=$(echo "$json" | jq  --arg phasedReleaseStartTime $start_time --arg phasedReleaseEndTime "$end_time" --argjson phasedReleasePercent $phased_release_percent --arg phasedReleaseDescription $phased_release_description '.phasedReleaseStartTime = $start_time | .phasedReleaseEndTime = $end_time | .phasedReleasePercent = $phased_release_percent | .phasedReleaseDescription = $phased_release_description')
+        echo $body | jq
+        curl --location 'https://connect-api.cloud.huawei.com/api/publish/v2/app-submit?appId=$application_id&releaseType=$release_type' -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' -d "$body"

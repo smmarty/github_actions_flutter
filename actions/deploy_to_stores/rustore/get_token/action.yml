@@ -29,5 +29,5 @@ runs:
         json='{"keyId": "key", "timestamp": "time", "signature": "SHA512withRSA"}'
         body=$(echo "$json" | jq  --arg keyId $key_id --arg timestamp "$datetime_now" --arg signature $signature '.keyId = $keyId | .timestamp = $datetime_now | .signature = $signature')
         echo $body | jq
-        token=$(curl --location 'https://public-api.rustore.ru/public/auth' -H 'Content-Type: application/json' -d "$body" | jq '.body.jwe')
+        token=$(curl --location 'https://public-api.rustore.ru/public/auth' -X POST -H 'Content-Type: application/json' -d "$body" | jq '.body.jwe')
         echo "token=$token" >> $GITHUB_OUTPUT

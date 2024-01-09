@@ -37,4 +37,4 @@ runs:
         json='{"fileType": "0", "files": {"fileName":"PhotoPlaza.apk","fileDestUrl":"https://**716E24D17593E159601A67A7.apk"}}'
         body=$(echo "$json" | jq  --argjson fileType $file_type --arg fileName "$file_name" --arg fileDestUrl "$object_id" '.fileType = $file_type | .files[fileName] = $file_name | .files[fileDestUrl] = $object_id')
         echo $body | jq
-        curl --location 'https://connect-api.cloud.huawei.com/api/publish/v2/app-file-info?appId=$application_id&releaseType=$release_type'  -H 'Content-Type: application/json' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' -d "$body"
+        curl --location 'https://connect-api.cloud.huawei.com/api/publish/v2/app-file-info?appId=$application_id&releaseType=$release_type' -X PUT -H 'Content-Type: application/json' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' -d "$body"

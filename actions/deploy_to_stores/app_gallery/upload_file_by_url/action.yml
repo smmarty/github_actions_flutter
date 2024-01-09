@@ -33,4 +33,4 @@ runs:
         h_date="$(headers || jq '.x-amz-date')"
         host="$(headers || jq '.Host')"
         user_agent="$(headers || jq '.user-agent')"
-        curl --location '$upload_url' -H 'Content-Type: application/octet-stream' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' -H 'x-amz-content-sha256: $sha_256_hash' -H 'x-amz-date: $h_date' -H 'Host: $host' -H 'user-agent: $user_agent' --data-binary @'$file_path'
+        curl --location '$upload_url' -H 'Content-Type: application/octet-stream' -X PUT -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' -H 'x-amz-content-sha256: $sha_256_hash' -H 'x-amz-date: $h_date' -H 'Host: $host' -H 'user-agent: $user_agent' --data-binary @'$file_path'

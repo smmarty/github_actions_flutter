@@ -40,7 +40,7 @@ runs:
         application_id="${{ inputs.application_id }}"
         file_name="${{ inputs.file_name }}"
         content_length="${{ inputs.content_length }}"
-        url_info=$(curl --location 'https://connect-api.cloud.huawei.com/api/publish/v2/upload-url/for-obs?fileName=$file_name&contentLength=$content_length&appId=$application_id' -H 'Content-Type: application/json' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' | jq '.urlInfo')
+        url_info=$(curl --location 'https://connect-api.cloud.huawei.com/api/publish/v2/upload-url/for-obs?fileName=$file_name&contentLength=$content_length&appId=$application_id' -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' | jq '.urlInfo')
         object_id="$(url_info | jq '.objectId')"
         upload_url="$(url_info | jq '.url')"
         headers="$(url_info | jq '.headers')"

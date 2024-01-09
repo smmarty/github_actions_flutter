@@ -25,5 +25,5 @@ runs:
         json='{"client_id": "id", "client_secret": "secret", "grant_type": "client_credentials"}'
         body=$(echo "$json" | jq  --arg client_id $client_id --arg client_secret "$client_secret" '.client_id = $client_id | .client_secret = $client_secret')
         echo $body | jq
-        token=$(curl --location 'https://connect-api.cloud.huawei.com/api/oauth2/v1/token' -H 'Content-Type: application/json' -d "$body" | jq '.access_token')
+        token=$(curl --location 'https://connect-api.cloud.huawei.com/api/oauth2/v1/token' -X POST -H 'Content-Type: application/json' -d "$body" | jq '.access_token')
         echo "token=$token" >> $GITHUB_OUTPUT

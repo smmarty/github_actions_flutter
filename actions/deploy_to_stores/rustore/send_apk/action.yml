@@ -27,4 +27,4 @@ runs:
     - name: Отправка apk
       shell: bash
       run: |
-        curl --location 'https://public-api.rustore.ru/public/v1/application/${{ inputs.application_id }}/version/${{ inputs.build_number }}/apk?servicesType=${{ inputs.services_type }}&isMainApk=${{ inputs.is_main_apk }}&' -H 'Public-Token: ${{ inputs.rustore_token }}' --form 'file=@"${{ inputs.file_path }}"'
+        curl --location 'https://public-api.rustore.ru/public/v1/application/${{ inputs.application_id }}/version/${{ inputs.build_number }}/apk?servicesType=${{ inputs.services_type }}&isMainApk=${{ inputs.is_main_apk }}&' -X POST -H 'Public-Token: ${{ inputs.rustore_token }}' --form 'file=@"${{ inputs.file_path }}"'

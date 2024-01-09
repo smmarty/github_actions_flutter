@@ -1,0 +1,40 @@
+name: 'AppGallery Update App File Inforamation'
+description: 'AppGallery Update App File Inforamation'
+inputs:
+  client_id:
+    description: 'Client id проекта'
+    required: true
+  access_token:
+    description: 'Access токен для доступа к API. Без Bearer.'
+    required: true
+  application_id:
+    description: 'Id приложения'
+    required: true
+  release_type:
+    description: '1 – полная раскатка, 3 – по фазам.'
+    required: true
+  application_file_name:
+    description: 'Имя загруженного файла'
+    required: true
+  application_object_id:
+    description: 'Id загруженного файла'
+    required: true
+runs:
+  using: "composite"
+  steps:
+#     https://developer.huawei.com/consumer/en/doc/AppGallery-connect-References/agcapi-app-file-info-0000001111685202
+    - name: Обновление сборки в шаблоне проекта на раскатку
+      id: update-app-file-info
+      shell: bash
+      run: |
+        client_id="${{ inputs.client_id }}"
+        access_token="${{ inputs.access_token }}"
+        application_id="${{ inputs.application_id }}"
+        release_type="${{ inputs.release_type }}"
+        file_type=5
+        file_name="${{ inputs.application_file_name }}"
+        object_id="${{ inputs.application_object_id }}"
+        json='{"fileType": "0", "files": {"fileName":"PhotoPlaza.apk","fileDestUrl":"https://**716E24D17593E159601A67A7.apk"}}'
+        body=$(echo "$json" | jq  --argjson fileType $file_type --arg fileName "$file_name" --arg fileDestUrl "$object_id" '.fileType = $file_type | .files[fileName] = $file_name | .files[fileDestUrl] = $object_id')
+        echo $body | jq
+        curl --location 'https://connect-api.cloud.huawei.com/api/publish/v2/app-file-info?appId=$application_id&releaseType=$release_type'  -H 'Content-Type: application/json' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' -d "$body"

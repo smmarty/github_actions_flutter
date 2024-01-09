@@ -1,0 +1,49 @@
+name: 'Get AppGallery File Upload Url'
+description: 'Get AppGallery File Upload Url'
+inputs:
+  client_id:
+    description: 'Client id проекта'
+    required: true
+  access_token:
+    description: 'Access токен для доступа к API. Без Bearer.'
+    required: true
+  application_id:
+    description: 'Id приложения'
+    required: true
+  file_name:
+    description: 'Имя файла включая расширение'
+    required: true
+  content_length:
+    description: 'Размер файла в байтах'
+    required: true
+outputs:
+  headers:
+    description: 'Необходимые заголовки для будущего запроса загрузки.'
+    value: ${{ steps.get-upload-url.outputs.headers }}
+  upload_url:
+    description: 'Url для загрузки файла.'
+    value: ${{ steps.get-upload-url.outputs.upload_url }}
+  object_id:
+    description: 'Id объекта будущего файла.'
+    value: ${{ steps.get-upload-url.outputs.object_id }}
+
+runs:
+  using: "composite"
+  steps:
+#     https://developer.huawei.com/consumer/en/doc/AppGallery-connect-References/agcapi-upload-url-new-0000001111685200
+    - name: Получение upload url
+      id: get-upload-url
+      shell: bash
+      run: |
+        client_id="${{ inputs.client_id }}"
+        access_token="${{ inputs.access_token }}"
+        application_id="${{ inputs.application_id }}"
+        file_name="${{ inputs.file_name }}"
+        content_length="${{ inputs.content_length }}"
+        url_info=$(curl --location 'https://connect-api.cloud.huawei.com/api/publish/v2/upload-url/for-obs?fileName=$file_name&contentLength=$content_length&appId=$application_id' -H 'Content-Type: application/json' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' | jq '.urlInfo')
+        object_id="$(url_info | jq '.objectId')"
+        upload_url="$(url_info | jq '.url')"
+        headers="$(url_info | jq '.headers')"
+        echo "object_id=$object_id" >> $GITHUB_OUTPUT
+        echo "upload_url=$upload_url" >> $GITHUB_OUTPUT
+        echo "headers=$headers" >> $GITHUB_OUTPUT

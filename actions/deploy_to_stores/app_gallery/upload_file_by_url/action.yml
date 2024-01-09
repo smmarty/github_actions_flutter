@@ -1,0 +1,36 @@
+name: 'AppGallery Upload File By Url'
+description: 'AppGallery Upload File By Url'
+inputs:
+  client_id:
+    description: 'Client id проекта'
+    required: true
+  access_token:
+    description: 'Access токен для доступа к API. Без Bearer.'
+    required: true
+  upload_url:
+    description: 'Ссылка куда загружать файл.'
+    required: true
+  file_path:
+    description: 'Путь до файла'
+    required: true
+  headers:
+    description: 'Полученные headers'
+    required: true
+runs:
+  using: "composite"
+  steps:
+#     https://developer.huawei.com/consumer/en/doc/AppGallery-connect-References/agcapi-upload-file-new-0000001111845090
+    - name: Загрузка файла по ссылке
+      id: upload-file-by-url
+      shell: bash
+      run: |
+        client_id="${{ inputs.client_id }}"
+        access_token="${{ inputs.access_token }}"
+        file_path="${{ inputs.file_path }}"
+        upload_url="${{ inputs.upload_url }}"
+        headers="${{ inputs.headers }}"
+        sha_256_hash="$(headers || jq '.x-amz-content-sha256')"
+        h_date="$(headers || jq '.x-amz-date')"
+        host="$(headers || jq '.Host')"
+        user_agent="$(headers || jq '.user-agent')"
+        curl --location '$upload_url' -H 'Content-Type: application/octet-stream' -H 'Authorization: Bearer $access_token' -H 'client_id: $client_id' -H 'x-amz-content-sha256: $sha_256_hash' -H 'x-amz-date: $h_date' -H 'Host: $host' -H 'user-agent: $user_agent' --data-binary @'$file_path'

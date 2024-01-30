@@ -57,7 +57,7 @@ runs:
         fi
         CMD_ARGS="$CMD_ARGS $DART_DEFINE_ARGS"
         echo $CMD_ARGS
-        (cd ios && pod install --repo-update --clean-install)
+#        (cd ios && pod install --repo-update --clean-install)
         flutter build ios --flavor ${{ inputs.flavor }} --$(tr -s "[:upper:]" "[:lower:]" <<<${{ inputs.build_mode }}) --no-codesign $CMD_ARGS
 
     - name: Upload debug_info to artifacts

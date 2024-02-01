@@ -1,0 +1,25 @@
+name: 'Get last changelog'
+description: 'Get last changelog'
+inputs:
+  changelog_file_path:
+    description: 'Path to file of changelog.md'
+    required: true
+outputs:
+  token:
+    description: "Last changelog"
+    value: ${{ steps.get-changelog.outputs.last_changelog }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get last changelog
+      id: get-changelog
+      shell: bash
+      run: |
+        chmod +x get_lines.awk && chmod +x get_last_changelog_line_number.awk
+        touch temp_file.md 
+        awk 'NF' ${{ inputs.changelog_file_path }} >> temp_file.md
+        line_number=$(./script.awk temp_file.md)
+        last_changelog="$(./get_lines.awk -v var1=$line_number temp_file.md)"
+        rm temp_file.md
+        echo "last_changelog=$last_changelog" >> $GITHUB_OUTPUT

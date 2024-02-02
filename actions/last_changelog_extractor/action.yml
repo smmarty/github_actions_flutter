@@ -1,0 +1,33 @@
+name: 'Get last changelog'
+description: 'Get last changelog'
+inputs:
+  changelog_file_path:
+    description: 'Path to file of changelog.md'
+    required: true
+  default_divider:
+    description: 'Default divider of release versions.'
+outputs:
+  changelog:
+    description: "Last changelog"
+    value: ${{ steps.get-changelog.outputs.last_changelog }}
+  release_version:
+    description: "Last release version"
+    value: ${{ steps.get-changelog.outputs.nearest_release_version }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get last changelog
+      id: get-changelog
+      shell: bash
+      run: |
+        chmod +x get_lines.awk && chmod +x get_last_changelog_line_number.awk && chmod +x get_nearest_release_version.awk
+        touch temp_file.md 
+        awk 'NF' ${{ inputs.changelog_file_path }} >> temp_file.md
+        version_divider=${{ inputs.default_divider }}
+        line_number=$(./get_last_changelog_line_number.awk -v divider=$version_divider temp_file.md)
+        nearest_release_version="$(./get_last_changelog_line_number.awk -v divider=$version_divider temp_file.md)"
+        last_changelog="$(./get_lines.awk -v last_line=$line_number temp_file.md)"
+        rm temp_file.md
+        echo "last_changelog=$last_changelog" >> $GITHUB_OUTPUT
+        echo "nearest_release_version=$nearest_release_version" >> $GITHUB_OUTPUT

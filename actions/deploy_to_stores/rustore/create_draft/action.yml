@@ -35,4 +35,4 @@ runs:
         json='{"packageName": "id", "shortDescription": "short desc", "fullDescription": "full desc", "whatsNew": "whats new ?", "partialValue": 5, "publishType": "MANUAL"}'
         body=$(echo "$json" | jq  --arg packageName "$application_id" --arg shortDescription "$short_description" --arg fullDescription "$full_description" --arg whatsNew $changelog --arg partialValue $partial_value '.packageName = $application_id | .shortDescription = $short_description | .fullDescription = $full_description | .whatsNew = $changelog | .partialValue = $partial_value')
         echo $body | jq
-        curl --location 'https://public-api.rustore.ru/public/v1/application/$application_id/version' -H 'Content-Type: application/json' -H 'Public-Token: ${{ inputs.rustore_token }}' -d "$body"
+        curl --location 'https://public-api.rustore.ru/public/v1/application/$application_id/version' -X POST -H 'Content-Type: application/json' -H 'Public-Token: ${{ inputs.rustore_token }}' -d "$body"

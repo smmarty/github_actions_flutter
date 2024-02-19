@@ -1,0 +1,29 @@
+name: 'Get AppGallery Connect token'
+description: 'Get AppGallery Connect token'
+inputs:
+  client_id:
+    description: 'Client id проекта'
+    required: true
+  client_secret:
+    description: 'Client secret проекта'
+    required: true
+outputs:
+  token:
+    description: "Api token"
+    value: ${{ steps.get-token.outputs.token }}
+
+runs:
+  using: "composite"
+  steps:
+#     https://developer.huawei.com/consumer/en/doc/AppGallery-connect-References/agcapi-obtain_token-0000001158365043
+    - name: Получение токена
+      id: get-token
+      shell: bash
+      run: |
+        client_id="${{ inputs.client_id }}"
+        client_secret="${{ inputs.client_secret }}"
+        json='{"client_id": "id", "client_secret": "secret", "grant_type": "client_credentials"}'
+        body=$(echo "$json" | jq  --arg client_id $client_id --arg client_secret "$client_secret" '.client_id = $client_id | .client_secret = $client_secret')
+        echo $body | jq
+        token=$(curl --location 'https://connect-api.cloud.huawei.com/api/oauth2/v1/token' -X POST -H 'Content-Type: application/json' -d "$body" | jq '.access_token')
+        echo "token=$token" >> $GITHUB_OUTPUT

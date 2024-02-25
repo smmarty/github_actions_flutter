@@ -30,10 +30,10 @@ inputs:
     required: true
   fastlane_apple_id:
     description: 'id от apple аккаунта'
-    required: true
+    required: false
   fastlane_apple_application_specific_password:
     description: 'Пароль приложения от apple аккаунта(2FA)'
-    required: true
+    required: false
   match_password:
     description: 'Пароль для расшифровки сертификатов'
     required: true
@@ -45,17 +45,26 @@ inputs:
     required: true
   temp_keychain_user:
     description: 'Логин от временного keychain'
-    required: true
+    required: false
   temp_keychain_password:
     description: 'Пароль от временного keychain'
-    required: true
+    required: false
+  appstore_key_id:
+    description: 'KEY ID'
+    required: false
+  appstore_issuer_id:
+    description: 'issuer_id'
+    required: false
+  appstore_key_filepath:
+    description: 'authkey filepath '
+    required: false
   itc_provider:
     description: 'ITC PROVIDER (TEAM ID)'
-    required: true
+    required: false
   upload_ipa:
     description: 'Выгрузка Ipa файла в артефакты'
     default: 'false'
-    required: true
+    required: false
 
 
 runs:
@@ -80,6 +89,9 @@ runs:
         FASTLANE_USER: ${{ inputs.fastlane_apple_id }}
         MATCH_PASSWORD: ${{ inputs.match_password }}
         GIT_SECRETS_URL: ${{ inputs.git_sercrets_url }}
+        APPSTORE_KEY_ID: ${{ inputs.appstore_key_id }}
+        APPSTORE_ISSUER_ID: ${{ inputs.appstore_issuer_id }}
+        APPSTORE_KEY_FILEPATH: ${{ inputs.appstore_key_filepath }}
 
 
     - name: Upload Ipa File
